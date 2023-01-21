@@ -43,7 +43,7 @@ function InboxPanelInputField() {
       className={`
         resize-none bg-tanj-white rounded-sm w-72 h-36 p-2 
         shadow-inner shadow-[rgba(0,0,0,0.2)] 
-        border-2 border-tanj-pink focus:border-tanj-green outline-none
+        border-2 border-tanj-pink focus:border-tanj-green outline-none 
       `} 
     />
   )

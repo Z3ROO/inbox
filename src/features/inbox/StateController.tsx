@@ -1,5 +1,16 @@
 import React, { createContext, useContext, useState } from "react"
 
+export interface IInboxItem {
+  content: string
+  last_delay: null|{
+    amount: DelayAmounts, 
+    delayed_at: Date, 
+    allowed_after: Date
+  }
+}
+
+type DelayAmounts = 'day'|'week'|'month'|'year';
+
 export interface InboxStateController {
   inboxInsertText: string
   setInboxInsertText: React.Dispatch<React.SetStateAction<string>>
@@ -8,6 +19,10 @@ export interface InboxStateController {
   insertInbox: () => Promise<void>
   filterInboxMode: boolean
   toggleFilterInboxMode: () => void
+  updateInboxItem: (amount: DelayAmounts) => Promise<void>
+  undoInboxItemUpdate: () => Promise<void>
+  inboxItems: IInboxItem[]|undefined
+  getInboxItems: () => Promise<void>
 }
 
 const StateControllerContext = createContext<InboxStateController|null>(null);
@@ -25,11 +40,28 @@ function StateController(): InboxStateController {
   const [filterInboxMode, setFilterInboxMode] = useState(false);
   const toggleFilterInboxMode = () => setFilterInboxMode(prev => !prev);
 
+  const [inboxItems, setInboxItems] = useState<IInboxItem[]>();
+
+  async function updateInboxItem(amount: 'day'|'week'|'month'|'year') {
+    
+  }
+
+  async function getInboxItems() {
+    const response: IInboxItem[] = [{content: 'teste teste teste \n teste teste', last_delay: { amount: 'month', delayed_at: new Date(), allowed_after: new Date()} }]
+    setInboxItems(response);
+  }
+
+  async function undoInboxItemUpdate() {
+
+  }
+
   return {
     inboxInsertText, setInboxInsertText, 
     insertInbox,
     inboxFilterText, setInboxFilterText,
-    filterInboxMode, toggleFilterInboxMode
+    filterInboxMode, toggleFilterInboxMode,
+    inboxItems,
+    getInboxItems, updateInboxItem, undoInboxItemUpdate
   }
 }
 

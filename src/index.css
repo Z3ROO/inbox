@@ -19,3 +19,54 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@layer components {
+  .heading {
+    @apply font-medium leading-tight mt-0 mb-2
+  }
+  
+  h1 {
+    @apply heading text-5xl
+  }
+  
+  h2 {
+    @apply heading text-4xl
+  }
+  
+  h3 {
+    @apply heading text-3xl
+  }
+  
+  h4 {
+    @apply heading text-2xl
+  }
+  
+  h5 {
+    @apply heading text-xl
+  }
+  
+  h6 {
+    @apply heading text-base
+  }
+}
+
+@keyframes inbox-animation {
+  0% {
+    width: 1px;
+    height: 1px;
+    left: 50%;
+    top: 50%;
+  }
+  100% {
+    width: 24rem;
+    height: 18rem;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+  }
+}
+
+.inbox {
+  animation: inbox-animation .5s linear;
+  animation-fill-mode: forwards;
+}

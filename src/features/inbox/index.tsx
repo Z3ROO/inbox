@@ -53,7 +53,7 @@ function FilterInboxModal() {
   const { toggleFilterInboxMode, filterInboxMode } = useInboxState()!;
 
   return (
-    <Modal close={toggleFilterInboxMode}>
+    <Modal closeFn={toggleFilterInboxMode}>
       {
         filterInboxMode && (
           <FilterInbox />

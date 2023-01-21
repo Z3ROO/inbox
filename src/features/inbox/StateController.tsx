@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState } from "react"
 export interface InboxStateController {
   inboxInsertText: string
   setInboxInsertText: React.Dispatch<React.SetStateAction<string>>
+  inboxFilterText: string
+  setInboxFilterText: React.Dispatch<React.SetStateAction<string>>
   insertInbox: () => Promise<void>
   filterInboxMode: boolean
   toggleFilterInboxMode: () => void
@@ -17,12 +19,15 @@ function StateController(): InboxStateController {
   async function insertInbox() {
     setInboxInsertText('');
   }
-
+  
+  const [inboxFilterText, setInboxFilterText] = useState('');
   const [filterInboxMode, setFilterInboxMode] = useState(false);
   const toggleFilterInboxMode = () => setFilterInboxMode(prev => !prev);
 
   return {
-    inboxInsertText, setInboxInsertText, insertInbox,
+    inboxInsertText, setInboxInsertText, 
+    insertInbox,
+    inboxFilterText, setInboxFilterText,
     filterInboxMode, toggleFilterInboxMode
   }
 }

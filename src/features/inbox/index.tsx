@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { InboxStateScope, useInboxState } from "./StateController";
 import Modal from "../../components/Modal";
 import { BtnPrimary, BtnSecondary } from "../../components/Buttons";
 import { FaTrashAlt } from 'react-icons/fa'
+import { useEffect } from "react";
 
 
 export default function Inbox() {
@@ -29,9 +31,15 @@ function InboxPanel() {
 function InboxPanelInputField() {
   const {inboxInsertText, setInboxInsertText} = useInboxState()!;
 
+  useEffect(() => {
+    const cachedInsertText = localStorage.getItem('inboxInsertText');
+    if (cachedInsertText?.length)
+      setInboxInsertText(cachedInsertText);
+  },[]);
+
   return (
     <textarea 
-      value={inboxInsertText} onChange={e => setInboxInsertText(e.target.value)}
+      value={inboxInsertText} onChange={e => { setInboxInsertText(e.target.value); localStorage.setItem('inboxInsertText', e.target.value) }}
       className={`
         resize-none bg-tanj-white rounded-sm w-72 h-36 p-2 
         shadow-inner shadow-[rgba(0,0,0,0.2)] 

@@ -1,6 +1,6 @@
-import BtnPrimary from "../../components/button/BtnPrimary";
 import { InboxStateScope, useInboxState } from "./StateController";
 import Modal from "../../components/Modal";
+import { BtnPrimary } from "../../components/Buttons";
 
 
 export default function Inbox() {

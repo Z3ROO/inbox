@@ -1,5 +1,5 @@
-import BtnPrimary from "./button/BtnPrimary";
 import { IoClose } from 'react-icons/io5';
+import { BtnIcon } from './Buttons';
 
 export default function Modal(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[], closeFn: () => void }) {
   
@@ -18,8 +18,8 @@ export default function Modal(props: { children?: JSX.Element|null|false|(JSX.El
 
 function CloseButton(props: { closeFn: () => void }) {
   return (
-    <BtnPrimary className="absolute top-2 right-2" onClick={props.closeFn}>
+    <BtnIcon className="absolute top-2 right-2" onClick={props.closeFn}>
       <IoClose />
-    </BtnPrimary>
+    </BtnIcon>
   )
 }

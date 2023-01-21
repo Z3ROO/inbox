@@ -83,6 +83,9 @@ function FilterInbox() {
     <div className="w-[28] m-2">
       <h4 className="text-tanj-green">Inbox filter:</h4>
       <InboxFilterInputField />
+      <div className="text-right">
+        <span className="text-sm text-tanj-green">Delayed a year on {new Date().toLocaleDateString(['pt-BR'])}.</span>
+      </div>
       <InboxFilterControlls />
     </div>
   )

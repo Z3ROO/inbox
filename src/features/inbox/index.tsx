@@ -2,7 +2,7 @@
 import { InboxStateScope, useInboxState } from "./StateController";
 import Modal from "../../components/Modal";
 import { BtnPrimary, BtnSecondary } from "../../components/Buttons";
-import { FaTrashAlt } from 'react-icons/fa'
+import { FaTrashAlt, FaUndoAlt } from 'react-icons/fa'
 import { useEffect } from "react";
 
 
@@ -80,7 +80,7 @@ function FilterInboxModal() {
 
 function FilterInbox() {
   return (
-    <div className="w-96 m-2">
+    <div className="w-[28] m-2">
       <h4 className="text-tanj-green">Inbox filter:</h4>
       <InboxFilterInputField />
       <InboxFilterControlls />
@@ -95,7 +95,7 @@ function InboxFilterInputField() {
     <textarea 
       value={inboxFilterText} onChange={e => setInboxFilterText(e.target.value)}
       className={`
-        resize-none bg-tanj-white rounded-sm w-full h-52 p-2 
+        resize-none bg-tanj-white rounded-sm w-full h-56 p-2 
         shadow-inner shadow-[rgba(0,0,0,0.2)] 
         border-2 border-tanj-pink focus:border-tanj-green outline-none
       `} 
@@ -114,6 +114,9 @@ function InboxFilterControlls() {
       <BtnPrimary>Year</BtnPrimary>
       <BtnSecondary icon bgLess>
         <FaTrashAlt/>
+      </BtnSecondary>
+      <BtnSecondary icon bgLess>
+        <FaUndoAlt/>
       </BtnSecondary>
     </div>
   )

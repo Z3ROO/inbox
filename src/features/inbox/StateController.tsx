@@ -18,6 +18,7 @@ function StateController(): InboxStateController {
 
   async function insertInbox() {
     setInboxInsertText('');
+    localStorage.setItem('inboxInsertText', '');
   }
   
   const [inboxFilterText, setInboxFilterText] = useState('');

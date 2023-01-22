@@ -1,7 +1,7 @@
 import { IoClose } from 'react-icons/io5';
 import { BtnSecondary } from './Buttons';
 
-export default function Modal(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[], closeFn: () => void }) {
+export function Modal(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[], closeFn: () => void }) {
   
   if(!props.children)
     return null

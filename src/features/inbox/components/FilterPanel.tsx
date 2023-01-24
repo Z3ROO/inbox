@@ -83,10 +83,10 @@ function Controlls() {
   return (
     <div className="flex justify-between mt-2 text-sm">
       {
-        ['Day', 'Week', 'Month', 'Year'].map(amount => (
+        ['Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
             onClick={() => updateInboxItem(amount.toLowerCase() as InboxDelayAmounts)}
-          >{amount}</BtnPrimary>    
+          >{amount}</BtnPrimary>
         ))
       }
       <BtnSecondary icon bgLess onClick={removeInboxItem}>

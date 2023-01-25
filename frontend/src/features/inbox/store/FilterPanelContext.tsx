@@ -12,8 +12,6 @@ export const useFilterPanelContext = () => useContext(Context);
 export function FilterPanelContextProvider(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[] }) {
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const toggleFilterPanel = () => setIsFilterPanelOpen(prev => !prev);
-  
-  
 
   const inboxItems = useQuery('inbox-items', InboxAPI.getInboxItems);
 

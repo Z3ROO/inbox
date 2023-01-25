@@ -6,12 +6,14 @@ export interface IFilterPanelContext {
   isFilterPanelOpen: boolean
   toggleFilterPanel: () => void
   updateInboxItem: UseMutationResult<any, unknown, {
+      inboxItem_id: string,
       action: "day" | "week" | "month" | "3months"|"remove"|"undo";
     }, unknown>
   inboxItems: UseQueryResult<IInboxItem[]>
 }
 
 export interface IInboxItem {
+  _id: string
   content: string
   last_delay: null|{
     amount: InboxDelayAmounts, 

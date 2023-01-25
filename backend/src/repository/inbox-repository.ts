@@ -1,5 +1,6 @@
 import { database } from '@/infra/database';
-import { Collection, Db, ObjectId } from 'mongodb';
+import { IInbox } from '@/types/Inbox';
+import { Collection, Db, ObjectId, WithId } from 'mongodb';
 
 class Repository<DocumentType> {
   protected db: Db
@@ -25,30 +26,37 @@ class Repository<DocumentType> {
 
 }
 
-interface IInbox {
-  content: string
-  last_delay: {
-    amount: string
-    delayed_at: Date
-  }
-  allowed_after: Date
-}
-
-class InboxRepository extends Repository<IInbox> {
+export class InboxRepository extends Repository<IInbox> {
   constructor() {
     super('kagura', 'inbox');
   }
 
   async findAll() {
-    return await this.collection().find().toArray();
-  }
-
-  async updateOne(inboxItem_id: string, properties: Partial<IInbox>) {
-    const _id = new ObjectId(inboxItem_id);
-    return await this.collection().findOneAndUpdate({_id}, {$set: {...properties}})
+    const result = await this.collection()
+      .find({allowed_after:{ $lte: new Date()}})
+      .sort({allowed_after: 1})
+      .toArray();
+    
+    return result;
   }
 
   async insertOne(inboxItem: IInbox) {
-    await this.collection().insertOne(inboxItem)
+    await this.collection().insertOne(inboxItem);
+  }
+
+  async updateItem(inboxItem_id: string, properties: Partial<IInbox>) {
+    const _id = new ObjectId(inboxItem_id);
+    const mutation = await this.collection().findOneAndUpdate({_id}, {$set: {...properties}}, { returnDocument: 'before' });
+    return {
+      originalValue: mutation.value
+    }
+  }
+
+  async deleteOne(inboxItem_id: string) {
+    const _id = new ObjectId(inboxItem_id);
+    const mutation = await this.collection().findOneAndDelete({_id});
+    return {
+      originalValue: mutation.value
+    }
   }
 }

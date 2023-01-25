@@ -93,28 +93,30 @@ function LastDelayLog() {
 }
 
 function Controlls() {
-  const { updateInboxItem } = useFilterPanelContext()!
+  const { inboxItems, updateInboxItem } = useFilterPanelContext()!
   const { mutate: updateItem, isLoading } = updateInboxItem;
+
+  const currentItem = (inboxItems.data || [])[0];
 
   return (
     <div className="flex justify-between mt-2 text-sm">
       {
         ['Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
-            onClick={() => updateItem({ action: amount.toLowerCase() as InboxDelayAmounts })} 
+            onClick={() => updateItem({ inboxItem_id: currentItem._id, action: amount.toLowerCase() as InboxDelayAmounts })} 
             disabled={isLoading}
           >{amount}</BtnPrimary>
         ))
       }
       <BtnSecondary icon bgLess 
         disabled={isLoading}
-        onClick={() => updateItem({ action: 'remove' })}
+        onClick={() => updateItem({ inboxItem_id: currentItem._id, action: 'remove' })}
       >
         <FaTrashAlt/>
       </BtnSecondary>
       <BtnSecondary icon bgLess 
         disabled={isLoading}
-        onClick={() => updateItem({ action: 'undo' })}
+        onClick={() => updateItem({ inboxItem_id: currentItem._id, action: 'undo' })}
       >
         <FaUndoAlt/>
       </BtnSecondary>

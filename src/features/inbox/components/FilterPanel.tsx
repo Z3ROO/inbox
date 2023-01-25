@@ -2,8 +2,9 @@ import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
 import { Modal } from "@/components/Modal";
 import { useEffect } from "react";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
-import { useFilterPanelContext } from "../store/FilterPanelContext";
-import { InboxDelayAmounts } from "../types";
+import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext";
+import { InboxDelayAmounts } from "@/features/inbox/types";
+import { BiLoaderAlt } from 'react-icons/bi';
 
 export function InboxFilterPanelModal() {
   const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;
@@ -19,18 +20,19 @@ export function InboxFilterPanelModal() {
 }
 
 function FilterPanel() {
-  const { inboxItems, getInboxItems } = useFilterPanelContext()!;
+  const { inboxItems } = useFilterPanelContext()!;
 
-  useEffect(() => {
-    getInboxItems();
-  },[])
-
-  if (!inboxItems)
+  if (inboxItems.isLoading)
     return (  
       <h2 className="m-4 mx-10 text-tanj-green">Loading...</h2>
     )
+  
+  if (inboxItems.isError)
+    return (  
+      <h2 className="m-4 mx-10 text-tanj-green">Something went wrong.</h2>
+    )
 
-  if (inboxItems.length === 0)
+  if (!inboxItems.data || inboxItems.data.length === 0)
     return (  
       <h2 className="m-4 mx-10 text-tanj-green">Inbox empty.</h2>
     ) 
@@ -46,23 +48,36 @@ function FilterPanel() {
 }
 
 function InputField() {
-  const { inboxFilterText, setInboxFilterText} = useFilterPanelContext()!;
+  const { inboxItems, inboxFilterText, setInboxFilterText, updateInboxItem} = useFilterPanelContext()!;
+  
+  useEffect(() => {
+    if (inboxItems.isSuccess)
+      setInboxFilterText(inboxItems.data[0].content)
+  }, [inboxItems]);
+
 
   return (
-    <textarea 
-      value={inboxFilterText} onChange={e => setInboxFilterText(e.target.value)}
-      className={`
-        resize-none bg-tanj-white rounded-sm w-full h-56 p-2 
-        shadow-inner shadow-[rgba(0,0,0,0.2)] 
-        border-2 border-tanj-pink focus:border-tanj-green outline-none 
-      `} 
-    />
+    <div className="relative">
+      <textarea 
+        value={inboxFilterText} onChange={e => setInboxFilterText(e.target.value)}
+        className={`
+          resize-none bg-tanj-white rounded-sm w-full h-56 p-2 
+          shadow-inner shadow-[rgba(0,0,0,0.2)] 
+          border-2 border-tanj-pink focus:border-tanj-green outline-none 
+        `} 
+      />
+      {
+        updateInboxItem.isLoading &&
+        <BiLoaderAlt className="absolute top-4 right-4 animate-spin" />
+      }
+    </div>
+    
   )
 }
 
 function LastDelayLog() {
   const { inboxItems } = useFilterPanelContext()!;
-  const delayed_at = (inboxItems || [])[0].last_delay?.delayed_at;
+  const delayed_at = (inboxItems.data || [])[0].last_delay?.delayed_at;
 
   return (
     <div className="text-right">
@@ -78,21 +93,29 @@ function LastDelayLog() {
 }
 
 function Controlls() {
-  const { updateInboxItem, removeInboxItem, undoInboxItemUpdate } = useFilterPanelContext()!;
+  const { updateInboxItem } = useFilterPanelContext()!
+  const { mutate: updateItem, isLoading } = updateInboxItem;
 
   return (
     <div className="flex justify-between mt-2 text-sm">
       {
         ['Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
-            onClick={() => updateInboxItem(amount.toLowerCase() as InboxDelayAmounts)}
+            onClick={() => updateItem({ action: amount.toLowerCase() as InboxDelayAmounts })} 
+            disabled={isLoading}
           >{amount}</BtnPrimary>
         ))
       }
-      <BtnSecondary icon bgLess onClick={removeInboxItem}>
+      <BtnSecondary icon bgLess 
+        disabled={isLoading}
+        onClick={() => updateItem({ action: 'remove' })}
+      >
         <FaTrashAlt/>
       </BtnSecondary>
-      <BtnSecondary icon bgLess onClick={undoInboxItemUpdate}>
+      <BtnSecondary icon bgLess 
+        disabled={isLoading}
+        onClick={() => updateItem({ action: 'undo' })}
+      >
         <FaUndoAlt/>
       </BtnSecondary>
     </div>

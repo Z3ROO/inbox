@@ -1,7 +1,7 @@
 import { database } from '@/infra/database';
-import { Db } from 'mongodb';
+import { Collection, Db, ObjectId } from 'mongodb';
 
-class Repository {
+class Repository<DocumentType> {
   protected db: Db
   protected dbName: string
   protected collectionName: string
@@ -12,7 +12,7 @@ class Repository {
     this.db = database.db(dbName);
   }
 
-  protected collection(collectionName?: string) {
+  protected collection(collectionName?: string): Collection<DocumentType> {
     if (collectionName)
       return this.db.collection(collectionName);
     else {
@@ -25,7 +25,16 @@ class Repository {
 
 }
 
-class InboxRepository extends Repository {
+interface IInbox {
+  content: string
+  last_delay: {
+    amount: string
+    delayed_at: Date
+  }
+  allowed_after: Date
+}
+
+class InboxRepository extends Repository<IInbox> {
   constructor() {
     super('kagura', 'inbox');
   }
@@ -34,11 +43,12 @@ class InboxRepository extends Repository {
     return await this.collection().find().toArray();
   }
 
-  updateOne() {
-
+  async updateOne(inboxItem_id: string, properties: Partial<IInbox>) {
+    const _id = new ObjectId(inboxItem_id);
+    return await this.collection().findOneAndUpdate({_id}, {$set: {...properties}})
   }
 
-  insertOne() {
-    
+  async insertOne(inboxItem: IInbox) {
+    await this.collection().insertOne(inboxItem)
   }
 }

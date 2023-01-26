@@ -51,9 +51,11 @@ function InputField() {
   const { inboxItems, inboxFilterText, setInboxFilterText, updateInboxItem} = useFilterPanelContext()!;
   
   useEffect(() => {
-    if (inboxItems.isSuccess)
-      setInboxFilterText(inboxItems.data[0].content)
-  }, [inboxItems]);
+    if (inboxItems.isSuccess) {
+      setInboxFilterText(inboxItems.data[0].content);
+      console.log('asdasdasdasd11')
+    }
+  }, [inboxItems.data]);
 
 
   return (
@@ -93,7 +95,7 @@ function LastDelayLog() {
 }
 
 function Controlls() {
-  const { inboxItems, updateInboxItem } = useFilterPanelContext()!
+  const { inboxItems, updateInboxItem, inboxFilterText } = useFilterPanelContext()!
   const { mutate: updateItem, isLoading } = updateInboxItem;
 
   const currentItem = (inboxItems.data || [])[0];
@@ -103,7 +105,7 @@ function Controlls() {
       {
         ['Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
-            onClick={() => updateItem({ inboxItem_id: currentItem._id, action: amount.toLowerCase() as InboxDelayAmounts })} 
+            onClick={() => updateItem({ content: inboxFilterText , inboxItem_id: currentItem._id, action: amount.toLowerCase() as InboxDelayAmounts })} 
             disabled={isLoading}
           >{amount}</BtnPrimary>
         ))

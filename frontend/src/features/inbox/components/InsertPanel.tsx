@@ -1,12 +1,22 @@
+import { queryClient } from "@/App";
 import { BtnPrimary } from "@/components/Buttons";
 import { useState, useEffect } from "react";
+import { useMutation } from "react-query";
 import { useFilterPanelContext } from "../store/FilterPanelContext";
 import { cacheInsertInputField, getCachedInsertInputField } from "../util/cacheInsertField";
+import * as InboxAPI from '@/features/inbox/api'
 
 export function InboxInsertPanel() {
   const [insertFieldText, setInsertFieldText] = useState('');
 
+  const insertInboxItem = useMutation(InboxAPI.insertInboxItem, {
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries('inbox-items');
+    }
+  });
+
   async function insertInbox() {
+    insertInboxItem.mutate({content: insertFieldText});
     setInsertFieldText('');
     cacheInsertInputField('');
   }

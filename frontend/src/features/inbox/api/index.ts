@@ -42,12 +42,27 @@ export async function getInboxItems(): Promise<IInboxItem[]> {
   // ]
 }
 
-export async function updateInboxItem(args: {inboxItem_id: string, action: 'day'|'week'|'month'|'3months'|'remove'|'undo'}) {
-  const { inboxItem_id, action } = args;
+export async function insertInboxItem(args: {content: string}) {
+  const { content } = args;
+  
+  const request = await fetch(`${API_URL}/inbox`, {
+    method: 'post',
+    body: JSON.stringify({content}),
+    headers: {
+      'Content-Type':'application/json'
+    }
+  });
+  const response = await request.json();
+
+  return response;
+}
+
+export async function updateInboxItem(args: {content?: string, inboxItem_id: string, action: 'day'|'week'|'month'|'3months'|'remove'|'undo'}) {
+  const { content, inboxItem_id, action } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
     method: 'put',
-    body: JSON.stringify({action, item_id: inboxItem_id}),
+    body: JSON.stringify({content, action, item_id: inboxItem_id}),
     headers: {
       'Content-Type':'application/json'
     }

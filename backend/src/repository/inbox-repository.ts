@@ -3,22 +3,22 @@ import { IInbox } from '@/types/Inbox';
 import { Collection, Db, ObjectId, WithId } from 'mongodb';
 
 class Repository<DocumentType> {
-  protected db: Db
+  protected db: () => Db
   protected dbName: string
   protected collectionName: string
 
   constructor(dbName: string, collectionName?: string) {
     this.dbName = dbName;
     this.collectionName = collectionName;
-    this.db = database.db(dbName);
+    this.db = () => database(dbName);
   }
 
   protected collection(collectionName?: string): Collection<DocumentType> {
     if (collectionName)
-      return this.db.collection(collectionName);
+      return this.db().collection(collectionName);
     else {
       if (this.collectionName)
-        return this.db.collection(this.collectionName)
+        return this.db().collection(this.collectionName)
       else
         throw new Error('A collection name must be passed');
     }

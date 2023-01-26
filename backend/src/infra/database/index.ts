@@ -14,4 +14,4 @@ export async function connectDB() {
   status.database = connection;
 }
 
-export const database = status.database;
+export const database = (dbName: string) => status.database.db(dbName);

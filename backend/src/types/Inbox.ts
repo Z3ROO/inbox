@@ -1,6 +1,6 @@
 export interface IInbox {
   content: string
-  last_delay: {
+  last_delay: null | {
     amount: 'day'|'week'|'month'|'3months'
     delayed_at: Date
   }

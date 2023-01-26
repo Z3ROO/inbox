@@ -34,18 +34,26 @@ class UndoCache<T>{
 
 const undoCache = new UndoCache<WithId<IInbox>>();
 
-class Inbox {
+export class Inbox {
   repository = new InboxRepository();
 
   public async getItems() {
     return await this.repository.findAll();
   }
 
+  public async insertItem(content: string) {
+    await this.repository.insertOne({
+      content,
+      last_delay: null,
+      allowed_after: new Date()
+    })
+  }
+
   public async delayItem(inboxItem: IInboxDTO) {
     const { _id, content, amount } = inboxItem;
-    const {originalValue} = await this.repository.updateItem(_id, {
+    const { originalValue } = await this.repository.updateItem(_id, {
       content,
-      allowed_after: new Date(Date.now() + DELAY_AMOUNT[amount]),
+      allowed_after: new Date(Date.now()/* + DELAY_AMOUNT[amount]*/),
       last_delay: {
         delayed_at: new Date(),
         amount

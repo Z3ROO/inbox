@@ -26,8 +26,8 @@ router.put('/inbox', async (request, response) => {
     else
       await inbox.delayItem({_id: item_id, content, amount: action});
 
-    response.status(200).send();
+    response.status(200).json([]);
   }catch(err){
-    response.status(500).send();
+    response.status(500).json([]);
   }  
 });

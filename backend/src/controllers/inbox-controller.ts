@@ -12,8 +12,8 @@ router.get('/inbox', async (request, response) => {
 router.post('/inbox', async (request, response) => {
   const { content } = request.body
   await inbox.insertItem(content);
-  console.log(content)
-  response.send(200)
+  
+  response.sendStatus(200)
 })
 
 router.put('/inbox', async (request, response) => {
@@ -21,7 +21,7 @@ router.put('/inbox', async (request, response) => {
   try {
     if (action === 'undo')
       await inbox.undoChange();
-    if (action === 'remove')
+    else if (action === 'remove')
       await inbox.removeItem(item_id);
     else
       await inbox.delayItem({_id: item_id, content, amount: action});

@@ -22,7 +22,9 @@ class UndoCache<T>{
   }
 
   get get() {
-    return this.#cache.pop()
+    const bit = this.#cache.pop();
+    console.log('ttt',this.#cache);
+    return bit;
   }
 
   set set(value: T) {
@@ -64,14 +66,13 @@ export class Inbox {
   }
 
   public async removeItem(_id: string) {
-    const { originalValue } = await this.repository.deleteOne(_id);
-    undoCache.set = originalValue;
+    await this.repository.deleteOne(_id);
   }
 
   public async undoChange() {
-    const { _id, content, last_delay, allowed_after} = undoCache.get;
+    const { _id, content, last_delay, allowed_after} = undoCache.get || {};
 
     if (_id !== undefined)
-      await this.repository.updateItem(_id.toHexString(),  {content, last_delay, allowed_after});
+      await this.repository.updateItem(_id.toHexString(),  { last_delay, allowed_after });
   }
 }

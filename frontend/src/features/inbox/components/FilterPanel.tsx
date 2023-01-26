@@ -89,7 +89,7 @@ function LastDelayLog() {
       <span className="text-sm text-tanj-green">
         {
           (delayed_at && amount) ?
-          `Delayed a ${amount.replace(/-/g, ' ')} on ${new Date(delayed_at).toLocaleDateString(['pt-BR'])}.` :
+          `Delayed for ${amount.includes('-') ? '' : 'a '}${amount.replace(/-/g, ' ')} on ${new Date(delayed_at).toLocaleDateString(['pt-BR'])}.` :
           `Never delayed.`
         }
       </span>

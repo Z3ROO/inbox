@@ -53,7 +53,6 @@ function InputField() {
   useEffect(() => {
     if (inboxItems.isSuccess) {
       setInboxFilterText(inboxItems.data[0].content);
-      console.log('asdasdasdasd11')
     }
   }, [inboxItems.data]);
 
@@ -79,14 +78,18 @@ function InputField() {
 
 function LastDelayLog() {
   const { inboxItems } = useFilterPanelContext()!;
-  const delayed_at = (inboxItems.data || [])[0].last_delay?.delayed_at;
+
+  if (!inboxItems.data || inboxItems.data.length === 0)
+    return null
+
+  const { delayed_at, amount } = inboxItems.data[0].last_delay || {};
 
   return (
     <div className="text-right">
       <span className="text-sm text-tanj-green">
         {
-          delayed_at ?
-          `Delayed a year on ${new Date(delayed_at).toLocaleDateString(['pt-BR'])}.` :
+          (delayed_at && amount) ?
+          `Delayed a ${amount.replace(/-/g, ' ')} on ${new Date(delayed_at).toLocaleDateString(['pt-BR'])}.` :
           `Never delayed.`
         }
       </span>
@@ -105,7 +108,7 @@ function Controlls() {
       {
         ['Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
-            onClick={() => updateItem({ content: inboxFilterText , inboxItem_id: currentItem._id, action: amount.toLowerCase() as InboxDelayAmounts })} 
+            onClick={() => updateItem({ content: inboxFilterText , inboxItem_id: currentItem._id, action: amount.toLowerCase().replace(/ /g, '-') as InboxDelayAmounts })} 
             disabled={isLoading}
           >{amount}</BtnPrimary>
         ))

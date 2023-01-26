@@ -17,8 +17,6 @@ export function FilterPanelContextProvider(props: { children?: JSX.Element|null|
 
   const [inboxFilterText, setInboxFilterText] = useState(''); 
 
-  
-
   const updateInboxItem = useMutation(InboxAPI.updateInboxItem, {
     onSuccess: (data, variables) => {
       const { action } = variables;

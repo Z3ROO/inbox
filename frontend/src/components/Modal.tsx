@@ -7,7 +7,7 @@ export function Modal(props: { children?: JSX.Element|null|false|(JSX.Element|nu
     return null
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-tanj-pink bg-opacity-25" style={{backdropFilter:'blur(8px)'}}>
+    <div className="z-50 fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-tanj-pink bg-opacity-25" style={{backdropFilter:'blur(8px)'}}>
       <div className="p-8 rounded-sm bg-gray-800 relative">
         <CloseButton closeFn={props.closeFn} />
         {props.children}

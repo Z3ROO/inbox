@@ -21,7 +21,7 @@ export function Kagura() {
 }
 
 function Categories() {
-  const { kagura, setRoutine } = useKagura()!;
+  const { kagura, setPerformingRoutine } = useKagura()!;
   
   if (kagura.isLoading)
     return <>Loading...</>
@@ -48,7 +48,7 @@ function Categories() {
                         notifications={cards.length}
                         onClick={() => {
                           if (cards.length)
-                            setRoutine([type, category]);
+                            setPerformingRoutine([type, category]);
                         }} 
                       />
                     )
@@ -165,18 +165,18 @@ function AddItemForm() {
 }
 
 function Routine() {
-  const { kagura, routine, setRoutine, evaluateCard } = useKagura()!;
+  const { kagura, performingRoutine, setPerformingRoutine, evaluateCard } = useKagura()!;
 
-  if (routine == null)
+  if (performingRoutine == null)
     return null;
 
-  const [type, category] = routine;
+  const [type, category] = performingRoutine;
   const { _id, requirements } = kagura.data?.find(k => k.type === type)?.routines.find(r => r.category === category)?.cards[0]!||{}
   
   const { mutate: takeNote } = evaluateCard;
 
   return (
-    <Modal closeFn={()=> {setRoutine(null)}}>
+    <Modal closeFn={()=> {setPerformingRoutine(null)}}>
       <div className={`relative select-none p-1.5 my-5 rounded-sm bg-gradient-to-br from-tanj-green to-tanj-gray`}>
         <div className={`p-1.5 mr-6 rounded-sm border-2 border-tanj-gray w-min inline-block`}>
           <FaReact className={`fill-tanj-gray w-12 h-12 inline-block`} />

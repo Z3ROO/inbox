@@ -6,23 +6,23 @@ import { queryClient } from "@/App";
 
 const Context = createContext<IKaguraContext|null>(null);
 
-
-
 export function KaguraProvider(props: { children: (JSX.Element|null|false)[]|JSX.Element|null|false}) {
-  const [routine, setRoutine] = useState<RoutineState>(null);
+  const [performingRoutine, setPerformingRoutine] = useState<RoutineState>(null);
 
   const kagura = useQuery('kagura', KaguraAPI.getKagura);
 
   const evaluateCard = useMutation(KaguraAPI.evaluateCard, {
     onSuccess: (responseData, args) => {
       queryClient.setQueryData<IKagura[]>('kagura', (data) => {
-        if (data) {
-          const category = data.find(type => type.type === routine![0])?.routines.find(category => category.category === routine![1]);
-          if (category?.cards.length) {
-            category.cards = category.cards.filter((d, index) =>  index !== 0)
+        if (data && performingRoutine) {
+          const type = data.find(t => t.type === performingRoutine[0])!;
+          const routine = type.routines.find(c => c.category === performingRoutine![1])!;
 
-            if (category.cards.length === 0)
-              setRoutine(null);
+          if (routine.cards.length) {
+            routine.cards = routine.cards.filter((d, index) =>  index !== 0)
+
+            if (routine.cards.length === 0)
+              setPerformingRoutine(null);
           }
           
           return data
@@ -34,7 +34,7 @@ export function KaguraProvider(props: { children: (JSX.Element|null|false)[]|JSX
   });
 
   const value: IKaguraContext = {
-    routine, setRoutine,
+    performingRoutine, setPerformingRoutine,
     kagura,
     evaluateCard
   }

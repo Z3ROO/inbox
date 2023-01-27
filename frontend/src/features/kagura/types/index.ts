@@ -23,11 +23,11 @@ export interface ICard {
 export type RoutineState = [string, string]|null;
 
 export interface IKaguraContext {
-  routine: [string, string]|null;
-  setRoutine: React.Dispatch<React.SetStateAction<RoutineState>>
+  performingRoutine: [string, string]|null;
+  setPerformingRoutine: React.Dispatch<React.SetStateAction<RoutineState>>
   kagura: UseQueryResult<IKagura[], unknown>
   evaluateCard: UseMutationResult<void, unknown, {
-    card_id: string;
-    note: 0 | 1 | -1;
-}, unknown>
+      card_id: string;
+      note: 0 | 1 | -1;
+  }, unknown>
 }

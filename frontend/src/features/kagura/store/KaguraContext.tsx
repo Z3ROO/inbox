@@ -18,8 +18,12 @@ export function KaguraProvider(props: { children: (JSX.Element|null|false)[]|JSX
       queryClient.setQueryData<IKagura[]>('kagura', (data) => {
         if (data) {
           const category = data.find(type => type.type === routine![0])?.routines.find(category => category.category === routine![1]);
-          if (category?.cards.length)
+          if (category?.cards.length) {
             category.cards = category.cards.filter((d, index) =>  index !== 0)
+
+            if (category.cards.length === 0)
+              setRoutine(null);
+          }
           
           return data
         }

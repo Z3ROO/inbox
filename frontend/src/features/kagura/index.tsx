@@ -44,10 +44,11 @@ function Categories() {
                   routines.map(routine => {
                     const { category, cards } = routine;
                     return (
-                      <Category 
+                      <Category
                         notifications={cards.length}
                         onClick={() => {
-                          setRoutine([type, category])
+                          if (cards.length)
+                            setRoutine([type, category]);
                         }} 
                       />
                     )
@@ -74,11 +75,15 @@ function Categories() {
 
 function Category(props: any) {
   return (
-    <div {...props} className={`relative p-1.5 m-3 rounded-sm bg-gradient-to-br from-tanj-green to-[#46b07779] cursor-pointer hover:scale-105 transition-all`}>
+    <div {...props} className={`relative p-1.5 m-3 
+        rounded-sm bg-gradient-to-br from-tanj-green to-[#46b07779] 
+        transition-all ${props.className}
+        ${props.notifications ? ' cursor-pointer hover:scale-105 ' : ' opacity-30 '}
+      `}>
       <div className={`p-1.5 rounded-sm border-2 border-tanj-gray`}>
         <FaReact className={`fill-tanj-gray w-12 h-12`} />
       </div>
-      <Notifications number={props.notifications} />
+      <Notifications qtd={props.notifications} />
     </div>
   )
 }
@@ -89,7 +94,7 @@ function Category1() {
       <div className={`p-1.5 rounded-sm border-2 border-red-200`}>
         <FaReact className={`fill-red-200 w-12 h-12`} />
       </div>
-      <Notifications number={8} />
+      <Notifications qtd={8} />
     </div>
   )
 }
@@ -100,17 +105,20 @@ function Category2() {
       <div className={`p-1.5 rounded-sm border-2 border-blue-100`}>
         <FaReact className={`fill-blue-100 w-12 h-12`} />
       </div>
-      <Notifications number={8} />
+      <Notifications qtd={8} />
     </div>
   )
 }
 
-function Notifications(props: { number: number }) {
-  return (
-    <div className={`absolute -top-2 -right-2 w-5 h-5 rounded-full bg-tanj-pink flex justify-center items-center`}>
-      <span className={`text-tanj-white text-sm`}>{props.number}</span>
-    </div>
-  )
+function Notifications({ qtd }: { qtd: number }) {
+  if (qtd)
+    return (
+      <div className={`absolute -top-2 -right-2 w-5 h-5 rounded-full bg-tanj-pink flex justify-center items-center`}>
+        <span className={`text-tanj-white text-sm`}>{qtd}</span>
+      </div>
+    )
+
+  return null
 }
 
 function AddItem() {

@@ -44,15 +44,29 @@ function Categories() {
                 {
                   routines.map(routine => {
                     const { category, cards } = routine;
-                    return (
-                      <Category
-                        notifications={cards.length}
-                        onClick={() => {
-                          if (cards.length)
+                    if (cards.length)
+                      return (
+                        <Category
+                          notifications={cards.length}
+                          onClick={() => {
                             setPerformingRoutine([type, category]);
-                        }} 
-                      />
-                    )
+                          }} 
+                        />
+                      )
+
+                    return null;
+                  })
+                }
+                {
+                  routines.map(routine => {
+                    const { category, cards } = routine;
+
+                    if (cards.length === 0)
+                      return (
+                        <Category />
+                      )
+
+                    return null
                   })
                 }
               </div>

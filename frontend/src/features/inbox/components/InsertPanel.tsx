@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import { useFilterPanelContext } from "../store/FilterPanelContext";
 import { cacheInsertInputField, getCachedInsertInputField } from "../util/cacheInsertField";
 import * as InboxAPI from '@/features/inbox/api'
+import { Textarea } from "@/components/Forms";
 
 export function InboxInsertPanel() {
   const [insertFieldText, setInsertFieldText] = useState('');
@@ -38,17 +39,13 @@ function InsertPanelInputField(props: { insertFieldText: string , setInsertField
   },[]);
 
   return (
-    <textarea 
+    <Textarea 
+      className={`resize-none w-72 h-36`} 
       value={insertFieldText} 
       onChange={e => { 
         setInsertFieldText(e.target.value); 
         cacheInsertInputField(e.target.value);
       }}
-      className={`
-        resize-none bg-tanj-white rounded-sm w-72 h-36 p-2 
-        shadow-inner shadow-[rgba(0,0,0,0.2)] 
-        border-2 border-tanj-pink focus:border-tanj-green outline-none 
-      `} 
     />
   )
 }

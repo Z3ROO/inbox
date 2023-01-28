@@ -91,9 +91,9 @@ function Category(props: any) {
 
 function Category1() {
   return (
-    <div className={`relative p-1.5 m-3 rounded-sm bg-gradient-to-br from-yellow-500 to-red-500 cursor-pointer hover:scale-105 transition-all`}>
-      <div className={`p-1.5 rounded-sm border-2 border-red-200`}>
-        <FaReact className={`fill-red-200 w-12 h-12`} />
+    <div className={`relative p-1.5 m-3 rounded-sm bg-gradient-to-br from-white to-yellow-500 cursor-pointer hover:scale-105 transition-all`}>
+      <div className={`p-1.5 rounded-sm border-2 border-red-500`}>
+        <FaReact className={`fill-red-500 w-12 h-12`} />
       </div>
       <Notifications qtd={8} />
     </div>

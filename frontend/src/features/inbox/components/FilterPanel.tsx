@@ -5,6 +5,7 @@ import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext";
 import { InboxDelayAmounts } from "@/features/inbox/types";
 import { BiLoaderAlt } from 'react-icons/bi';
+import { Textarea } from "@/components/Forms";
 
 export function InboxFilterPanelModal() {
   const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;
@@ -59,13 +60,9 @@ function InputField() {
 
   return (
     <div className="relative">
-      <textarea 
+      <Textarea 
+        className={`resize-none w-full h-56`} 
         value={inboxFilterText} onChange={e => setInboxFilterText(e.target.value)}
-        className={`
-          resize-none bg-tanj-white rounded-sm w-full h-56 p-2 
-          shadow-inner shadow-[rgba(0,0,0,0.2)] 
-          border-2 border-tanj-pink focus:border-tanj-green outline-none 
-        `} 
       />
       {
         updateInboxItem.isLoading &&

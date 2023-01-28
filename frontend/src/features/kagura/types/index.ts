@@ -39,4 +39,11 @@ export interface IKaguraContext {
       started_at: Date
       finished_at: Date
   }, unknown>
+  insertCard: UseMutationResult<void, unknown, KaguraCardDTO, unknown>
+}
+
+export interface KaguraCardDTO {
+  type: KagurasType
+  requirements: string
+  category: KagurasCategory
 }

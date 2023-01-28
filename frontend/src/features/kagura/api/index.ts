@@ -1,4 +1,4 @@
-import { IKagura } from "../types";
+import { IKagura, KaguraCardDTO } from "../types";
 
 export async function getKagura(): Promise<IKagura[]> {
   return [
@@ -38,5 +38,10 @@ export async function getKagura(): Promise<IKagura[]> {
 
 export async function evaluateCard(args: {card_id: string, note: -1|0|1, started_at: Date, finished_at: Date}): Promise<void> {
   console.log(args)
-  return ;
+  return;
+}
+
+export async function insertCard(args: KaguraCardDTO): Promise<void> {
+  console.log(args);
+  return;
 }

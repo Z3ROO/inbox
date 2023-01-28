@@ -25,7 +25,7 @@ export function KaguraProvider(props: { children: (JSX.Element|null|false)[]|JSX
               setPerformingRoutine(null);
           }
           
-          return data
+          return data;
         }
 
         return []
@@ -33,10 +33,13 @@ export function KaguraProvider(props: { children: (JSX.Element|null|false)[]|JSX
     }
   });
 
+  const insertCard = useMutation(KaguraAPI.insertCard)
+
   const value: IKaguraContext = {
     performingRoutine, setPerformingRoutine,
     kagura,
-    evaluateCard
+    evaluateCard,
+    insertCard
   }
 
   return (

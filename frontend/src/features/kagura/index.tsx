@@ -29,7 +29,7 @@ function Categories() {
 
   if (kagura.isError)
     return <>Something went wrong...</>
-
+  
   const data = kagura.data!
 
   return (
@@ -148,7 +148,7 @@ function AddItem() {
       {
         isOpen && (
           <Modal closeFn={() => setIsOpen(false)}>
-            <AddItemForm />
+            <AddItemForm {...{setIsOpen}} />
           </Modal>
         )
       }
@@ -156,25 +156,44 @@ function AddItem() {
   )
 }
 
-function AddItemForm() {
+function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+  const { insertCard } = useKagura()!;
+
+  const [typeInput, setTypeInput] = useState('');
+  const [requirementsInput, setRequirementsInput] = useState('');
+  const [categoryInput, setCategoryInput] = useState('');
+
   return (
     <div className='p-2'>
       <h4 className='text-tanj-white'>Insert a new card</h4>
       <form id="insert-card-form" className='flex flex-col mb-4 w-72'>
         <label>
           <div className='text-tanj-white '>Type: </div>
-          <Input type="text" className={`w-full`} />
+          <Input type="text" className={`w-full`} value={typeInput} onChange={e => setTypeInput(e.target.value)} />
         </label>
         <label>
           <div className='text-tanj-white '>Requirements: </div>
-          <Textarea className={`w-full resize-none h-32`}/>
+          <Textarea className={`w-full resize-none h-32`} value={requirementsInput} onChange={e => setRequirementsInput(e.target.value)} />
         </label>
         <label>
           <div className='text-tanj-white '>Category: </div>
-          <Input type="text" className={`w-full`} />
+          <Input type="text" className={`w-full`} value={categoryInput} onChange={e => setCategoryInput(e.target.value)} />
         </label>
       </form>
-      <BtnPrimary type="submit" form='insert-card-form'>Create</BtnPrimary>
+      <BtnPrimary type="submit" 
+        form='insert-card-form'
+        onClick={e => {
+          e.preventDefault();
+          insertCard.mutate(
+            {type: typeInput, requirements: requirementsInput, category: categoryInput},
+            {
+              onSuccess: () => {
+                setIsOpen(false);
+              }
+            }
+          );
+        }}
+      >Create</BtnPrimary>
     </div>
   )
 }

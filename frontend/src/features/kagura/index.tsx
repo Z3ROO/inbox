@@ -5,6 +5,7 @@ import { Modal } from "@/components/Modal";
 import { useState } from "react";
 import { BtnPrimary, BtnSecondary } from '@/components/Buttons';
 import { KaguraProvider, useKagura } from './store/KaguraContext';
+import { Input, Textarea } from '@/components/Forms';
 
 export function Kagura() {
   return (
@@ -145,21 +146,21 @@ function AddItemForm() {
   return (
     <div className='p-2'>
       <h4 className='text-tanj-white'>Insert a new card</h4>
-      <form className='flex flex-col mb-4'>
+      <form id="insert-card-form" className='flex flex-col mb-4 w-72'>
         <label>
           <div className='text-tanj-white '>Type: </div>
-          <input type="text" />
+          <Input type="text" className={`w-full`} />
         </label>
         <label>
           <div className='text-tanj-white '>Requirements: </div>
-          <textarea />
+          <Textarea className={`w-full resize-none h-32`}/>
         </label>
         <label>
           <div className='text-tanj-white '>Category: </div>
-          <input type="text" />
+          <Input type="text" className={`w-full`} />
         </label>
       </form>
-      <BtnPrimary type="submit">Create</BtnPrimary>
+      <BtnPrimary type="submit" form='insert-card-form'>Create</BtnPrimary>
     </div>
   )
 }

@@ -9,7 +9,17 @@ const Context = createContext<IKaguraContext|null>(null);
 export function KaguraProvider(props: { children: (JSX.Element|null|false)[]|JSX.Element|null|false}) {
   const [performingRoutine, setPerformingRoutine] = useState<RoutineState>(null);
 
-  const kagura = useQuery('kagura', KaguraAPI.getKagura);
+  const kagura = useQuery('kagura', KaguraAPI.getKagura, {
+    retry: false,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchIntervalInBackground: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    onSuccess: () => {
+      console.log('aAAAAAAAAAAAAAAAAAAAAAAA')
+    }
+  });
 
   const evaluateCard = useMutation(KaguraAPI.evaluateCard, {
     onSuccess: (responseData, args) => {

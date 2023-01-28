@@ -2,7 +2,7 @@ import { HiPlus } from 'react-icons/hi';
 import { FaReact } from 'react-icons/fa';
 import { GoThumbsup, GoThumbsdown, GoPrimitiveDot } from 'react-icons/go';
 import { Modal } from "@/components/Modal";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BtnPrimary, BtnSecondary } from '@/components/Buttons';
 import { KaguraProvider, useKagura } from './store/KaguraContext';
 import { Input, Textarea } from '@/components/Forms';
@@ -106,8 +106,8 @@ function Category(props: any) {
 function Category1() {
   return (
     <div className={`relative p-1.5 m-3 rounded-sm bg-gradient-to-br from-white to-yellow-500 cursor-pointer hover:scale-105 transition-all`}>
-      <div className={`p-1.5 rounded-sm border-2 border-red-500`}>
-        <FaReact className={`fill-red-500 w-12 h-12`} />
+      <div className={`p-1.5 rounded-sm border-2 border-red-400`}>
+        <FaReact className={`fill-red-400 w-12 h-12`} />
       </div>
       <Notifications qtd={8} />
     </div>
@@ -180,55 +180,82 @@ function AddItemForm() {
 }
 
 function Routine() {
-  const { kagura, performingRoutine, setPerformingRoutine, evaluateCard } = useKagura()!;
-
+  const { performingRoutine, setPerformingRoutine } = useKagura()!;
+  
   if (performingRoutine == null)
     return null;
 
-  const [type, category] = performingRoutine;
+  return (
+    <Modal closeFn={()=> {setPerformingRoutine(null)}}>
+      <RoutineHeader />
+      <RoutineBody />
+    </Modal>
+  )
+}
+
+function RoutineHeader() {
+  const { performingRoutine } = useKagura()!;
+
+  const [type, category] = performingRoutine!;
+
+  return (
+    <div className={`relative select-none p-1.5 my-5 rounded-sm bg-gradient-to-br from-tanj-green to-tanj-gray`}>
+      <div className={`p-1.5 mr-6 rounded-sm border-2 border-tanj-gray w-min inline-block`}>
+        <FaReact className={`fill-tanj-gray w-12 h-12 inline-block`} />
+      </div>
+      <span className='font-bold text-lg'>{category}</span>
+      <span className='absolute text-xs text-tanj-green bottom-1 right-1'>{type}</span>
+    </div>
+  )
+}
+
+function RoutineBody() {
+  const { kagura, performingRoutine, evaluateCard } = useKagura()!;
+
+  const [type, category] = performingRoutine!;
   const { _id, requirements } = kagura.data?.find(k => k.type === type)?.routines.find(r => r.category === category)?.cards[0]!||{}
   
   const { mutate: takeNote } = evaluateCard;
 
+  const cardEngageDate = useRef<Date>(new Date());
+
+  useEffect(() => {
+    cardEngageDate.current = new Date();
+  },[requirements]);
+
   return (
-    <Modal closeFn={()=> {setPerformingRoutine(null)}}>
-      <div className={`relative select-none p-1.5 my-5 rounded-sm bg-gradient-to-br from-tanj-green to-tanj-gray`}>
-        <div className={`p-1.5 mr-6 rounded-sm border-2 border-tanj-gray w-min inline-block`}>
-          <FaReact className={`fill-tanj-gray w-12 h-12 inline-block`} />
-        </div>
-        <span className='font-bold text-lg'>{category}</span>
-        <span className='absolute text-xs text-tanj-green bottom-1 right-1'>{type}</span>
+    <div className=''>
+      <div className='w-80 h-64 p-4 m-2 overflow-auto custom-scrollbar'>
+        <span className='text-tanj-green select-none'>
+          {requirements}
+        </span>
       </div>
-      <div className=''>
-        <div className='w-80 h-64 p-4 m-2 overflow-auto custom-scrollbar'>
-          <span className='text-tanj-green select-none'>
-            {requirements}
-          </span>
-        </div>
-        <div className='flex justify-center mt-6'>
-          <BtnSecondary
-            onClick={() => {
-              takeNote({ card_id: _id, note: -1})
-            }}
-          >
-            <GoThumbsdown className='p-1 w-7 h-7' />
-          </BtnSecondary>
-          <BtnSecondary
-            onClick={() => {
-              takeNote({ card_id: _id, note: 0})
-            }}
-          >
-            <GoPrimitiveDot className='p-1 w-7 h-7' />
-          </BtnSecondary>
-          <BtnSecondary
-            onClick={() => {
-              takeNote({ card_id: _id, note: 1})
-            }}
-          >
-            <GoThumbsup className='p-1 w-7 h-7' />   
-          </BtnSecondary>
-        </div>
+      <div className='flex justify-center mt-6'>
+        <BtnSecondary
+          onClick={() => {
+            const finished_at = new Date();
+            takeNote({ card_id: _id, note: -1, started_at: cardEngageDate.current, finished_at})
+          }}
+        >
+          <GoThumbsdown className='p-1 w-7 h-7' />
+        </BtnSecondary>
+        <BtnSecondary
+          onClick={() => {
+            const finished_at = new Date();
+            takeNote({ card_id: _id, note: 0, started_at: cardEngageDate.current, finished_at})
+          }}
+        >
+          <GoPrimitiveDot className='p-1 w-7 h-7' />
+        </BtnSecondary>
+        <BtnSecondary
+          onClick={() => {
+            const finished_at = new Date();
+            takeNote({ card_id: _id, note: 1, started_at: cardEngageDate.current, finished_at})
+          }}
+        >
+          <GoThumbsup className='p-1 w-7 h-7' />   
+        </BtnSecondary>
       </div>
-    </Modal>
+    </div>
   )
 }

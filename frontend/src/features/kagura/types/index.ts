@@ -17,17 +17,26 @@ export interface ICard {
   // allowed_after: Date
   // history: {
   //   direction: -1|0|1
-  //   date: Date
+  //   started_at: Date
+  //   finished_at: Date
   // }
 }
-export type RoutineState = [string, string]|null;
+
+export type KagurasType = string
+export type KagurasCategory = string
+
+export type KagurasCardEngageDate = Date
+
+export type RoutineState = [KagurasType, KagurasCategory]|null
 
 export interface IKaguraContext {
-  performingRoutine: [string, string]|null;
+  performingRoutine: RoutineState|null
   setPerformingRoutine: React.Dispatch<React.SetStateAction<RoutineState>>
   kagura: UseQueryResult<IKagura[], unknown>
   evaluateCard: UseMutationResult<void, unknown, {
-      card_id: string;
-      note: 0 | 1 | -1;
+      card_id: string
+      note: 0 | 1 | -1
+      started_at: Date
+      finished_at: Date
   }, unknown>
 }

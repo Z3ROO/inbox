@@ -18,17 +18,17 @@ export function Textarea(props: React.InputHTMLAttributes<HTMLTextAreaElement>) 
 }
 
 
-export interface InputWithOptionsAttributes<T> {
-  initValue: T
-  value: T
-  setValue: (value:T) => void
-  options: { label: string, value: T }[]
+export interface InputWithOptionsAttributes {
+  initValue: string
+  value: string[]
+  setValue: (value: string[]) => void
+  options: { label: string, value: string }[]
   className?: string
   ulClassName?: string
   liClassName?: string
 }
 
-export function InputWithOptions<T>(props: InputWithOptionsAttributes<T>) {
+export function InputWithOptions(props: InputWithOptionsAttributes) {
   let { initValue, value, setValue, options, className, ulClassName, liClassName } = props;
   
   const [displayList, setDisplayList] = useState(false);
@@ -56,16 +56,16 @@ export function InputWithOptions<T>(props: InputWithOptionsAttributes<T>) {
 
           const option = options.find(opt => textContent === opt.label);
           if (option) {
-            setValue(option.value);
+            setValue([option.value, option.value]);
             toggleList(false);
           }
           else {
-            setValue(initValue);
+            setValue([inputText, initValue]);
             toggleList(true);
           }
         }}
         onFocus={() => {
-          if (value === initValue)
+          if (value[0] === initValue)
             toggleList(true)
         }} 
         onBlur={
@@ -76,20 +76,20 @@ export function InputWithOptions<T>(props: InputWithOptionsAttributes<T>) {
         }
       />
       {
-        initValue !== inputText && !value && 
+        initValue !== inputText && !value[1] && 
         <HiExclamationCircle className="absolute right-2 top-2.5 fill-red-400 w-5 h-5" />
       }
-      { displayList && <OptionsDataList<T> {...{setInputText, setValue, liClassName, ulClassName, options:filteredOptions, toggleList}}/> }
+      { displayList && <OptionsDataList {...{setInputText, setValue, liClassName, ulClassName, options:filteredOptions, toggleList}}/> }
     </div>
   )
 }
 
-function OptionsDataList<T>(props: { 
-    options: { label: string, value: T }[]
+function OptionsDataList(props: { 
+    options: { label: string, value: string }[]
     liClassName?: string
     ulClassName?: string
     toggleList: (state: boolean) => void
-    setValue: (value: T) => void
+    setValue: (value: string[]) => void
     setInputText: React.Dispatch<React.SetStateAction<string>>
   }) {
   const { options, liClassName, ulClassName, toggleList, setValue, setInputText } = props;
@@ -106,7 +106,7 @@ function OptionsDataList<T>(props: {
               className={'p-1.5 hover:bg-tanj-green hover:font-bold cursor-pointer '+(liClassName || ' w-full ')}
               onClick={(e) => {
                 e.stopPropagation();
-                setValue(value);
+                setValue([value, value]);
                 setInputText(label);
                 toggleList(false);
               }}

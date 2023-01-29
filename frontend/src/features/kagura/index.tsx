@@ -166,7 +166,6 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
     refetchOnWindowFocus: false,
     refetchIntervalInBackground: false,
     refetchOnReconnect: false,
-    refetchOnMount: false,
     onSuccess: (data) => {
       const { types, categories } = data;
 
@@ -183,9 +182,9 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
   const [typesOptions, setTypesOptions] = useState<{label: string, value: string}[]>([]);
   const [categoriesOptions, setCategoriesOptions] = useState<{label: string, value: string}[]>([]);
 
-  const [typeInput, setTypeInput] = useState('');
+  const [typeInput, setTypeInput] = useState(['', '']);
   const [requirementsInput, setRequirementsInput] = useState('');
-  const [categoryInput, setCategoryInput] = useState('');
+  const [categoryInput, setCategoryInput] = useState(['', '']);
 
   return (
     <div className='p-2'>
@@ -209,7 +208,7 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
         onClick={e => {
           e.preventDefault();
           insertCard.mutate(
-            {type: typeInput, requirements: requirementsInput, category: categoryInput},
+            {type: typeInput[1] !== '' ? typeInput[1] : typeInput[0], requirements: requirementsInput, category: categoryInput[1] !== '' ? categoryInput[1] : categoryInput[0]},
             {
               onSuccess: () => {
                 setIsOpen(false);

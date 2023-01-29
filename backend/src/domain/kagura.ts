@@ -1,7 +1,7 @@
 import { KaguraRepository } from "@/repository/kagura-repository";
 import { ICardDTO, INewCardDTO } from "@/types/Kagura";
 
-const DAY = (24 * (60 * 60 * 1000))
+const DAY = (24 * (60 * 60 * 1))
 
 export class Kagura {
   repository: KaguraRepository;
@@ -57,17 +57,21 @@ export class Kagura {
     this.repository.updateCard({
       _id,
       allowed_after,
-      history
+      history: {
+        direction,
+        started_at: new Date(started_at),
+        finished_at: new Date(finished_at)
+      }
     });
   }
 
   public async newCard(card: INewCardDTO) {
     const { requirements, type, category } = card;
-    
+    console.log(card)
     await this.repository.insertCard({
       requirements,
-      type,
-      category,
+      type: type.replace(/ /g, '_'),
+      category: category.replace(/ /g, '_'),
       level: 1,
       allowed_after: new Date(),
       history:[],

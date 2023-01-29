@@ -16,7 +16,7 @@ router.get('/', async (request, response) => {
   }
 });
 
-router.patch('/eval', async (request, response) => {
+router.put('/eval', async (request, response) => {
   const { _id, history } = request.body;
 
   try {

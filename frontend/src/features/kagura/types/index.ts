@@ -47,3 +47,8 @@ export interface KaguraCardDTO {
   requirements: string
   category: KagurasCategory
 }
+
+export interface KaguraMetaData {
+  types: KagurasType[]
+  categories: KagurasCategory[]
+}

@@ -2,7 +2,7 @@ import { database } from '@/infra/database';
 import { IInbox } from '@/types/Inbox';
 import { Collection, Db, ObjectId, WithId } from 'mongodb';
 
-class Repository<DocumentType> {
+export class Repository<DocumentType> {
   protected db: () => Db
   protected dbName: string
   protected collectionName: string

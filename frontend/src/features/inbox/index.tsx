@@ -6,7 +6,7 @@ import { InboxFilterPanelModal } from './components/FilterPanel';
 
 export default function Inbox() {
   return (
-    <div>
+    <div className="mt-8">
       <FilterPanelContextProvider>
         <h4 className="text-tanj-green">Inbox</h4>
         <InboxInsertPanel />

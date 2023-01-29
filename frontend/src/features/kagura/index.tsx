@@ -8,6 +8,7 @@ import { KaguraProvider, useKagura } from './store/KaguraContext';
 import { InputWithOptions, Textarea } from '@/components/Forms';
 import { useQuery } from 'react-query';
 import * as KaguraAPI from './api/index'
+import * as Icons from '@/components/icons/kagura'
 
 export function Kagura() {
   return (
@@ -41,7 +42,7 @@ function Categories() {
           const { type, routines } = value;
           return (
             <div>
-              <h4>{type}</h4>
+              <h4 className='text-tanj-green'>{type}</h4>
               <div className='p-4 w-full flex'>
                 {
                   routines.map(routine => {
@@ -50,6 +51,7 @@ function Categories() {
                       return (
                         <Category
                           notifications={cards.length}
+                          category={category}
                           onClick={() => {
                             setPerformingRoutine([type, category]);
                           }} 
@@ -65,7 +67,7 @@ function Categories() {
 
                     if (cards.length === 0)
                       return (
-                        <Category />
+                        <Category category={category} />
                       )
 
                     return null
@@ -76,21 +78,14 @@ function Categories() {
           )
         })
       }
-      <div className='p-4 w-full flex'>
-        <Category1 />
-        <Category1 />
-        <Category1 />
-      </div>
-      <div className='p-4 w-full flex'>
-        <Category2 />
-        <Category2 />
-        <Category2 />
-      </div>
     </div>
   )
 }
 
 function Category(props: any) {
+  const icon:string = props.category || 'Routine';
+  const Icon = Icons[icon as keyof typeof Icons] || Icons['Routine' as keyof typeof Icons];
+
   return (
     <div {...props} className={`relative p-1.5 m-3 
         rounded-sm bg-gradient-to-br from-tanj-green to-[#46b07779] 
@@ -98,7 +93,7 @@ function Category(props: any) {
         ${props.notifications ? ' cursor-pointer hover:scale-105 ' : ' opacity-30 '}
       `}>
       <div className={`p-1.5 rounded-sm border-2 border-tanj-gray`}>
-        <FaReact className={`fill-tanj-gray w-12 h-12`} />
+        <Icon className={`fill-tanj-gray w-12 h-12`} />
       </div>
       <Notifications qtd={props.notifications} />
     </div>
@@ -207,7 +202,7 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
         form='insert-card-form'
         onClick={e => {
           e.preventDefault();
-          console.log(typeInput, categoryInput);
+          
           insertCard.mutate(
             {type: typeInput[1] !== '' ? typeInput[1] : typeInput[0], requirements: requirementsInput, category: categoryInput[1] !== '' ? categoryInput[1] : categoryInput[0]},
             {
@@ -241,10 +236,13 @@ function RoutineHeader() {
 
   const [type, category] = performingRoutine!;
 
+  const icon:string = category || 'Routine';
+  const Icon = Icons[icon as keyof typeof Icons] || Icons['Routine' as keyof typeof Icons];
+
   return (
     <div className={`relative select-none p-1.5 my-5 rounded-sm bg-gradient-to-br from-tanj-green to-tanj-gray`}>
       <div className={`p-1.5 mr-6 rounded-sm border-2 border-tanj-gray w-min inline-block`}>
-        <FaReact className={`fill-tanj-gray w-12 h-12 inline-block`} />
+        <Icon className={`fill-tanj-gray w-12 h-12 inline-block`} />
       </div>
       <span className='font-bold text-lg'>{category.replace(/_/g, ' ')}</span>
       <span className='absolute text-xs text-tanj-green bottom-1 right-1'>{type.replace(/_/g, ' ')}</span>

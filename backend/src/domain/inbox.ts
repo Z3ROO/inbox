@@ -55,7 +55,7 @@ export class Inbox {
     const { _id, content, amount } = inboxItem;
     const { originalValue } = await this.repository.updateItem(_id, {
       content,
-      allowed_after: new Date(Date.now()/* + DELAY_AMOUNT[amount]*/),
+      allowed_after: new Date(new Date().setHours(0,0,0,0) + DELAY_AMOUNT[amount]),
       last_delay: {
         delayed_at: new Date(),
         amount

@@ -21,7 +21,7 @@ export interface InputWithOptionsAttributes<T> {
   initValue: T
   value: T
   setValue: (value:T) => void
-  options: { title: string, value: T }[]
+  options: { label: string, value: T }[]
   className?: string
   ulClassName?: string
   liClassName?: string
@@ -41,7 +41,7 @@ export function InputWithOptions<T>(props: InputWithOptionsAttributes<T>) {
 
   useEffect(() => {
     const regex = new RegExp(inputText);
-    setFilteredOptions(options.filter(option => option.title.match(regex)));
+    setFilteredOptions(options.filter(option => option.label.match(regex)));
   },[inputText]);
 
   return (
@@ -53,7 +53,7 @@ export function InputWithOptions<T>(props: InputWithOptionsAttributes<T>) {
           const textContent = e.target.value;
           setInputText(textContent);
 
-          const option = options.find(opt => textContent === opt.title);
+          const option = options.find(opt => textContent === opt.label);
           if (option) {
             setValue(option.value);
             toggleList(false);
@@ -80,7 +80,7 @@ export function InputWithOptions<T>(props: InputWithOptionsAttributes<T>) {
 }
 
 function OptionsDataList<T>(props: { 
-    options: { title: string, value: T }[]
+    options: { label: string, value: T }[]
     liClassName?: string
     ulClassName?: string
     toggleList: (state: boolean) => void
@@ -95,17 +95,17 @@ function OptionsDataList<T>(props: {
     >
       {
         options.map(option => {
-          const { title, value } = option;
+          const { label, value } = option;
           return (
             <li 
               className={'p-1.5 hover:bg-tanj-green hover:font-bold cursor-pointer '+(liClassName || ' w-full ')}
               onClick={(e) => {
                 e.stopPropagation();
                 setValue(value);
-                setInputText(title);
+                setInputText(label);
                 toggleList(false);
               }}
-            >{title}</li>
+            >{label}</li>
           )
         })
       }

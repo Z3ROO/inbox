@@ -5,7 +5,7 @@ import { Modal } from "@/components/Modal";
 import { useEffect, useRef, useState } from "react";
 import { BtnPrimary, BtnSecondary } from '@/components/Buttons';
 import { KaguraProvider, useKagura } from './store/KaguraContext';
-import { Input, Textarea } from '@/components/Forms';
+import { InputWithOptions, Textarea } from '@/components/Forms';
 
 export function Kagura() {
   return (
@@ -169,7 +169,7 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
       <form id="insert-card-form" className='flex flex-col mb-4 w-72'>
         <label>
           <div className='text-tanj-white '>Type: </div>
-          <Input type="text" className={`w-full`} value={typeInput} onChange={e => setTypeInput(e.target.value)} />
+          <InputWithOptions className='w-full' initValue={''} options={[{title:'asdasd', value: 'asdasd'}]} value={typeInput} setValue={e => setTypeInput(e)} />
         </label>
         <label>
           <div className='text-tanj-white '>Requirements: </div>
@@ -177,7 +177,7 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
         </label>
         <label>
           <div className='text-tanj-white '>Category: </div>
-          <Input type="text" className={`w-full`} value={categoryInput} onChange={e => setCategoryInput(e.target.value)} />
+          <InputWithOptions className='w-full' initValue={''} options={[{title:'asdasd', value: 'asdasd'}]} value={categoryInput} setValue={e => setCategoryInput(e)} />
         </label>
       </form>
       <BtnPrimary type="submit" 

@@ -52,7 +52,7 @@ export class Kagura {
     if (direction === 1)
       SPACE_FACTOR = level
 
-    let allowed_after = new Date(new Date().setHours(0,0,0,0) + (DAY * SPACE_FACTOR));
+    let allowed_after = new Date(new Date().setHours(4,0,0,0) + (DAY * SPACE_FACTOR));
 
     this.repository.updateCard({
       _id,

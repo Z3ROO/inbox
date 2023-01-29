@@ -60,7 +60,7 @@ export function InputWithOptions(props: InputWithOptionsAttributes) {
             toggleList(false);
           }
           else {
-            setValue([inputText, initValue]);
+            setValue([textContent, initValue]);
             toggleList(true);
           }
         }}

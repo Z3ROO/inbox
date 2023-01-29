@@ -207,6 +207,7 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
         form='insert-card-form'
         onClick={e => {
           e.preventDefault();
+          console.log(typeInput, categoryInput);
           insertCard.mutate(
             {type: typeInput[1] !== '' ? typeInput[1] : typeInput[0], requirements: requirementsInput, category: categoryInput[1] !== '' ? categoryInput[1] : categoryInput[0]},
             {

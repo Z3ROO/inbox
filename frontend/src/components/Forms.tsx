@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {HiExclamationCircle} from 'react-icons/hi';
 
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`
@@ -42,7 +43,7 @@ export function InputWithOptions<T>(props: InputWithOptionsAttributes<T>) {
   useEffect(() => {
     const regex = new RegExp(inputText);
     setFilteredOptions(options.filter(option => option.label.match(regex)));
-  },[inputText]);
+  },[inputText, options]);
 
   return (
     <div className="relative">
@@ -74,6 +75,10 @@ export function InputWithOptions<T>(props: InputWithOptionsAttributes<T>) {
           }, 150)
         }
       />
+      {
+        initValue !== inputText && !value && 
+        <HiExclamationCircle className="absolute right-2 top-2.5 fill-red-400 w-5 h-5" />
+      }
       { displayList && <OptionsDataList<T> {...{setInputText, setValue, liClassName, ulClassName, options:filteredOptions, toggleList}}/> }
     </div>
   )

@@ -2,10 +2,12 @@ import { HiPlus } from 'react-icons/hi';
 import { FaReact } from 'react-icons/fa';
 import { GoThumbsup, GoThumbsdown, GoPrimitiveDot } from 'react-icons/go';
 import { Modal } from "@/components/Modal";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BtnPrimary, BtnSecondary } from '@/components/Buttons';
 import { KaguraProvider, useKagura } from './store/KaguraContext';
 import { InputWithOptions, Textarea } from '@/components/Forms';
+import { useQuery } from 'react-query';
+import * as KaguraAPI from './api/index'
 
 export function Kagura() {
   return (
@@ -159,6 +161,28 @@ function AddItem() {
 function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { insertCard } = useKagura()!;
 
+  const kaguraMetaData = useQuery('kagura-meta-data', KaguraAPI.getKaguraMetaData, {
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchIntervalInBackground: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    onSuccess: (data) => {
+      const { types, categories } = data;
+
+      setTypesOptions(types.map(t => 
+        ({label: t.replace(/_/g, ' '), value: t})
+      ));
+
+      setCategoriesOptions(categories.map(c => 
+        ({label: c.replace(/_/g, ' '), value: c})
+      ));
+    }
+  });  
+
+  const [typesOptions, setTypesOptions] = useState<{label: string, value: string}[]>([]);
+  const [categoriesOptions, setCategoriesOptions] = useState<{label: string, value: string}[]>([]);
+
   const [typeInput, setTypeInput] = useState('');
   const [requirementsInput, setRequirementsInput] = useState('');
   const [categoryInput, setCategoryInput] = useState('');
@@ -169,7 +193,7 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
       <form id="insert-card-form" className='flex flex-col mb-4 w-72'>
         <label>
           <div className='text-tanj-white '>Type: </div>
-          <InputWithOptions className='w-full' initValue={''} options={[{title:'asdasd', value: 'asdasd'}]} value={typeInput} setValue={e => setTypeInput(e)} />
+          <InputWithOptions className='w-full' initValue={''} options={typesOptions} value={typeInput} setValue={e => setTypeInput(e)} />
         </label>
         <label>
           <div className='text-tanj-white '>Requirements: </div>
@@ -177,7 +201,7 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
         </label>
         <label>
           <div className='text-tanj-white '>Category: </div>
-          <InputWithOptions className='w-full' initValue={''} options={[{title:'asdasd', value: 'asdasd'}]} value={categoryInput} setValue={e => setCategoryInput(e)} />
+          <InputWithOptions className='w-full' initValue={''} options={categoriesOptions} value={categoryInput} setValue={e => setCategoryInput(e)} />
         </label>
       </form>
       <BtnPrimary type="submit" 

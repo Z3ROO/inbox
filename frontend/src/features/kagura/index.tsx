@@ -246,8 +246,8 @@ function RoutineHeader() {
       <div className={`p-1.5 mr-6 rounded-sm border-2 border-tanj-gray w-min inline-block`}>
         <FaReact className={`fill-tanj-gray w-12 h-12 inline-block`} />
       </div>
-      <span className='font-bold text-lg'>{category}</span>
-      <span className='absolute text-xs text-tanj-green bottom-1 right-1'>{type}</span>
+      <span className='font-bold text-lg'>{category.replace(/_/g, ' ')}</span>
+      <span className='absolute text-xs text-tanj-green bottom-1 right-1'>{type.replace(/_/g, ' ')}</span>
     </div>
   )
 }

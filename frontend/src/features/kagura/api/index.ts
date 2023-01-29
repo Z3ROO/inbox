@@ -19,7 +19,7 @@ export async function getKagura(): Promise<IKagura[]> {
           ]
         },
         {
-          category: 'Ciencia da computação',
+          category: 'Ciencia_da_computação',
           cards: [
             {
               _id: '1123asdasdasdasd',

@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-
+const NODE_ENV = process.env.NODE_ENV;
 const DB_URL = process.env.DB_URL || 'mongodb://localhost:3002';
 
 const status: { database: null| MongoClient } = {

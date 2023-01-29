@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "./src/scripts/start-prod.sh",
     "dev": "nodemon src/index.ts"
   },
   "keywords": [],

@@ -1,7 +1,7 @@
 import { KaguraRepository } from "@/repository/kagura-repository";
 import { ICardDTO, INewCardDTO } from "@/types/Kagura";
 
-const DAY = (24 * (60 * 60 * 1))
+const DAY = (24 * (60 * 60 * 1000))
 
 export class Kagura {
   repository: KaguraRepository;

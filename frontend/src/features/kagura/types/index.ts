@@ -38,8 +38,9 @@ export interface IKaguraContext {
       note: 0 | 1 | -1
       started_at: Date
       finished_at: Date
-  }, unknown>
+    }, unknown>
   insertCard: UseMutationResult<void, unknown, KaguraCardDTO, unknown>
+  removeCard: UseMutationResult<void, unknown, { card_id: string }, unknown>
 }
 
 export interface KaguraCardDTO {

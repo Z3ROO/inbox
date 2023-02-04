@@ -39,13 +39,36 @@ export function KaguraProvider(props: { children: (JSX.Element|null|false)[]|JSX
     }
   });
 
+  const removeCard = useMutation(KaguraAPI.removeCard, {
+    onSuccess: (responseData, args) => {
+      queryClient.setQueryData<IKagura[]>('kagura', (data) => {
+        if (data && performingRoutine) {
+          const type = data.find(t => t.type === performingRoutine[0])!;
+          const routine = type.routines.find(c => c.category === performingRoutine![1])!;
+
+          if (routine.cards.length) {
+            routine.cards = routine.cards.filter((d, index) =>  index !== 0)
+
+            if (routine.cards.length === 0)
+              setPerformingRoutine(null);
+          }
+          
+          return data;
+        }
+
+        return []
+      })
+    }
+  });
+
   const insertCard = useMutation(KaguraAPI.insertCard)
 
   const value: IKaguraContext = {
     performingRoutine, setPerformingRoutine,
     kagura,
     evaluateCard,
-    insertCard
+    insertCard,
+    removeCard
   }
 
   return (

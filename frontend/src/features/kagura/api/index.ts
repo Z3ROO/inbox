@@ -1,7 +1,8 @@
 import { IKagura, KaguraCardDTO, KaguraMetaData } from "../types";
+import { API_URL } from "@/config/API";
 
 export async function getKagura(): Promise<IKagura[]> {
-  const request = await fetch('http://localhost:3001/kagura');
+  const request = await fetch(API_URL+'/kagura');
   const response = request.json();
 
   return response;
@@ -42,7 +43,7 @@ export async function getKagura(): Promise<IKagura[]> {
 }
 
 export async function getKaguraMetaData(): Promise<KaguraMetaData> {
-  const request = await fetch('http://localhost:3001/kagura/meta');
+  const request = await fetch(API_URL+'/kagura/meta');
   const response = request.json();
 
   return response;
@@ -53,7 +54,7 @@ export async function getKaguraMetaData(): Promise<KaguraMetaData> {
 }
 
 export async function evaluateCard(args: {card_id: string, note: -1|0|1, started_at: Date, finished_at: Date}): Promise<void> {
-  const request = await fetch('http://localhost:3001/kagura/eval', {
+  const request = await fetch(API_URL+'/kagura/eval', {
     method: 'put',
     body: JSON.stringify({
       _id: args.card_id,
@@ -74,7 +75,7 @@ export async function evaluateCard(args: {card_id: string, note: -1|0|1, started
 export async function insertCard(args: KaguraCardDTO): Promise<void> {
   const { requirements, type, category } = args;
 
-  const request = await fetch('http://localhost:3001/kagura/card', {
+  const request = await fetch(API_URL+'/kagura/card', {
     method: 'post',
     body: JSON.stringify({ requirements, type, category }),
     headers: {
@@ -83,5 +84,17 @@ export async function insertCard(args: KaguraCardDTO): Promise<void> {
   });
   const response = request.json();
 
+  return;
+}
+
+export async function removeCard({card_id}: {card_id: string}): Promise<void> {
+  const request = await fetch(API_URL+'/kagura/remove', {
+    method: 'delete',
+    body: JSON.stringify({ card_id }),
+    headers: {
+      'Content-type': 'application/json'
+    }
+  });
+  const response = request.json();
   return;
 }

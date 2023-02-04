@@ -269,7 +269,7 @@ function RoutineBody() {
 
   return (
     <div className='relative'>
-      <RoutineOptions />
+      <RoutineOptions card_id={_id} />
       <div className='w-80 h-64 p-4 m-2 overflow-auto custom-scrollbar'>
         <span className='text-tanj-green select-none'>
           {requirements}
@@ -305,8 +305,10 @@ function RoutineBody() {
   )
 }
 
-function RoutineOptions() {
+function RoutineOptions({card_id}: {card_id: string}) {
   const [isOpen, setIsOpen] = useState(false);
+  const { removeCard } = useKagura()!;
+
   const divStyle: React.CSSProperties = {
     backgroundColor: 'rgba(70, 176, 119, .1)',
     backdropFilter: 'blur(8px)'
@@ -315,7 +317,7 @@ function RoutineOptions() {
   return (
     <div style={isOpen ? divStyle : {} } className='absolute -top-4 right-0 rounded-sm'>
       <BtnSecondary icon 
-        className=''
+        className='' 
         onClick={e => setIsOpen(prev => !prev)} 
       >
         <GoGear />
@@ -325,8 +327,12 @@ function RoutineOptions() {
         isOpen &&
         <div className='flex flex-col'>
           <RoutineOptionsItem confirm 
-            action={() => {
-              setIsOpen(false);
+            action={async () => {
+              removeCard.mutate({card_id}, {
+                onSuccess: () => {
+                  setIsOpen(false);
+                }
+              });
             }}
           >
             <FaTrashAlt />

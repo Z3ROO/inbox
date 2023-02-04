@@ -1,5 +1,6 @@
+import { API_URL } from "@/config/API";
 import { IInboxItem } from "@/features/inbox/types";
-const API_URL = 'http://localhost:3001';
+
 
 export async function getInboxItems(): Promise<IInboxItem[]> {
   const request = await fetch(`${API_URL}/inbox`);

@@ -13,6 +13,7 @@ export interface ICard {
   type: string
   category: string
   level: number
+  difficulty: 1|2|3
   allowed_after: Date
   history: {
     direction: -1|0|1
@@ -35,6 +36,7 @@ export interface INewCardDTO {
   requirements: string
   type: string
   category: string
+  difficulty: 1|2|3
 }
 
 

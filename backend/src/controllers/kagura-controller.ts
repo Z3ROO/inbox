@@ -42,10 +42,10 @@ router.get('/meta', async (request, response) => {
 });
 
 router.post('/card', async (request, response) => {
-  const { requirements, type, category } = request.body;
+  const { requirements, type, category, difficulty } = request.body;
 
   try {
-    await kagura.newCard({requirements, type, category});
+    await kagura.newCard({requirements, type, category, difficulty});
     response.json({});
   }
   catch(err) {

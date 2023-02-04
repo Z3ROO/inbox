@@ -67,14 +67,14 @@ export class Kagura {
 
   public async newCard(card: INewCardDTO) {
     const { requirements, type, category, difficulty } = card;
-    console.log(card)
+    
     await this.repository.insertCard({
       requirements,
       type: type.replace(/ /g, '_'),
       category: category.replace(/ /g, '_'),
       level: 1, 
       difficulty,
-      allowed_after: new Date(),
+      allowed_after: new Date(new Date().setHours(4,0,0,0) + DAY),
       history:[],
     });
   }

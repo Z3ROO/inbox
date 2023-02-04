@@ -88,7 +88,7 @@ export async function insertCard(args: KaguraCardDTO): Promise<void> {
 }
 
 export async function removeCard({card_id}: {card_id: string}): Promise<void> {
-  const request = await fetch(API_URL+'/kagura/remove', {
+  const request = await fetch(API_URL+'/kagura/card', {
     method: 'delete',
     body: JSON.stringify({ card_id }),
     headers: {

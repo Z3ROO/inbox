@@ -78,4 +78,8 @@ export class Kagura {
     });
   }
 
+  public async removeCard(card_id: string) {
+    await this.repository.deleteCard(card_id);
+  }
+
 }

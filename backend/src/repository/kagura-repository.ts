@@ -44,4 +44,10 @@ export class KaguraRepository extends Repository<ICard> {
   public async insertCard(card: ICard) {
     await this.collection().insertOne(card)
   }
+
+  public async deleteCard(card_id: string) {
+    const _id = new ObjectId(card_id);
+
+    return await this.collection().findOneAndDelete({_id});
+  }
 }

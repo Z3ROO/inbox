@@ -53,3 +53,16 @@ router.post('/card', async (request, response) => {
     response.sendStatus(500).json({});
   }
 });
+
+router.delete('/card', async (request, response) => {
+  const { card_id } = request.body;
+
+  try {
+    await kagura.removeCard(card_id);
+    response.json({});
+  }
+  catch(err) {
+    console.log(err);
+    response.sendStatus(500).json({});
+  }
+});

@@ -1,13 +1,14 @@
-import express from 'express';
+const express = require('express');
+const path = require('path');
 
 const app = express();
 
 const SERVER_PORT = 80;
 
-app.use(express.static('dist'));
+app.use(express.static(path.resolve(__dirname,'dist')));
 
 app.get('*', (request, response) => {
-  response.sendFile('index.html');
+  response.sendFile(path.resolve(__dirname,'dist','index.html'));
 });
 
 app.listen(SERVER_PORT, () => {

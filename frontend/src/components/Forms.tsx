@@ -96,7 +96,7 @@ function OptionsDataList(props: {
 
   return (
     <ul
-      className={'text-input-data-list absolute top-[calc(100%-2px)] left-0 overflow-auto bg-tanj-white border-2 border-tanj-green rounded-sm border-t-0 shadow-md '+ (ulClassName || ' w-full max-h-48')}
+      className={'z-10 text-input-data-list absolute top-[calc(100%-2px)] left-0 overflow-auto bg-tanj-white border-2 border-tanj-green rounded-sm border-t-0 shadow-md '+ (ulClassName || ' w-full max-h-48')}
     >
       {
         options.map(option => {

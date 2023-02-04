@@ -73,11 +73,11 @@ export async function evaluateCard(args: {card_id: string, note: -1|0|1, started
 }
 
 export async function insertCard(args: KaguraCardDTO): Promise<void> {
-  const { requirements, type, category } = args;
+  const { requirements, type, category, difficulty } = args;
 
   const request = await fetch(API_URL+'/kagura/card', {
     method: 'post',
-    body: JSON.stringify({ requirements, type, category }),
+    body: JSON.stringify({ requirements, type, category, difficulty }),
     headers: {
       'Content-type': 'application/json'
     }

@@ -3,6 +3,7 @@ import { FaReact, FaCheck } from 'react-icons/fa';
 import { GoGear } from 'react-icons/go';
 import { ImCross } from 'react-icons/im';
 import { FaTrashAlt } from "react-icons/fa";
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import { GoThumbsup, GoThumbsdown, GoPrimitiveDot } from 'react-icons/go';
 import { Modal } from "@/components/Modal";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -180,6 +181,7 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
   const [typesOptions, setTypesOptions] = useState<{label: string, value: string}[]>([]);
   const [categoriesOptions, setCategoriesOptions] = useState<{label: string, value: string}[]>([]);
 
+  const [difficulty, setDifficulty] = useState<1|2|3>(3);
   const [typeInput, setTypeInput] = useState(['', '']);
   const [requirementsInput, setRequirementsInput] = useState('');
   const [categoryInput, setCategoryInput] = useState(['', '']);
@@ -188,17 +190,45 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
     <div className='p-2'>
       <h4 className='text-tanj-white'>Insert a new card</h4>
       <form id="insert-card-form" className='flex flex-col mb-4 w-72'>
+        <div className='flex justify-end'>
+          <div className='flex'>
+            <div
+              className='cursor-pointer'
+              onClick={() => {
+                setDifficulty(1)
+              }}
+            >
+              {difficulty >= 1 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
+            </div>
+            <div
+              className='cursor-pointer'
+              onClick={() => {
+                setDifficulty(2)
+              }}
+            >
+              {difficulty >= 2 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
+            </div> 
+            <div
+              className='cursor-pointer'
+              onClick={() => {
+                setDifficulty(3)
+              }}
+            >
+              {difficulty >= 3 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
+            </div>           
+          </div>
+        </div>
         <label>
           <div className='text-tanj-white '>Type: </div>
           <InputWithOptions className='w-full' initValue={''} options={typesOptions} value={typeInput} setValue={e => setTypeInput(e)} />
         </label>
         <label>
-          <div className='text-tanj-white '>Requirements: </div>
-          <Textarea className={`w-full resize-none h-32`} value={requirementsInput} onChange={e => setRequirementsInput(e.target.value)} />
-        </label>
-        <label>
           <div className='text-tanj-white '>Category: </div>
           <InputWithOptions className='w-full' initValue={''} options={categoriesOptions} value={categoryInput} setValue={e => setCategoryInput(e)} />
+        </label>
+        <label>
+          <div className='text-tanj-white '>Requirements: </div>
+          <Textarea className={`w-full resize-none h-32`} value={requirementsInput} onChange={e => setRequirementsInput(e.target.value)} />
         </label>
       </form>
       <BtnPrimary type="submit" 
@@ -207,7 +237,12 @@ function AddItemForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
           e.preventDefault();
           
           insertCard.mutate(
-            {type: typeInput[1] !== '' ? typeInput[1] : typeInput[0], requirements: requirementsInput, category: categoryInput[1] !== '' ? categoryInput[1] : categoryInput[0]},
+            { 
+              type: typeInput[1] !== '' ? typeInput[1] : typeInput[0], 
+              requirements: requirementsInput, 
+              category: categoryInput[1] !== '' ? categoryInput[1] : categoryInput[0],
+              difficulty
+            },
             {
               onSuccess: () => {
                 setIsOpen(false);

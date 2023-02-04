@@ -47,6 +47,7 @@ export interface KaguraCardDTO {
   type: KagurasType
   requirements: string
   category: KagurasCategory
+  difficulty: 1|2|3
 }
 
 export interface KaguraMetaData {

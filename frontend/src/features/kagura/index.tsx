@@ -306,9 +306,11 @@ function RoutineBody() {
     <div className='relative'>
       <RoutineOptions card_id={_id} />
       <div className='w-80 h-64 p-4 m-2 overflow-auto custom-scrollbar'>
-        <span className='text-tanj-green select-none'>
-          {requirements}
-        </span>
+        <pre>
+          <span className='text-tanj-green select-none whitespace-pre-wrap'>
+              {requirements}
+          </span>
+        </pre>
       </div>
       <div className='flex justify-center mt-6'>
         <BtnSecondary

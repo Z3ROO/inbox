@@ -292,11 +292,7 @@ function RoutineBody() {
   const { kagura, performingRoutine, evaluateCard } = useKagura()!;
 
   const [type, category] = performingRoutine!;
-  const { _id, /*requirements*/ } = kagura.data?.find(k => k.type === type)?.routines.find(r => r.category === category)?.cards[0]!||{}
-  
-  const requirements = `
-  Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testosoddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-  `
+  const { _id, requirements } = kagura.data?.find(k => k.type === type)?.routines.find(r => r.category === category)?.cards[0]!||{};
 
   const { mutate: takeNote } = evaluateCard;
 

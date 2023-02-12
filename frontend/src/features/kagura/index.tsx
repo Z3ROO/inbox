@@ -292,8 +292,12 @@ function RoutineBody() {
   const { kagura, performingRoutine, evaluateCard } = useKagura()!;
 
   const [type, category] = performingRoutine!;
-  const { _id, requirements } = kagura.data?.find(k => k.type === type)?.routines.find(r => r.category === category)?.cards[0]!||{}
+  const { _id, /*requirements*/ } = kagura.data?.find(k => k.type === type)?.routines.find(r => r.category === category)?.cards[0]!||{}
   
+  const requirements = `
+  Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testoso Teste testosoddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+  `
+
   const { mutate: takeNote } = evaluateCard;
 
   const cardEngageDate = useRef<Date>(new Date());
@@ -307,7 +311,7 @@ function RoutineBody() {
       <RoutineOptions card_id={_id} />
       <div className='w-80 h-64 p-4 m-2 overflow-auto custom-scrollbar'>
         <pre>
-          <span className='text-tanj-green select-none whitespace-pre-wrap'>
+          <span className='text-tanj-green select-none whitespace-pre-wrap break-words'>
               {requirements}
           </span>
         </pre>

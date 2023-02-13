@@ -1,7 +1,7 @@
 import { BtnPrimary } from "@/components/Buttons";
 import { InputWithOptions, Textarea } from "@/components/Forms";
 import { Modal } from "@/components/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { HiPlus } from "react-icons/hi";
 import { useQuery } from "react-query";
@@ -34,12 +34,9 @@ function OpenModalButton({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<Re
 function AddCardForm({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { insertCard } = useKagura()!;
 
-  const kaguraMetaData = useQuery('kagura-meta-data', KaguraAPI.getKaguraMetaData, {
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-    refetchIntervalInBackground: false,
-    refetchOnReconnect: false,
-    onSuccess: (data) => {
+  useEffect(() => {
+    (async () => {
+      const data = await KaguraAPI.getKaguraMetaData();
       const { types, categories } = data;
 
       setTypesOptions(types.map(t => 
@@ -49,8 +46,8 @@ function AddCardForm({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.
       setCategoriesOptions(categories.map(c => 
         ({label: c.replace(/_/g, ' '), value: c})
       ));
-    }
-  });  
+    })();
+  },[]);
 
   const [typesOptions, setTypesOptions] = useState<{label: string, value: string}[]>([]);
   const [categoriesOptions, setCategoriesOptions] = useState<{label: string, value: string}[]>([]);

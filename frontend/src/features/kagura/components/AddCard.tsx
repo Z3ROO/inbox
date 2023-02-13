@@ -64,34 +64,7 @@ function AddCardForm({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.
     <div className='p-2'>
       <h4 className='text-tanj-white'>Insert a new card</h4>
       <form id="insert-card-form" className='flex flex-col mb-4 w-72'>
-        <div className='flex justify-end'>
-          <div className='flex'>
-            <div
-              className='cursor-pointer'
-              onClick={() => {
-                setDifficulty(1)
-              }}
-            >
-              {difficulty >= 1 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
-            </div>
-            <div
-              className='cursor-pointer'
-              onClick={() => {
-                setDifficulty(2)
-              }}
-            >
-              {difficulty >= 2 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
-            </div> 
-            <div
-              className='cursor-pointer'
-              onClick={() => {
-                setDifficulty(3)
-              }}
-            >
-              {difficulty >= 3 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
-            </div>           
-          </div>
-        </div>
+        <DifficultyField {...{difficulty, setDifficulty}} />
         <label>
           <div className='text-tanj-white '>Type: </div>
           <InputWithOptions className='w-full' initValue={''} options={typesOptions} value={typeInput} setValue={e => setTypeInput(e)} />
@@ -125,6 +98,40 @@ function AddCardForm({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.
           );
         }}
       >Create</BtnPrimary>
+    </div>
+  )
+}
+
+
+function DifficultyField({ difficulty, setDifficulty }: {difficulty: ( 1 | 2 | 3 ), setDifficulty: React.Dispatch<React.SetStateAction<2 | 1 | 3>>}) {
+  return (
+    <div className='flex justify-end'>
+      <div className='flex'>
+        <div
+          className='cursor-pointer'
+          onClick={() => {
+            setDifficulty(1)
+          }}
+        >
+          {difficulty >= 1 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
+        </div>
+        <div
+          className='cursor-pointer'
+          onClick={() => {
+            setDifficulty(2)
+          }}
+        >
+          {difficulty >= 2 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
+        </div> 
+        <div
+          className='cursor-pointer'
+          onClick={() => {
+            setDifficulty(3)
+          }}
+        >
+          {difficulty >= 3 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
+        </div>           
+      </div>
     </div>
   )
 }

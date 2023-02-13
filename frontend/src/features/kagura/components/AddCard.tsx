@@ -4,9 +4,8 @@ import { Modal } from "@/components/Modal";
 import { useEffect, useState } from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { HiPlus } from "react-icons/hi";
-import { useQuery } from "react-query";
 import { useKagura } from "@/features/kagura/store/KaguraContext";
-import * as KaguraAPI from '@/features/kagura/api/index'
+import * as KaguraAPI from '@/features/kagura/api/index';
 
 export function AddCard() {
   const [isModalOpen, setIsModalOpen] = useState(false);

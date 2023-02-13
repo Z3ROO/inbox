@@ -11,12 +11,9 @@ import * as Icons from '@/components/icons/kagura'
 
 export function Routine() {
   const { performingRoutine, setPerformingRoutine } = useKagura()!;
-  
-  if (performingRoutine == null)
-    return null;
 
   return (
-    <Modal closeFn={()=> {setPerformingRoutine(null)}}>
+    <Modal isModalOpen={!!performingRoutine} closeFn={()=> {setPerformingRoutine(null)}}>
       <RoutineHeader />
       <RoutineBody />
     </Modal>

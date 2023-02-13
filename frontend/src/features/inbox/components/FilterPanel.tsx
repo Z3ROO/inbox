@@ -10,14 +10,11 @@ import { Textarea } from "@/components/Forms";
 export function InboxFilterPanelModal() {
   const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;
 
-  if (isFilterPanelOpen)
-    return (
-      <Modal closeFn={toggleFilterPanel}>
-        <FilterPanel />
-      </Modal>
-    )
-
-  return null
+  return (
+    <Modal isModalOpen={isFilterPanelOpen} closeFn={toggleFilterPanel}>
+      <FilterPanel />
+    </Modal>
+  )
 }
 
 function FilterPanel() {

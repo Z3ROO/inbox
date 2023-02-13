@@ -9,26 +9,23 @@ import { useKagura } from "@/features/kagura/store/KaguraContext";
 import * as KaguraAPI from '@/features/kagura/api/index'
 
 export function AddCard() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className={`absolute top-4 right-4`}>
       <BtnPrimary icon round
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsModalOpen(true)}
       >
         <HiPlus className="w-4 h-4" />
       </BtnPrimary>
-      {
-        isOpen && (
-          <Modal closeFn={() => setIsOpen(false)}>
-            <AddCardForm {...{setIsOpen}} />
-          </Modal>
-        )
-      }
+      <Modal {...{isModalOpen, closeFn: () => setIsModalOpen(false)}}>
+        <AddCardForm {...{setIsModalOpen}} />
+      </Modal>
     </div>
   )
 }
 
-function AddCardForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+function AddCardForm({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   const { insertCard } = useKagura()!;
 
   const kaguraMetaData = useQuery('kagura-meta-data', KaguraAPI.getKaguraMetaData, {
@@ -116,7 +113,7 @@ function AddCardForm({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAc
             },
             {
               onSuccess: () => {
-                setIsOpen(false);
+                setIsModalOpen(false);
               }
             }
           );

@@ -1,16 +1,26 @@
 import { IoClose } from 'react-icons/io5';
 import { BtnSecondary } from './Buttons';
 
-export function Modal(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[], closeFn: () => void }) {
+interface ModalProps { 
+  isModalOpen?: boolean
+  closeFn: () => void
+  children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[], 
+}
+
+export function Modal(props: ModalProps) {
+  const { isModalOpen, closeFn, children } = props;
   
-  if(!props.children)
-    return null
+  if (!children)
+    return null;
+
+  if (isModalOpen === false || isModalOpen === null)
+    return null;
 
   return (
     <div className="z-50 fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-tanj-pink bg-opacity-25" style={{backdropFilter:'blur(8px)'}}>
       <div className="p-8 rounded-sm bg-gray-800 relative">
-        <CloseButton closeFn={props.closeFn} />
-        {props.children}
+        <CloseButton {...{closeFn}} />
+        { children }
       </div>
     </div>
   )

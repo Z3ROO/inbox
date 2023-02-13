@@ -13,6 +13,7 @@ import { InputWithOptions, Textarea } from '@/components/Forms';
 import { useQuery } from 'react-query';
 import * as KaguraAPI from './api/index'
 import * as Icons from '@/components/icons/kagura'
+import { Notifications } from '@/components/Notifications';
 
 export function Kagura() {
   return (
@@ -124,17 +125,6 @@ function Category2() {
       <Notifications qtd={8} />
     </div>
   )
-}
-
-function Notifications({ qtd }: { qtd: number }) {
-  if (qtd)
-    return (
-      <div className={`absolute -top-2 -right-2 w-5 h-5 rounded-full bg-tanj-pink flex justify-center items-center`}>
-        <span className={`text-tanj-white text-sm`}>{qtd}</span>
-      </div>
-    )
-
-  return null
 }
 
 function AddItem() {

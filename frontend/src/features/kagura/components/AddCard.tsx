@@ -13,15 +13,21 @@ export function AddCard() {
 
   return (
     <div className={`absolute top-4 right-4`}>
-      <BtnPrimary icon round
-        onClick={() => setIsModalOpen(true)}
-      >
-        <HiPlus className="w-4 h-4" />
-      </BtnPrimary>
+      <OpenModalButton {...{setIsModalOpen}} />
       <Modal {...{isModalOpen, closeFn: () => setIsModalOpen(false)}}>
         <AddCardForm {...{setIsModalOpen}} />
       </Modal>
     </div>
+  )
+}
+
+function OpenModalButton({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
+  return (
+    <BtnPrimary icon round
+      onClick={() => setIsModalOpen(true)}
+    >
+      <HiPlus className="w-4 h-4" />
+    </BtnPrimary>
   )
 }
 

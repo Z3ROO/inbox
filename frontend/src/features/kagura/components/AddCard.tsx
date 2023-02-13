@@ -82,32 +82,24 @@ function DifficultyField({ difficulty, setDifficulty }: {difficulty: ( 1 | 2 | 3
   return (
     <div className='flex justify-end'>
       <div className='flex'>
-        <div
-          className='cursor-pointer'
-          onClick={() => {
-            setDifficulty(1)
-          }}
-        >
-          {difficulty >= 1 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
-        </div>
-        <div
-          className='cursor-pointer'
-          onClick={() => {
-            setDifficulty(2)
-          }}
-        >
-          {difficulty >= 2 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
-        </div> 
-        <div
-          className='cursor-pointer'
-          onClick={() => {
-            setDifficulty(3)
-          }}
-        >
-          {difficulty >= 3 ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
-        </div>           
+        <DifficultyStar {...{position: 1, difficulty, setDifficulty }} />
+        <DifficultyStar {...{position: 2, difficulty, setDifficulty }} />
+        <DifficultyStar {...{position: 3, difficulty, setDifficulty }} />
       </div>
     </div>
+  )
+}
+
+function DifficultyStar({ position, difficulty, setDifficulty }: { position: ( 1 | 2 | 3 ), difficulty: ( 1 | 2 | 3 ), setDifficulty: React.Dispatch<React.SetStateAction<2 | 1 | 3>>}) {
+  return (
+    <div
+      className='cursor-pointer'
+      onClick={() => {
+        setDifficulty(position)
+      }}
+    >
+      {difficulty >= position ? <AiFillStar className='fill-tanj-green w-5 h-5' /> : <AiOutlineStar className='fill-tanj-green w-5 h-5' />}
+    </div> 
   )
 }
 

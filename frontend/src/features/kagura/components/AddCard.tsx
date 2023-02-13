@@ -15,7 +15,7 @@ export function AddCard() {
       <BtnPrimary icon round
         onClick={() => setIsOpen(true)}
       >
-        <HiPlus />
+        <HiPlus className="w-4 h-4" />
       </BtnPrimary>
       {
         isOpen && (

@@ -102,9 +102,9 @@ function DifficultyStar({ position, difficulty, setDifficulty }: { position: ( 1
   )
 }
 
-function Submit(props: {typeInput: string[], categoryInput: string[], requirementsInput: string, difficulty: ( 1 | 2 | 3 ) }, setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>) {
+function Submit(props: {typeInput: string[], categoryInput: string[], requirementsInput: string, difficulty: ( 1 | 2 | 3 ) , setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
   const { insertCard } = useKagura()!;
-  const { typeInput, categoryInput, requirementsInput, difficulty } = props;
+  const { typeInput, categoryInput, requirementsInput, difficulty, setIsModalOpen } = props;
 
   return (
     <BtnPrimary type="submit" 

@@ -1,6 +1,6 @@
 import { KaguraProvider } from './store/KaguraContext';
 import { Categories } from './components/Categories';
-import { AddCard } from './components/AddCard';
+import { AddCardForm } from './components/AddCardForm';
 import { Routine } from './components/Routine';
 
 export function Kagura() {
@@ -9,9 +9,9 @@ export function Kagura() {
       <div className='w-full flex justify-center'>
         <div className='relative w-3/6'>
           <Categories />
-          <AddCard />
+          <AddCardForm />
           <Routine />
-        </div>      
+        </div>
       </div>
     </KaguraProvider>
   )

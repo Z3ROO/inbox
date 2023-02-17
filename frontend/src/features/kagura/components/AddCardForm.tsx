@@ -7,14 +7,14 @@ import { HiPlus } from "react-icons/hi";
 import { useKagura } from "@/features/kagura/store/KaguraContext";
 import * as KaguraAPI from '@/features/kagura/api/index';
 
-export function AddCard() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export function AddCardForm() {
+const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className={`absolute top-4 right-4`}>
       <OpenModalButton {...{setIsModalOpen}} />
       <Modal {...{isModalOpen, closeFn: () => setIsModalOpen(false)}}>
-        <AddCardForm {...{setIsModalOpen}} />
+        <Form {...{setIsModalOpen}} />
       </Modal>
     </div>
   )
@@ -30,7 +30,7 @@ function OpenModalButton({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<Re
   )
 }
 
-function AddCardForm({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   const [typesOptions, setTypesOptions] = useState<{label: string, value: string}[]>([]);
   const [categoriesOptions, setCategoriesOptions] = useState<{label: string, value: string}[]>([]);
 

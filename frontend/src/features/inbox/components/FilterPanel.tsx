@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
 import { Modal } from "@/components/Modal";
 import { useEffect } from "react";
@@ -20,6 +21,7 @@ export function InboxFilterPanelModal() {
 
 function FilterPanel() {
   const { inboxItems } = useFilterPanelContext()!;
+  const [picker, setPicker] = useState<boolean>(false);
 
   if (inboxItems.isLoading)
     return (  
@@ -39,9 +41,16 @@ function FilterPanel() {
   return (
     <div className="w-[28] m-2">
       <h4 className="text-tanj-green">Inbox filter:</h4>
-      <InputField />
+      <div className="relative h-56">
+        {
+          picker ? (
+            <div className="w-full h-full border-2 border-tanj-green rounded-sm bg-tanj-gray">
+            </div>
+          ) : <InputField />
+        }
+      </div>
       <div className="flex justify-between">
-        <BtnSecondary className="m-0 py-0" icon bgLess>
+        <BtnSecondary className="m-0 py-0" icon bgLess onClick={() => setPicker(prev => !prev)}>
           <HiArrowDownOnSquareStack className="w-4 h-4"/>
         </BtnSecondary>
         <LastDelayLog />
@@ -62,16 +71,16 @@ function InputField() {
 
 
   return (
-    <div className="relative">
+    <>
       <Textarea 
-        className={`resize-none w-full h-56`} 
+        className={`resize-none w-full h-full`} 
         value={inboxFilterText} onChange={e => setInboxFilterText(e.target.value)}
       />
       {
         updateInboxItem.isLoading &&
         <BiLoaderAlt className="absolute top-4 right-4 animate-spin" />
       }
-    </div>
+    </>
     
   )
 }

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { HiArrowDownOnSquareStack } from "react-icons/hi2";
 import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext";
-import { InboxDelayAmounts } from "@/features/inbox/types";
+import { InboxDelayAmounts, PanelMode } from "@/features/inbox/types";
 import { BiLoaderAlt } from 'react-icons/bi';
 import { Textarea } from "@/components/Forms";
 
@@ -20,8 +20,7 @@ export function InboxFilterPanelModal() {
 }
 
 function FilterPanel() {
-  const { inboxItems } = useFilterPanelContext()!;
-  const [picker, setPicker] = useState<boolean>(false);
+  const { inboxItems, panelMode, setPanelMode } = useFilterPanelContext()!;
 
   if (inboxItems.isLoading)
     return (  
@@ -43,14 +42,10 @@ function FilterPanel() {
       <h4 className="text-tanj-green">Inbox filter:</h4>
       <div className="relative h-56">
         {
-          picker ? (
-            <div className="w-full h-full border-2 border-tanj-green rounded-sm bg-tanj-gray">
-            </div>
-          ) : <InputField />
-        }
+          panelMode === 'normal' ? <InputField /> : <SetOptionsField />        }
       </div>
       <div className="flex justify-between">
-        <BtnSecondary className="m-0 py-0" icon bgLess onClick={() => setPicker(prev => !prev)}>
+        <BtnSecondary className="m-0 py-0" icon bgLess onClick={() => setPanelMode(prev => prev === 'enqueue' ? 'normal' : 'enqueue')}>
           <HiArrowDownOnSquareStack className="w-4 h-4"/>
         </BtnSecondary>
         <LastDelayLog />
@@ -83,6 +78,28 @@ function InputField() {
     </>
     
   )
+}
+
+function SetOptionsField() {
+  const { panelMode } = useFilterPanelContext()!;
+  const content = SwitchSetters(panelMode);
+
+  return (
+    <div className="w-full h-full border-2 border-tanj-green rounded-sm bg-tanj-gray">
+      { content }
+    </div>
+  ) 
+
+}
+
+function SwitchSetters(mode: PanelMode):JSX.Element|null {
+  switch(mode) {
+    case 'enqueue':
+    return <></>
+    
+    default:
+    return null
+  }
 }
 
 function LastDelayLog() {

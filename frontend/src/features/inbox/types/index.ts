@@ -1,6 +1,8 @@
 import { UseMutationResult, UseQueryResult } from "react-query/types/react"
 
 export interface IFilterPanelContext {
+  panelMode: PanelMode
+  setPanelMode: React.Dispatch<React.SetStateAction<PanelMode>>
   inboxFilterText: string
   setInboxFilterText: React.Dispatch<React.SetStateAction<string>>
   isFilterPanelOpen: boolean
@@ -13,6 +15,8 @@ export interface IFilterPanelContext {
   //insertInboxItem: UseMutationResult<any, unknown, { content: string }, unknown>
   inboxItems: UseQueryResult<IInboxItem[]>
 }
+
+export type PanelMode = 'normal' | 'select-project' | 'enqueue'
 
 export interface IInboxItem {
   _id: string

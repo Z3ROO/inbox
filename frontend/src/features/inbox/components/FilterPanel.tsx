@@ -2,6 +2,7 @@ import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
 import { Modal } from "@/components/Modal";
 import { useEffect } from "react";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
+import { HiArrowDownOnSquareStack } from "react-icons/hi2";
 import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext";
 import { InboxDelayAmounts } from "@/features/inbox/types";
 import { BiLoaderAlt } from 'react-icons/bi';
@@ -39,7 +40,12 @@ function FilterPanel() {
     <div className="w-[28] m-2">
       <h4 className="text-tanj-green">Inbox filter:</h4>
       <InputField />
-      <LastDelayLog />
+      <div className="flex justify-between">
+        <BtnSecondary className="m-0 py-0" icon bgLess>
+          <HiArrowDownOnSquareStack className="w-4 h-4"/>
+        </BtnSecondary>
+        <LastDelayLog />
+      </div>
       <Controlls />
     </div>
   )

@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { useFilterPanelContext } from "../store/FilterPanelContext";
 import { cacheInsertInputField, getCachedInsertInputField } from "../util/cacheInsertField";
 import * as InboxAPI from '@/features/inbox/api'
-import { Textarea } from "@/components/Forms";
+import { Textarea } from "@/components/form/Input";
 
 export function InboxInsertPanel() {
   const [insertFieldText, setInsertFieldText] = useState('');

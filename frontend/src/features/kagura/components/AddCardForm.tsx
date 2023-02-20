@@ -1,5 +1,6 @@
 import { BtnPrimary } from "@/components/Buttons";
-import { InputWithOptions, Textarea } from "@/components/Forms";
+import { Textarea } from "@/components/form/Input";
+import { InputDataList } from "@/components/form/InputDataList";
 import { Modal } from "@/components/Modal";
 import { useEffect, useState } from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -61,11 +62,11 @@ function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStat
         <DifficultyField {...{difficulty, setDifficulty}} />
         <label>
           <div className='text-tanj-white '>Type: </div>
-          <InputWithOptions className='w-full' initValue={''} options={typesOptions} value={typeInput} setValue={e => setTypeInput(e)} />
+          <InputDataList className='w-full' initValue={''} options={typesOptions} value={typeInput} setValue={e => setTypeInput(e)} />
         </label>
         <label>
           <div className='text-tanj-white '>Category: </div>
-          <InputWithOptions className='w-full' initValue={''} options={categoriesOptions} value={categoryInput} setValue={e => setCategoryInput(e)} />
+          <InputDataList className='w-full' initValue={''} options={categoriesOptions} value={categoryInput} setValue={e => setCategoryInput(e)} />
         </label>
         <label>
           <div className='text-tanj-white '>Requirements: </div>

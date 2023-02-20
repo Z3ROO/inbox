@@ -6,7 +6,8 @@ import { HiArrowDownOnSquareStack } from "react-icons/hi2";
 import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext";
 import { InboxDelayAmounts, PanelMode } from "@/features/inbox/types";
 import { BiLoaderAlt } from 'react-icons/bi';
-import { Textarea, InputDetailedDataList } from "@/components/Forms";
+import { Textarea } from "@/components/form/Input";
+import { InputDetailedDataList } from "@/components/form/InputDetailedDataList";
 
 export function InboxFilterPanelModal() {
   const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;

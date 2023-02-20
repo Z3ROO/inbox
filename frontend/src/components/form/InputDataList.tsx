@@ -11,8 +11,7 @@ export interface InputDataListAttributes {
   liClassName?: string
 }
 
-const Context = createContext<IContext|null>(null);
-interface IContext {
+interface InputDataListContext {
   value: {
     label: string;
     value: string;
@@ -32,6 +31,8 @@ interface IContext {
   closeDataList: (event: React.ChangeEvent<HTMLInputElement>) => void;
   chooseOption: (label: string, value: string) => void;
 }
+
+const Context = createContext<InputDataListContext|null>(null);
 
 export function InputDataList(props: InputDataListAttributes) {
   let { value, setValue, options, className, ulClassName, liClassName } = props;

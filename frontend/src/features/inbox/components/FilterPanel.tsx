@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
 import { Modal } from "@/components/Modal";
 import { useEffect } from "react";
@@ -39,10 +38,16 @@ function FilterPanel() {
 
   return (
     <div className="w-[28] m-2">
-      <h4 className="text-tanj-green">Inbox filter:</h4>
+      <div className="flex justify-between">
+        <span className="text-tanj-green font-bold text-2xl">Inbox:</span>
+        <BtnSecondary className="m-0" bgLess onClick={() => setPanelMode(prev => prev === 'select-project' ? 'normal' : 'select-project')}>
+          <span>Choose a project</span>
+        </BtnSecondary>
+      </div>
       <div className="relative h-56">
         {
-          panelMode === 'normal' ? <InputField /> : <SetOptionsField />        }
+          panelMode === 'normal' ? <InputField /> : <SetOptionsField />
+        }
       </div>
       <div className="flex justify-between">
         <BtnSecondary className="m-0 py-0" icon bgLess onClick={() => setPanelMode(prev => prev === 'enqueue' ? 'normal' : 'enqueue')}>

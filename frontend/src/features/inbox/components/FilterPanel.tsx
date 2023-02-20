@@ -1,12 +1,12 @@
 import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
 import { Modal } from "@/components/Modal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { HiArrowDownOnSquareStack } from "react-icons/hi2";
 import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext";
 import { InboxDelayAmounts, PanelMode } from "@/features/inbox/types";
 import { BiLoaderAlt } from 'react-icons/bi';
-import { Textarea } from "@/components/Forms";
+import { Textarea, InputDetailedDataList } from "@/components/Forms";
 
 export function InboxFilterPanelModal() {
   const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;
@@ -22,19 +22,19 @@ function FilterPanel() {
   const { inboxItems, panelMode, setPanelMode } = useFilterPanelContext()!;
 
   if (inboxItems.isLoading)
-    return (  
+    return (
       <h2 className="m-4 mx-10 text-tanj-green">Loading...</h2>
     )
-  
+
   if (inboxItems.isError)
-    return (  
+    return (
       <h2 className="m-4 mx-10 text-tanj-green">Something went wrong.</h2>
     )
 
   if (!inboxItems.data || inboxItems.data.length === 0)
-    return (  
+    return (
       <h2 className="m-4 mx-10 text-tanj-green">Inbox empty.</h2>
-    ) 
+    )
 
   return (
     <div className="w-[28] m-2">
@@ -51,7 +51,7 @@ function FilterPanel() {
       </div>
       <div className="flex justify-between">
         <BtnSecondary className="m-0 py-0" icon bgLess onClick={() => setPanelMode(prev => prev === 'enqueue' ? 'normal' : 'enqueue')}>
-          <HiArrowDownOnSquareStack className="w-4 h-4"/>
+          <HiArrowDownOnSquareStack className="w-4 h-4" />
         </BtnSecondary>
         <LastDelayLog />
       </div>
@@ -61,8 +61,8 @@ function FilterPanel() {
 }
 
 function InputField() {
-  const { inboxItems, inboxFilterText, setInboxFilterText, updateInboxItem} = useFilterPanelContext()!;
-  
+  const { inboxItems, inboxFilterText, setInboxFilterText, updateInboxItem } = useFilterPanelContext()!;
+
   useEffect(() => {
     if (inboxItems.isSuccess) {
       setInboxFilterText(inboxItems.data[0].content);
@@ -72,8 +72,8 @@ function InputField() {
 
   return (
     <>
-      <Textarea 
-        className={`resize-none w-full h-full`} 
+      <Textarea
+        className={`resize-none w-full h-full`}
         value={inboxFilterText} onChange={e => setInboxFilterText(e.target.value)}
       />
       {
@@ -81,7 +81,7 @@ function InputField() {
         <BiLoaderAlt className="absolute top-4 right-4 animate-spin" />
       }
     </>
-    
+
   )
 }
 
@@ -91,20 +91,47 @@ function SetOptionsField() {
 
   return (
     <div className="w-full h-full border-2 border-tanj-green rounded-sm bg-tanj-gray">
-      { content }
+      {content}
     </div>
-  ) 
+  )
 
 }
 
-function SwitchSetters(mode: PanelMode):JSX.Element|null {
-  switch(mode) {
+function SwitchSetters(mode: PanelMode): JSX.Element | null {
+  switch (mode) {
     case 'enqueue':
-    return <></>
-    
+      return <></>
+
     default:
-    return null
+      return null
   }
+}
+
+function SelectProject() {
+  const [project_id, setProject_id] = useState('');
+
+  const projectDataList = [
+    {
+      value: 'ProjetoUm',
+      label: 'idzeroum'
+    },
+    {
+      value: 'ProjetoDois',
+      label: 'idzerodois'
+    },
+    {
+      value: 'ProjetoTres',
+      label: 'idzerotres'
+    },
+    {
+      value: 'ProjetoQuatro',
+      label: 'idzeroquatro'
+    }
+  ]
+
+  return (
+    <InputDetailedDataList value={project_id} setValue={setProject_id} options={projectDataList} />
+  )
 }
 
 function LastDelayLog() {
@@ -120,8 +147,8 @@ function LastDelayLog() {
       <span className="text-sm text-tanj-green">
         {
           (delayed_at && amount) ?
-          `Delayed for ${amount.includes('-') ? '' : 'a '}${amount.replace(/-/g, ' ')} on ${new Date(delayed_at).toLocaleDateString(['pt-BR'])}.` :
-          `Never delayed.`
+            `Delayed for ${amount.includes('-') ? '' : 'a '}${amount.replace(/-/g, ' ')} on ${new Date(delayed_at).toLocaleDateString(['pt-BR'])}.` :
+            `Never delayed.`
         }
       </span>
     </div>
@@ -139,22 +166,22 @@ function Controlls() {
       {
         ['Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
-            onClick={() => updateItem({ content: inboxFilterText , inboxItem_id: currentItem._id, action: amount.toLowerCase().replace(/ /g, '-') as InboxDelayAmounts })} 
+            onClick={() => updateItem({ content: inboxFilterText, inboxItem_id: currentItem._id, action: amount.toLowerCase().replace(/ /g, '-') as InboxDelayAmounts })}
             disabled={isLoading}
           >{amount}</BtnPrimary>
         ))
       }
-      <BtnSecondary icon bgLess 
+      <BtnSecondary icon bgLess
         disabled={isLoading}
         onClick={() => updateItem({ inboxItem_id: currentItem._id, action: 'remove' })}
       >
-        <FaTrashAlt/>
+        <FaTrashAlt />
       </BtnSecondary>
-      <BtnSecondary icon bgLess 
+      <BtnSecondary icon bgLess
         disabled={isLoading}
         onClick={() => updateItem({ inboxItem_id: currentItem._id, action: 'undo' })}
       >
-        <FaUndoAlt/>
+        <FaUndoAlt />
       </BtnSecondary>
     </div>
   )

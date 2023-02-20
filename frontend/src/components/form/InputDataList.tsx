@@ -3,9 +3,8 @@ import { HiExclamationCircle } from "react-icons/hi2"
 import { Input } from "./Input"
 
 export interface InputDataListAttributes {
-  initValue: string
-  value: string[]
-  setValue: (value: string[]) => void
+  value: { label: string, value: string }
+  setValue: (value: { label: string, value: string }) => void
   options: { label: string, value: string }[]
   className?: string
   ulClassName?: string
@@ -14,8 +13,10 @@ export interface InputDataListAttributes {
 
 const Context = createContext<IContext|null>(null);
 interface IContext {
-  initValue: string;
-  value: string[];
+  value: {
+    label: string;
+    value: string;
+  };
   className: string;
   ulClassName: string | undefined;
   liClassName: string | undefined;
@@ -33,10 +34,10 @@ interface IContext {
 }
 
 export function InputDataList(props: InputDataListAttributes) {
-  let { initValue, value, setValue, options, className, ulClassName, liClassName } = props;
+  let { value, setValue, options, className, ulClassName, liClassName } = props;
 
   const [isDataListOpen, setIsDataListOpen] = useState(false);
-  const toggleList = (state: boolean) => setIsDataListOpen(state);
+  const toggleDataList = (state: boolean) => setIsDataListOpen(state);
 
   const [inputText, setInputText] = useState('');
   const [filteredOptions, setFilteredOptions] = useState(options);
@@ -47,40 +48,41 @@ export function InputDataList(props: InputDataListAttributes) {
   function autoSelectOptionIfMatch(textContent: string) {
     const option = options.find(opt => textContent === opt.label);
     if (option) {
-      setValue([option.value, option.value]);
-      toggleList(false);
+      setValue({label: option.value, value: option.value});
+      toggleDataList(false);
     }
     else {
-      setValue([textContent, initValue]);
-      toggleList(true);
+      setValue({label: textContent, value: ''});
+      toggleDataList(true);
     }
   }
 
   function openDataList() {
-    if (value[0] === initValue)
-      toggleList(true)
+    if (value.value === '')
+      toggleDataList(true);
   }
   
   function closeDataList(event: React.ChangeEvent<HTMLInputElement>) {
     setTimeout(() => {
       if (document.activeElement !== event.target)
-        toggleList(false);
-    }, 150)
+        toggleDataList(false);
+    }, 150);
   }
 
   function chooseOption(label: string, value: string) {
-    setValue([value, value]);
+    setValue({ label, value });
     setInputText(label);
-    toggleList(false);
+    toggleDataList(false);
   }
 
   useEffect(() => {
     const regex = new RegExp(inputText);
-    setFilteredOptions(options.filter(option => option.label.match(regex)));
+    const refiltered = options.filter(option => option.label.match(regex));
+    setFilteredOptions(refiltered);
   }, [inputText, options]);
 
   const contextValue = {
-    initValue, value, className, ulClassName, liClassName,
+    value, className, ulClassName, liClassName,
     options: filteredOptions,
     inputText, setInputText,
     isDataListOpen,
@@ -104,8 +106,8 @@ function InputContainer() {
   return (
     <div className="relative">
       <Input 
-      type="text" 
-      className={' ' + (className || 'w-64')}
+        type="text" 
+        className={' ' + (className || 'w-64')}
         value={inputText}
         onChange={(e) => {
           const textContent = e.target.value;
@@ -122,9 +124,9 @@ function InputContainer() {
 }
 
 function InexistentOptionIconWarning() {
-  const { initValue, inputText, value } = useContext(Context)!;
+  const { inputText, value } = useContext(Context)!;
 
-  if (initValue !== inputText && !value[1])
+  if (inputText !== '' && !value.value)
     return (
       <HiExclamationCircle className="absolute right-2 top-2.5 fill-red-400 w-5 h-5" />
     )

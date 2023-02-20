@@ -36,16 +36,16 @@ function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStat
   const [categoriesOptions, setCategoriesOptions] = useState<{label: string, value: string}[]>([]);
 
   const [difficulty, setDifficulty] = useState<1|2|3>(3);
-  const [typeInput, setTypeInput] = useState(['', '']);
+  const [typeInput, setTypeInput] = useState({value: '', label: ''});
   const [requirementsInput, setRequirementsInput] = useState('');
-  const [categoryInput, setCategoryInput] = useState(['', '']);
+  const [categoryInput, setCategoryInput] = useState({value: '', label: ''});
 
   useEffect(() => {
     (async () => {
       const data = await KaguraAPI.getKaguraMetaData();
       const { types, categories } = data;
 
-      setTypesOptions(types.map(t => 
+      setTypesOptions(types.map(t =>
         ({label: t.replace(/_/g, ' '), value: t})
       ));
 
@@ -62,11 +62,11 @@ function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStat
         <DifficultyField {...{difficulty, setDifficulty}} />
         <label>
           <div className='text-tanj-white '>Type: </div>
-          <InputDataList className='w-full' initValue={''} options={typesOptions} value={typeInput} setValue={e => setTypeInput(e)} />
+          <InputDataList className='w-full' options={typesOptions} value={typeInput} setValue={val => setTypeInput(val)} />
         </label>
         <label>
           <div className='text-tanj-white '>Category: </div>
-          <InputDataList className='w-full' initValue={''} options={categoriesOptions} value={categoryInput} setValue={e => setCategoryInput(e)} />
+          <InputDataList className='w-full' options={categoriesOptions} value={categoryInput} setValue={val => setCategoryInput(val)} />
         </label>
         <label>
           <div className='text-tanj-white '>Requirements: </div>
@@ -103,7 +103,7 @@ function DifficultyStar({ position, difficulty, setDifficulty }: { position: ( 1
   )
 }
 
-function Submit(props: {typeInput: string[], categoryInput: string[], requirementsInput: string, difficulty: ( 1 | 2 | 3 ) , setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
+function Submit(props: {typeInput: { label: string, value: string }, categoryInput: { label: string, value: string }, requirementsInput: string, difficulty: ( 1 | 2 | 3 ) , setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
   const { insertCard } = useKagura()!;
   const { typeInput, categoryInput, requirementsInput, difficulty, setIsModalOpen } = props;
 
@@ -115,10 +115,10 @@ function Submit(props: {typeInput: string[], categoryInput: string[], requiremen
         
         insertCard.mutate(
           { 
-            type: typeInput[1] !== '' ? typeInput[1] : typeInput[0], 
+            difficulty,
+            type: typeInput.value !== '' ? typeInput.value : typeInput.label, 
+            category: categoryInput.value !== '' ? categoryInput.value : categoryInput.label,
             requirements: requirementsInput, 
-            category: categoryInput[1] !== '' ? categoryInput[1] : categoryInput[0],
-            difficulty
           },
           {
             onSuccess: () => {

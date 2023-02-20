@@ -39,7 +39,7 @@ function FilterPanel() {
   return (
     <div className="w-[28] m-2">
       <div className="flex justify-between">
-        <span className="text-tanj-green font-bold text-2xl">Inbox:</span>
+        <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
         <BtnSecondary className="m-0" bgLess onClick={() => setPanelMode(prev => prev === 'select-project' ? 'normal' : 'select-project')}>
           <span>Choose a project</span>
         </BtnSecondary>

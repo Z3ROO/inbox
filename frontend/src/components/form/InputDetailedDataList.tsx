@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { GiCaravel } from 'react-icons/gi';
+import { BtnPrimary } from "../Buttons";
 import { Input } from "./Input";
 
 type optionType = {
@@ -12,9 +13,11 @@ export interface DetailedDataList {
   setValue: (value: optionType) => void;
   options: optionType[];
   className?: string;
+  onSubmit?: () => void
 }
 
 interface InputDetailedDataListContext {
+  onSubmit: (() => void) | undefined;
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
   filteredOptions: optionType[];
@@ -23,7 +26,7 @@ interface InputDetailedDataListContext {
 const Context = createContext<InputDetailedDataListContext|null>(null);
 
 export function InputDetailedDataList(props: DetailedDataList) {
-  const { value, setValue, options, className } = props;
+  const { value, setValue, options, className, onSubmit } = props;
 
   const [inputText, setInputText] = useState('');
   const [filteredOptions, setFilteredOptions] = useState<optionType[]>([]);
@@ -35,13 +38,14 @@ export function InputDetailedDataList(props: DetailedDataList) {
   }, [inputText, options]);
 
   const contextValue = {
+    onSubmit,
     inputText, setInputText,
-    filteredOptions,
+    filteredOptions, 
   }
 
   return (
     <Context.Provider value={contextValue} >
-      <div className={`p-4 h-full flex flex-col ${className}`}>
+      <div className={`p-8 h-full flex flex-col ${className}`}>
         <InputContainer />
       </div>
     </Context.Provider>
@@ -49,10 +53,15 @@ export function InputDetailedDataList(props: DetailedDataList) {
 }
 
 function InputContainer() {
-  const { inputText, setInputText } = useContext(Context)!;
+  const { inputText, setInputText, onSubmit } = useContext(Context)!;
   return (
     <>
-      <Input className="mx-4" value={inputText} onChange={(e) => setInputText(e.target.value)} />
+      <div className="flex">
+        <Input className="mx-2 grow" value={inputText} onChange={(e) => setInputText(e.target.value)} />
+        {
+          onSubmit && <BtnPrimary className="m-0 mx-2" onClick={onSubmit}>Submit</BtnPrimary>
+        }
+      </div>
       <DataList  />
     </>
   )
@@ -62,7 +71,7 @@ function DataList() {
   const { filteredOptions } = useContext(Context)!;
 
   return (
-    <div className="h-full overflow-auto overflow-x-hidden pl-4 mr-4 pt-1 mt-3 flex flex-wrap custom-scrollbar">
+    <div className="h-full overflow-auto overflow-x-hidden pl-2 mr-4 pt-1 mt-3 flex flex-wrap custom-scrollbar">
       {
         filteredOptions.map(option => {
           return (

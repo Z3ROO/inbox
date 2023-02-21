@@ -159,7 +159,7 @@ function SelectProject() {
   ]
 
   return (
-    <InputDetailedDataList value={project_id} setValue={setProject_id} options={projectDataList} />
+    <InputDetailedDataList value={project_id} setValue={setProject_id} options={projectDataList} onSubmit={() => { } } />
   )
 }
 

@@ -38,7 +38,7 @@ function FilterPanel() {
     )
 
   return (
-    <div className="w-[28] m-2">
+    <div className="w-[30rem] m-2">
       <div className="flex justify-between">
         <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
         <BtnSecondary className="m-0" bgLess onClick={() => setPanelMode(prev => prev === 'select-project' ? 'normal' : 'select-project')}>
@@ -102,14 +102,18 @@ function SwitchSetters(mode: PanelMode): JSX.Element | null {
   switch (mode) {
     case 'enqueue':
       return <></>
-
+    case 'select-project':
+      return <SelectProject />
     default:
       return null
   }
 }
 
 function SelectProject() {
-  const [project_id, setProject_id] = useState('');
+  const [project_id, setProject_id] = useState<{
+    value: string;
+    label: string;
+}>();
 
   const projectDataList = [
     {
@@ -127,6 +131,30 @@ function SelectProject() {
     {
       value: 'ProjetoQuatro',
       label: 'idzeroquatro'
+    },
+    {
+      value: 'Projeto1Dois',
+      label: 'idzero1doisasdasdasdasdasdasdasd'
+    },
+    {
+      value: 'Projeto2Tres',
+      label: 'idzero2tres'
+    },
+    {
+      value: 'Projeto3Quatro',
+      label: 'idzero4quatro'
+    },
+    {
+      value: 'Projeto5Dois',
+      label: 'idzero5dois'
+    },
+    {
+      value: 'Projeto6Tres',
+      label: 'idzero6tres'
+    },
+    {
+      value: 'Projeto7Quatro',
+      label: 'idzero7quatro'
     }
   ]
 

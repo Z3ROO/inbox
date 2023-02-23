@@ -8,6 +8,8 @@ import { InboxDelayAmounts, PanelMode } from "@/features/inbox/types";
 import { BiLoaderAlt } from 'react-icons/bi';
 import { Textarea } from "@/components/form/Input";
 import { InputDetailedDataList } from "@/components/form/InputDetailedDataList";
+import { useMutation, useQuery } from "react-query";
+import * as InboxAPI from '@/features/inbox/api';
 
 export function InboxFilterPanelModal() {
   const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;
@@ -110,56 +112,37 @@ function SwitchSetters(mode: PanelMode): JSX.Element | null {
 }
 
 function SelectProject() {
-  const [project_id, setProject_id] = useState<{
+  const { panelMode, setPanelMode, inboxItems } = useFilterPanelContext()!
+  const [project, setProject] = useState<{
     value: string;
     label: string;
-}>();
+  }>();
+  const inboxItem_id = inboxItems.data![0]._id;
+  
+  const listOfProjects = useQuery('project-list', InboxAPI.getListOfProjects);
+  const attachToProject = useMutation(InboxAPI.attachToProject);
 
-  const projectDataList = [
-    {
-      value: 'ProjetoUm',
-      label: 'idzeroum'
-    },
-    {
-      value: 'ProjetoDois',
-      label: 'idzerodois'
-    },
-    {
-      value: 'ProjetoTres',
-      label: 'idzerotres'
-    },
-    {
-      value: 'ProjetoQuatro',
-      label: 'idzeroquatro'
-    },
-    {
-      value: 'Projeto1Dois',
-      label: 'idzero1doisasdasdasdasdasdasdasd'
-    },
-    {
-      value: 'Projeto2Tres',
-      label: 'idzero2tres'
-    },
-    {
-      value: 'Projeto3Quatro',
-      label: 'idzero4quatro'
-    },
-    {
-      value: 'Projeto5Dois',
-      label: 'idzero5dois'
-    },
-    {
-      value: 'Projeto6Tres',
-      label: 'idzero6tres'
-    },
-    {
-      value: 'Projeto7Quatro',
-      label: 'idzero7quatro'
-    }
-  ]
+  if (listOfProjects.isLoading)
+    return <>Loading ...</>
+  
+  const projectDataList = listOfProjects.data!;
+
+  function submit(option?: any) {
+    if (!project?.value && !option)
+      return;
+
+    let project_id:string;
+    if (option)
+      project_id = option.value;
+    else
+      project_id = project!.value;
+
+    attachToProject.mutate({project_id, inboxItem_id})
+    setPanelMode('normal');
+  }
 
   return (
-    <InputDetailedDataList value={project_id} setValue={setProject_id} options={projectDataList} onSubmit={() => { } } />
+    <InputDetailedDataList value={project} setValue={setProject} options={projectDataList} onSubmit={submit} onSelect={submit} />
   )
 }
 

@@ -103,7 +103,7 @@ function SetOptionsField() {
 function SwitchSetters(mode: PanelMode): JSX.Element | null {
   switch (mode) {
     case 'enqueue':
-      return <></>
+      return <Enqueue />
     case 'select-project':
       return <SelectProject />
     default:
@@ -143,6 +143,34 @@ function SelectProject() {
 
   return (
     <InputDetailedDataList value={project} setValue={setProject} options={projectDataList} onSubmit={submit} onSelect={submit} />
+  )
+}
+
+function Enqueue() {
+  const { panelMode, setPanelMode, inboxItems } = useFilterPanelContext()!
+  const inboxItem_id = inboxItems.data![0]._id;
+
+  const enqueueMutation = useMutation(InboxAPI.enqueueInboxItem);
+ 
+  function enqueueInboxItem(priority: number) {
+    enqueueMutation.mutate(
+      {priority, inboxItem_id},{
+        onSuccess() {
+          setPanelMode('normal');
+        }
+      }
+    );
+
+  } 
+
+  return (
+    <div className={`flex flex-wrap justify-center items-center`} >
+      <BtnPrimary onClick={() => enqueueInboxItem(0)}>Urgent</BtnPrimary>
+      <BtnPrimary onClick={() => enqueueInboxItem(1)}>Important/Necessary</BtnPrimary>
+      <BtnPrimary onClick={() => enqueueInboxItem(2)}>Important</BtnPrimary>
+      <BtnPrimary onClick={() => enqueueInboxItem(3)}>Necessary</BtnPrimary>
+      <BtnPrimary onClick={() => enqueueInboxItem(4)}>Should be done</BtnPrimary>
+    </div>
   )
 }
 

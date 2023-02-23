@@ -87,3 +87,6 @@ export async function getListOfProjects() {
 
 export async function attachToProject(args: { project_id: string, inboxItem_id: string }) {
 }
+
+export async function enqueueInboxItem(args: { inboxItem_id: string, priority: number }) {
+}

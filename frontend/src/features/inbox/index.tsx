@@ -2,6 +2,7 @@
 import { FilterPanelContextProvider, useFilterPanelContext } from "./store/FilterPanelContext";
 import { InboxInsertPanel } from './components/InsertPanel';
 import { InboxFilterPanelModal } from './components/FilterPanel';
+import { ListOfProjectsWidget } from "../projects";
 
 
 export default function Inbox() {
@@ -9,7 +10,10 @@ export default function Inbox() {
     <div className="mt-8">
       <FilterPanelContextProvider>
         <h4 className="text-tanj-green">Inbox</h4>
-        <InboxInsertPanel />
+        <div className="flex">
+          <ListOfProjectsWidget />
+          <InboxInsertPanel />
+        </div>
         <InboxFilterPanelModal />
       </FilterPanelContextProvider>
     </div>

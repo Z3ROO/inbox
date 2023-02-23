@@ -39,52 +39,6 @@ export async function updateInboxItem(args: {content?: string, inboxItem_id: str
   return response;
 }
 
-export async function getListOfProjects() {
-  return [
-    {
-      value: 'ProjetoUm',
-      label: 'idzeroum'
-    },
-    {
-      value: 'ProjetoDois',
-      label: 'idzerodois'
-    },
-    {
-      value: 'ProjetoTres',
-      label: 'idzerotres'
-    },
-    {
-      value: 'ProjetoQuatro',
-      label: 'idzeroquatro'
-    },
-    {
-      value: 'Projeto1Dois',
-      label: 'idzero1doisasdasdasdasdasdasdasd'
-    },
-    {
-      value: 'Projeto2Tres',
-      label: 'idzero2tres'
-    },
-    {
-      value: 'Projeto3Quatro',
-      label: 'idzero4quatro'
-    },
-    {
-      value: 'Projeto5Dois',
-      label: 'idzero5dois'
-    },
-    {
-      value: 'Projeto6Tres',
-      label: 'idzero6tres'
-    },
-    {
-      value: 'Projeto7Quatro',
-      label: 'idzero7quatro'
-    }
-  ]
-}
-
-
 export async function attachToProject(args: { project_id: string, inboxItem_id: string }) {
 }
 

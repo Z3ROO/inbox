@@ -9,6 +9,7 @@ import { BiLoaderAlt } from 'react-icons/bi';
 import { Textarea } from "@/components/form/Input";
 import { InputDetailedDataList } from "@/components/form/InputDetailedDataList";
 import { useMutation, useQuery } from "react-query";
+import * as ProjectsAPI from '@/features/projects/api';
 import * as InboxAPI from '@/features/inbox/api';
 
 export function InboxFilterPanelModal() {
@@ -119,7 +120,7 @@ function SelectProject() {
   }>();
   const inboxItem_id = inboxItems.data![0]._id;
   
-  const listOfProjects = useQuery('project-list', InboxAPI.getListOfProjects);
+  const listOfProjects = useQuery('project-list', ProjectsAPI.getListOfProjects);
   const attachToProject = useMutation(InboxAPI.attachToProject);
 
   if (listOfProjects.isLoading)

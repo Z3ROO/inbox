@@ -4,28 +4,28 @@ import { HiExclamationCircle } from "react-icons/hi2";
 import { BtnPrimary } from "../Buttons";
 import { Input } from "./Input";
 
-type OptionType = {
+export type DatalistDetailedOptionType = {
   value: string;
   label: string;
 }
 
 export interface DetailedDataList {
-  value?: OptionType|undefined;
-  setValue?: (value: OptionType) => void;
-  options: OptionType[];
+  value?: DatalistDetailedOptionType|undefined;
+  setValue?: (value: DatalistDetailedOptionType) => void;
+  options: DatalistDetailedOptionType[];
   className?: string;
   onSubmit?: () => void
-  onSelect?: (option: OptionType) => void
+  onSelect?: (option: DatalistDetailedOptionType) => void
 }
 
 interface InputDetailedDataListContext {
-  value: OptionType|undefined;
+  value: DatalistDetailedOptionType|undefined;
   onSubmit: (() => void) | undefined;
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
-  filteredOptions: OptionType[];
+  filteredOptions: DatalistDetailedOptionType[];
   autoSelectOptionIfMatch: (textContent: string) => void;
-  selectOption: (option: OptionType) => void;
+  selectOption: (option: DatalistDetailedOptionType) => void;
 }
 
 const Context = createContext<InputDetailedDataListContext|null>(null);
@@ -34,7 +34,7 @@ export function InputDetailedDataList(props: DetailedDataList) {
   const { value, setValue, options, className, onSubmit, onSelect } = props;
 
   const [inputText, setInputText] = useState('');
-  const [filteredOptions, setFilteredOptions] = useState<OptionType[]>([]);
+  const [filteredOptions, setFilteredOptions] = useState<DatalistDetailedOptionType[]>([]);
 
   function autoSelectOptionIfMatch(textContent: string) {
     if (!value || !setValue)
@@ -49,7 +49,7 @@ export function InputDetailedDataList(props: DetailedDataList) {
     }
   }
 
-  function selectOption(option: OptionType) {
+  function selectOption(option: DatalistDetailedOptionType) {
     setInputText(option.label);
 
     if (setValue)

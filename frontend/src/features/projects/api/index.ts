@@ -1,4 +1,4 @@
-import { ListOfProjects } from "../types"
+import { IProject, ListOfProjects } from "../types"
 
 export async function getListOfProjects(): Promise<ListOfProjects> {
   return [
@@ -55,9 +55,20 @@ export async function getListOfProjects(): Promise<ListOfProjects> {
   ]
 }
 
+export async function getProject(args: { project_id: string }): Promise<IProject> {
+  return {
+    _id: 'project_id',
+    name: 'Project name',
+    description: 'Project description',
+    created_at: new Date(),
+    focused: true,
+    attachments: {
+      inbox: true
+    }
+  }
+}
 
-
-export async function getFocusedProjects() {
+export async function getFocusedProjects(): Promise<ListOfProjects> {
   return [
     {
       _id: 'project_id-tananan',

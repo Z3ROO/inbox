@@ -37,7 +37,7 @@ export function InputDetailedDataList(props: DetailedDataList) {
   const [filteredOptions, setFilteredOptions] = useState<DatalistDetailedOptionType[]>([]);
 
   function autoSelectOptionIfMatch(textContent: string) {
-    if (!value || !setValue)
+    if (!setValue)
       return;
 
     const option = options.find(opt => textContent === opt.label);
@@ -109,8 +109,8 @@ function InputContainer() {
 
 function InexistentOptionIconWarning() {
   const { inputText, value } = useContext(Context)!;
-
-  if (inputText !== '' && (value && !value.value))
+console.log(value)
+  if (inputText !== '' && (value && value.value === ''))
     return (
       <HiExclamationCircle className="absolute right-2 top-2.5 fill-red-400 w-5 h-5" />
     )

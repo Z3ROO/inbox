@@ -7,40 +7,6 @@ export async function getInboxItems(): Promise<IInboxItem[]> {
   const response = await request.json();
 
   return response;
-
-  // return [
-  //   {
-  //     content: 'Inbox teste 1',
-  //     last_delay: null,
-  //     allowed_after: new Date(321321654)
-  //   },
-  //   {
-  //     content: 'Inbox teste 2',
-  //     last_delay: {
-  //       amount: 'day',
-  //       delayed_at: new Date(1231321545)
-  //     },
-  //     allowed_after: new Date(321321654)
-  //   },
-  //   {
-  //     content: 'Inbox teste 3',
-  //     last_delay: null,
-  //     allowed_after: new Date(321321654)
-  //   },
-  //   {
-  //     content: 'Inbox teste 4',
-  //     last_delay: {
-  //       amount: 'day',
-  //       delayed_at: new Date(1231321545)
-  //     },
-  //     allowed_after: new Date(321321654)
-  //   },
-  //   {
-  //     content: 'Inbox teste 5',
-  //     last_delay: null,
-  //     allowed_after: new Date(321321654)
-  //   }
-  // ]
 }
 
 export async function insertInboxItem(args: {content: string}) {
@@ -71,4 +37,53 @@ export async function updateInboxItem(args: {content?: string, inboxItem_id: str
   const response = await request.json();
 
   return response;
+}
+
+export async function getListOfProjects() {
+  return [
+    {
+      value: 'ProjetoUm',
+      label: 'idzeroum'
+    },
+    {
+      value: 'ProjetoDois',
+      label: 'idzerodois'
+    },
+    {
+      value: 'ProjetoTres',
+      label: 'idzerotres'
+    },
+    {
+      value: 'ProjetoQuatro',
+      label: 'idzeroquatro'
+    },
+    {
+      value: 'Projeto1Dois',
+      label: 'idzero1doisasdasdasdasdasdasdasd'
+    },
+    {
+      value: 'Projeto2Tres',
+      label: 'idzero2tres'
+    },
+    {
+      value: 'Projeto3Quatro',
+      label: 'idzero4quatro'
+    },
+    {
+      value: 'Projeto5Dois',
+      label: 'idzero5dois'
+    },
+    {
+      value: 'Projeto6Tres',
+      label: 'idzero6tres'
+    },
+    {
+      value: 'Projeto7Quatro',
+      label: 'idzero7quatro'
+    }
+  ]
+}
+
+
+export async function attachToProject(args: { project_id: string, inboxItem_id: string }) {
 }

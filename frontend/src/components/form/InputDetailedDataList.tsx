@@ -10,8 +10,8 @@ type OptionType = {
 }
 
 export interface DetailedDataList {
-  value: OptionType|undefined;
-  setValue: (value: OptionType) => void;
+  value?: OptionType|undefined;
+  setValue?: (value: OptionType) => void;
   options: OptionType[];
   className?: string;
   onSubmit?: () => void
@@ -37,6 +37,9 @@ export function InputDetailedDataList(props: DetailedDataList) {
   const [filteredOptions, setFilteredOptions] = useState<OptionType[]>([]);
 
   function autoSelectOptionIfMatch(textContent: string) {
+    if (!value || !setValue)
+      return;
+
     const option = options.find(opt => textContent === opt.label);
     if (option) {
       setValue({label: option.label, value: option.value});
@@ -48,7 +51,10 @@ export function InputDetailedDataList(props: DetailedDataList) {
 
   function selectOption(option: OptionType) {
     setInputText(option.label);
-    setValue(option);
+
+    if (setValue)
+      setValue(option);
+
     if (onSelect)
       onSelect(option);
   }
@@ -70,7 +76,7 @@ export function InputDetailedDataList(props: DetailedDataList) {
 
   return (
     <Context.Provider value={contextValue} >
-      <div className={`p-8 h-full flex flex-col ${className}`}>
+      <div className={`p-6 h-full flex flex-col ${className}`}>
         <InputContainer />
       </div>
     </Context.Provider>
@@ -104,7 +110,7 @@ function InputContainer() {
 function InexistentOptionIconWarning() {
   const { inputText, value } = useContext(Context)!;
 
-  if (inputText !== '' && !value?.value)
+  if (inputText !== '' && (value && !value.value))
     return (
       <HiExclamationCircle className="absolute right-2 top-2.5 fill-red-400 w-5 h-5" />
     )

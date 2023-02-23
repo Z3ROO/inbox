@@ -109,7 +109,7 @@ function InputContainer() {
 
 function InexistentOptionIconWarning() {
   const { inputText, value } = useContext(Context)!;
-console.log(value)
+
   if (inputText !== '' && (value && value.value === ''))
     return (
       <HiExclamationCircle className="absolute right-2 top-2.5 fill-red-400 w-5 h-5" />

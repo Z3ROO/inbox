@@ -2,12 +2,12 @@ import { HiPlus } from "react-icons/hi";
 import { GiCaravel } from 'react-icons/gi';
 import { useEffect, useState } from "react"
 import * as ProjectsAPI from '@/features/projects/api';
-import { ListOfFocusedProjects } from "./types";
+import { ListOfProjects } from "./types";
 import { InputDetailedDataList } from "@/components/form/InputDetailedDataList";
 import { useMutation, useQuery } from "react-query";
 
 export function ListOfProjectsWidget() {
-  const [list, setList] = useState<ListOfFocusedProjects>([]);
+  const [list, setList] = useState<ListOfProjects>([]);
 
   useEffect(() => {
     (async function() {
@@ -50,7 +50,7 @@ function FocusProject() {
   if (listOfProjects.isLoading)
     return <>Loading ...</>
 
-  const projectDataList = listOfProjects.data!;
+  const projectDataList = listOfProjects.data!.map(project => ({ label: project.name, value: project._id }));
   
   return (
     <div className="relative w-8 h-8 p-1 m-1 rounded-sm bg-tanj-brown group">

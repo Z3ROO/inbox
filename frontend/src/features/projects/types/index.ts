@@ -9,4 +9,4 @@ export interface IProject {
   }
 }
 
-export type ListOfFocusedProjects = Omit<IProject, 'created_at' | 'focused' | 'attachments'>[];
+export type ListOfProjects = Omit<IProject, 'created_at' | 'focused' | 'attachments'>[];

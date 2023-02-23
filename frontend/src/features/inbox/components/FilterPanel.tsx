@@ -7,7 +7,7 @@ import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext
 import { InboxDelayAmounts, PanelMode } from "@/features/inbox/types";
 import { BiLoaderAlt } from 'react-icons/bi';
 import { Textarea } from "@/components/form/Input";
-import { InputDetailedDataList } from "@/components/form/InputDetailedDataList";
+import { DatalistDetailedOptionType, DetailedDataList, InputDetailedDataList } from "@/components/form/InputDetailedDataList";
 import { useMutation, useQuery } from "react-query";
 import * as ProjectsAPI from '@/features/projects/api';
 import * as InboxAPI from '@/features/inbox/api';
@@ -114,10 +114,7 @@ function SwitchSetters(mode: PanelMode): JSX.Element | null {
 
 function SelectProject() {
   const { panelMode, setPanelMode, inboxItems } = useFilterPanelContext()!
-  const [project, setProject] = useState<{
-    value: string;
-    label: string;
-  }>();
+  const [project, setProject] = useState<DatalistDetailedOptionType>();
   const inboxItem_id = inboxItems.data![0]._id;
   
   const listOfProjects = useQuery('project-list', ProjectsAPI.getListOfProjects);
@@ -126,7 +123,7 @@ function SelectProject() {
   if (listOfProjects.isLoading)
     return <>Loading ...</>
   
-  const projectDataList = listOfProjects.data!;
+  const projectDataList = listOfProjects.data!.map(project => ({ label: project.name, value: project._id }));
 
   function submit(option?: any) {
     if (!project?.value && !option)

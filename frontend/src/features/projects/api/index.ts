@@ -1,45 +1,56 @@
+import { ListOfProjects } from "../types"
 
-export async function getListOfProjects() {
+export async function getListOfProjects(): Promise<ListOfProjects> {
   return [
     {
-      value: 'ProjetoUm',
-      label: 'idzeroum'
+      _id: 'ProjetoUm',
+      name: 'idzeroum',
+      description: 'some description'
     },
     {
-      value: 'ProjetoDois',
-      label: 'idzerodois'
+      _id: 'ProjetoDois',
+      name: 'idzerodois',
+      description: 'some description'
     },
     {
-      value: 'ProjetoTres',
-      label: 'idzerotres'
+      _id: 'ProjetoTres',
+      name: 'idzerotres',
+      description: 'some description'
     },
     {
-      value: 'ProjetoQuatro',
-      label: 'idzeroquatro'
+      _id: 'ProjetoQuatro',
+      name: 'idzeroquatro',
+      description: 'some description'
     },
     {
-      value: 'Projeto1Dois',
-      label: 'idzero1doisasdasdasdasdasdasdasd'
+      _id: 'Projeto1Dois',
+      name: 'idzero1doisasdasdasdasdasdasdasd',
+      description: 'some description'
     },
     {
-      value: 'Projeto2Tres',
-      label: 'idzero2tres'
+      _id: 'Projeto2Tres',
+      name: 'idzero2tres',
+      description: 'some description'
     },
     {
-      value: 'Projeto3Quatro',
-      label: 'idzero4quatro'
+      _id: 'Projeto3Quatro',
+      name: 'idzero4quatro',
+      description: 'some description'
     },
     {
-      value: 'Projeto5Dois',
-      label: 'idzero5dois'
+      _id: 'Projeto5Dois',
+      name: 'idzero5dois',
+      description: 'some description'
     },
     {
-      value: 'Projeto6Tres',
-      label: 'idzero6tres'
+      _id: 'Projeto6Tres',
+      name: 'idzero6tres',
+      description: 'some description'
     },
     {
-      value: 'Projeto7Quatro',
-      label: 'idzero7quatro'
+      _id: 'Projeto7Quatro',
+      name: 'idzero7quatro',
+      description: 'some description'
     }
   ]
 }

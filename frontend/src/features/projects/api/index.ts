@@ -1,4 +1,5 @@
-import { IProject, ListOfProjects } from "../types"
+import { IInboxItem } from "@/features/inbox/types"
+import { IProject, IProjectQueueNode, ListOfProjects } from "../types"
 
 export async function getListOfProjects(): Promise<ListOfProjects> {
   return [
@@ -66,6 +67,14 @@ export async function getProject(args: { project_id: string }): Promise<IProject
       inbox: true
     }
   }
+}
+
+export async function getProjectInbox(args: { project_id: string }): Promise<IInboxItem[]> {
+  return []
+}
+
+export async function getProjectQueue(args: { project_id: string }): Promise<IProjectQueueNode[]> {
+  return []
 }
 
 export async function getFocusedProjects(): Promise<ListOfProjects> {

@@ -17,3 +17,5 @@ export interface IProjectQueueNode {
   queued_at: Date
 }
 
+export type ProjectUpdatableInfoFields = Omit<IProject, '_id'|'attachments'|'created_at'>
+

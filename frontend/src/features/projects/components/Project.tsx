@@ -1,12 +1,16 @@
-import { useState, ReactNode } from 'react';
-import { useProjectContext, ProjectContextProvider } from '@/features/projects/store/ProjectContext';
+import { createPortal } from 'react-dom';
+import { ProjectContextProvider } from '../store/ProjectContext';
+import { ProjectBody } from './ProjectBody';
 
-export function Project({ children, project_id }: { children: ReactNode, project_id: string}) {
+export function Project({ project_id, closeProjectHandler }: { project_id: string, closeProjectHandler: () => void }) {
   return (
-    <ProjectContextProvider {...{project_id }}>
-      <div className='fixed w-screen h-screen'>
-        {children}
-      </div>
+    <ProjectContextProvider {...{project_id}} >
+      {
+        createPortal(
+          <ProjectBody {...{project_id, closeProjectHandler}} />,
+          document.getElementById('root')!
+        )
+      }
     </ProjectContextProvider>
   )
 }

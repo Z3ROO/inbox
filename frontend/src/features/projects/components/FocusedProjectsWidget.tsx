@@ -2,13 +2,15 @@ import { HiPlus } from "react-icons/hi";
 import { GiCaravel } from 'react-icons/gi';
 import { useEffect, useState } from "react"
 import * as ProjectsAPI from '@/features/projects/api';
-import { ListOfProjects } from "./types";
+import { ListOfProjects } from "@/features/projects/types";
 import { InputDetailedDataList } from "@/components/form/InputDetailedDataList";
 import { useMutation, useQuery } from "react-query";
+import { Project } from "./Project";
 
 export function ListOfProjectsWidget() {
   const [list, setList] = useState<ListOfProjects>([]);
-
+  const [openedProject, setOpenedProject] = useState('');
+  
   useEffect(() => {
     (async function() {
       const data = await ProjectsAPI.getFocusedProjects();
@@ -21,7 +23,9 @@ export function ListOfProjectsWidget() {
       {
         list.map(project => {
           return (
-            <div className="relative w-8 h-8 p-1 m-1 rounded-sm bg-tanj-brown group">
+            <div 
+              onClick={() => setOpenedProject(project._id)}
+              className="relative w-8 h-8 p-1 m-1 rounded-sm bg-tanj-brown group">
               <GiCaravel className="w-full h-full" />
               <span className="absolute top-0 left-10 invisible group-hover:visible p-2 px-4 rounded-sm bg-tanj-brown text-white whitespace-nowrap">{project.name}</span>
             </div>
@@ -32,6 +36,10 @@ export function ListOfProjectsWidget() {
         list.length < 5 && (
           <FocusProject />
         )
+      }
+      {
+        openedProject !== '' &&
+          <Project project_id={openedProject} closeProjectHandler={() => setOpenedProject('')} />
       }
     </div>
   )

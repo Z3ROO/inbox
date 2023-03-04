@@ -1,5 +1,5 @@
 import { IInboxItem } from "@/features/inbox/types"
-import { IProject, IProjectQueueNode, ListOfProjects } from "../types"
+import { IProject, IProjectQueueNode, ListOfProjects, ProjectUpdatableInfoFields } from "../types"
 
 export async function getListOfProjects(): Promise<ListOfProjects> {
   return [
@@ -61,6 +61,24 @@ export async function getProject(args: { project_id: string }): Promise<IProject
     _id: 'project_id',
     name: 'Project name',
     description: 'Project description',
+    created_at: new Date(),
+    focused: true,
+    attachments: {
+      inbox: true
+    }
+  }
+}
+
+interface UpdateProjectInfo extends Partial<ProjectUpdatableInfoFields> {
+  project_id: string
+}
+
+export async function updateProjectInfo(args: UpdateProjectInfo): Promise<IProject> {
+  
+  return {
+    _id: 'project_id',
+    name: args.name ? args.name : 'Project name',
+    description: args.description ? args.description : 'Project description',
     created_at: new Date(),
     focused: true,
     attachments: {

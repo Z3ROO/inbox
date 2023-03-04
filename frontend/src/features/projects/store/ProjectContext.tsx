@@ -5,7 +5,7 @@ import * as ProjectAPI from '@/features/projects/api';
 
 interface IProjectContext {
   projectQuery: UseQueryResult<IProject>
-  project: IProject|undefined
+  project: IProject
 }
 
 const ProjectContext = createContext<IProjectContext|null>(null);
@@ -16,8 +16,14 @@ export function ProjectContextProvider({ children, project_id }: { children: Rea
   
   const contextValue: IProjectContext = {
     projectQuery: project,
-    project: project.data
+    project: project.data!
   }
+
+  if (project.isLoading)
+    return <h2>Loading...</h2>
+
+  if (project.error)
+    return <h2>Something went wrong</h2>
 
   return (
     <ProjectContext.Provider value={contextValue}>

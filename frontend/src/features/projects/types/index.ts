@@ -11,7 +11,7 @@ export interface IProject {
 
 export type ListOfProjects = Omit<IProject, 'created_at' | 'focused' | 'attachments'>[];
 
-export interface IProjectQueueNode {
+export interface ProjectQueueNode {
   requirements: string
   priority: number
   queued_at: Date

@@ -1,5 +1,5 @@
 import { IInboxItem } from "@/features/inbox/types"
-import { IProject, IProjectQueueNode, ListOfProjects, ProjectUpdatableInfoFields } from "../types"
+import { IProject, ProjectQueueNode, ListOfProjects, ProjectUpdatableInfoFields } from "../types"
 
 export async function getListOfProjects(): Promise<ListOfProjects> {
   return [
@@ -91,8 +91,34 @@ export async function getProjectInbox(args: { project_id: string }): Promise<IIn
   return []
 }
 
-export async function getProjectQueue(args: { project_id: string }): Promise<IProjectQueueNode[]> {
-  return []
+export async function getProjectQueue(args: { project_id: string }): Promise<ProjectQueueNode[]> {
+  return [
+    {
+      requirements: 'Queued 1',
+      priority: 1,
+      queued_at: new Date()
+    },
+    {
+      requirements: 'Queued 3',
+      priority: 3,
+      queued_at: new Date()
+    },
+    {
+      requirements: 'Queued 0',
+      priority: 0,
+      queued_at: new Date()
+    },
+    {
+      requirements: 'Queued 4',
+      priority: 4,
+      queued_at: new Date()
+    },
+    {
+      requirements: 'Queued 2',
+      priority: 2,
+      queued_at: new Date()
+    }
+  ]
 }
 
 export async function getFocusedProjects(): Promise<ListOfProjects> {

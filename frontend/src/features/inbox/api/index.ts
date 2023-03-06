@@ -40,7 +40,30 @@ export async function updateInboxItem(args: {content?: string, inboxItem_id: str
 }
 
 export async function attachToProject(args: { project_id: string, inboxItem_id: string }) {
+  const { project_id, inboxItem_id } = args;
+
+  const request = await fetch(`${API_URL}/inbox/attachProject`, {
+    method: 'put',
+    body: JSON.stringify({project_id, inboxItem_id}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const response = await request.json();
 }
 
 export async function enqueueInboxItem(args: { inboxItem_id: string, priority: number }) {
+  const { inboxItem_id, priority } = args;
+
+  const request = await fetch(`${API_URL}/inbox/enqueue`, {
+    method: 'put',
+    body: JSON.stringify({ inboxItem_id, priority }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const response = await request.json();
 }
+

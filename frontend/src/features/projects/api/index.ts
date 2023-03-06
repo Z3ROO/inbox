@@ -91,34 +91,21 @@ export async function getProjectInbox(args: { project_id: string }): Promise<IIn
   return []
 }
 
-export async function getProjectQueue(args: { project_id: string }): Promise<ProjectQueueNode[]> {
-  return [
-    {
-      requirements: 'Queued 1',
-      priority: 1,
-      queued_at: new Date()
-    },
-    {
-      requirements: 'Queued 3',
-      priority: 3,
-      queued_at: new Date()
-    },
-    {
-      requirements: 'Queued 0',
-      priority: 0,
-      queued_at: new Date()
-    },
-    {
-      requirements: 'Queued 4',
-      priority: 4,
-      queued_at: new Date()
-    },
-    {
-      requirements: 'Queued 2',
-      priority: 2,
-      queued_at: new Date()
-    }
-  ]
+export async function getCurrentProjectTask(args: { project_id: string }): Promise<ProjectQueueNode|null>{
+  return {
+    requirements: 'Queued 1',
+    priority: 1,
+    queued_at: new Date()
+  }
+}
+
+export async function finishCurrentProjectTaks(arg: { project_id: string }): Promise<ProjectQueueNode|null> {
+  return {
+    requirements: 'Queued 2',
+    priority: 2,
+    queued_at: new Date()
+  }
+
 }
 
 export async function getFocusedProjects(): Promise<ListOfProjects> {

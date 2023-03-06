@@ -1,4 +1,5 @@
 import { HiArrowNarrowLeft } from "react-icons/hi";
+import { FaCheck } from 'react-icons/fa';
 import { BtnSecondary } from "@/components/Buttons";
 import { useProjectContext } from "../store/ProjectContext";
 import { useMutation, useQuery } from "react-query";
@@ -18,7 +19,7 @@ export function ProjectBody({ closeProjectHandler }: { closeProjectHandler?: () 
       </BtnSecondary>
       <div className="flex flex-col items-center h-full">
         <Info />
-        <Queue />
+        <TaskQueue />
       </div>
     </div>
   )
@@ -51,95 +52,49 @@ function Info() {
   )
 }
 
-function usePriorityQueue<T extends { priority: number, queued_at: Date }>() {
-  const [queue, setQueue] = useState<T[]>([]);
 
-  const enqueue = (node: T) => {
-    setQueue(prevQueue => enqueueLogic(prevQueue, node));
-  }
-
-  const enqueueBatch = (nodes: T[]) => {
-    console.log(nodes)
-    setQueue(prevQueue => {
-      nodes.forEach(node => {
-        prevQueue = enqueueLogic(prevQueue, node);
-      });
-      console.log(prevQueue)
-      return prevQueue;
-    });
-  }
-
-  const dequeue = () => {
-    setQueue(prevQueue => {
-      return prevQueue.slice(1)
-    })
-  }
-
-  const clean = () => {
-    setQueue([]);
-  }
-
-  function enqueueLogic(currentQueue: T[], node: T) {
-    if (currentQueue.length === 0)
-      return [node];
-
-    for (let i = 0; i < currentQueue.length; i++) {
-      const queueNode = currentQueue[i];
-      let found = false;
-      if (queueNode.priority === node.priority) {
-        if (node.queued_at.getDate() > queueNode.queued_at.getDate())
-          found = true;
-      }
-      else if (queueNode.priority > node.priority) {
-        found = true 
-      }
-      else if (i === currentQueue.length-1) {
-        i++;
-        found = true;
-      }
-
-
-      if (found) {
-        const firstHalf = currentQueue.slice(0,i);
-        const secondHalf = currentQueue.slice(i);
-        return [...firstHalf, node ,...secondHalf];
-      }
-    }
-    
-    return currentQueue
-  }
-
-  return {
-    queue,
-    enqueue,
-    enqueueBatch,
-    dequeue,
-    clean
-  }
-}
-
-function Queue() {
+function TaskQueue() {
   const { project } = useProjectContext()!;
-  const { queue, enqueue, dequeue, enqueueBatch, clean } = usePriorityQueue<ProjectQueueNode>();
-  const queueQuery = useQuery('project-queue', () => ProjectsAPI.getProjectQueue({project_id: project._id}), {
-    onSuccess(queue) {
-      console.log(queue)
-      enqueueBatch(queue)
+  const taskQuery = useQuery('project-task', () => ProjectsAPI.getCurrentProjectTask({project_id: project._id}), {
+    onSuccess(task) {
+      console.log(task)
     },
     refetchOnWindowFocus: false,
     refetchInterval: false
   });
 
+  const updateTask = useMutation(ProjectsAPI.finishCurrentProjectTaks);
+
+  if (taskQuery.isLoading)
+    return <>Loading...</>
+
+  if (taskQuery.error)
+    return <>Something went wrong</>
+  
+  const task = taskQuery.data;
+
+  if (!task)
+    return null
+  
+
   return (
-    <div>
-      {
-        queue.length && 
-          (
-            <div className="text-2xl text-white">
-              {queue[0].requirements}
-            </div>
-          )
-      }
+    <div className="flex">
+      <div className="text-2xl text-white">
+        {task.requirements}
+      </div>
+      <BtnSecondary 
+        onClick={() => {
+          updateTask.mutate({ project_id: project._id }, { 
+            onSuccess(nextTask) {
+              queryClient.setQueryData<ProjectQueueNode|null>('project-task', (task) => {
+                if (task?.priority === 2) return null
+                return nextTask
+              })
+            }})
+        }}
+      >
+        <FaCheck />
+      </BtnSecondary>
     </div>
   )
 }

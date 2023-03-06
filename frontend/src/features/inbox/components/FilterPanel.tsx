@@ -11,6 +11,7 @@ import { DatalistDetailedOptionType, DetailedDataList, InputDetailedDataList } f
 import { useMutation, useQuery } from "react-query";
 import * as ProjectsAPI from '@/features/projects/api';
 import * as InboxAPI from '@/features/inbox/api';
+import { queryClient } from "@/App";
 
 export function InboxFilterPanelModal() {
   const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;
@@ -54,7 +55,7 @@ function FilterPanel() {
         }
       </div>
       <div className="flex justify-between">
-        <BtnSecondary className="m-0 py-0" icon bgLess onClick={() => setPanelMode(prev => prev === 'enqueue' ? 'normal' : 'enqueue')}>
+        <BtnSecondary disabled={inboxItems.data[0].project == null} className="m-0 py-0" icon bgLess onClick={() => setPanelMode(prev => prev === 'enqueue' ? 'normal' : 'enqueue')}>
           <HiArrowDownOnSquareStack className="w-4 h-4" />
         </BtnSecondary>
         <LastDelayLog />
@@ -135,7 +136,8 @@ function SelectProject() {
     else
       project_id = project!.value;
 
-    attachToProject.mutate({project_id, inboxItem_id})
+    attachToProject.mutate({project_id, inboxItem_id});
+    queryClient.refetchQueries(['inbox-items'], { active: true, exact: true });
     setPanelMode('normal');
   }
 
@@ -154,6 +156,7 @@ function Enqueue() {
     enqueueMutation.mutate(
       {priority, inboxItem_id},{
         onSuccess() {
+          queryClient.refetchQueries(['inbox-items'], { active: true, exact: true });
           setPanelMode('normal');
         }
       }
@@ -189,6 +192,15 @@ function LastDelayLog() {
             `Never delayed.`
         }
       </span>
+      {
+        inboxItems.data[0].project?.queue_priority != null &&
+          <>
+            <br/>
+            <span className="text-sm text-tanj-green">
+              Inbox item queued to be done.
+            </span>
+          </>
+      }
     </div>
   )
 }

@@ -21,6 +21,10 @@ export type PanelMode = 'normal' | 'select-project' | 'enqueue'
 export interface IInboxItem {
   _id: string
   content: string
+  project: { 
+    name: string
+    queue_priority: 0|1|2|3|4|null
+  }|null
   last_delay: null|{
     amount: InboxDelayAmounts, 
     delayed_at: Date, 

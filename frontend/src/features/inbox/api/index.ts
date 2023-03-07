@@ -42,7 +42,7 @@ export async function updateInboxItem(args: {content?: string, inboxItem_id: str
 export async function attachToProject(args: { project_id: string, inboxItem_id: string }) {
   const { project_id, inboxItem_id } = args;
 
-  const request = await fetch(`${API_URL}/inbox/attachProject`, {
+  const request = await fetch(`${API_URL}/inbox/attach-project`, {
     method: 'put',
     body: JSON.stringify({project_id, inboxItem_id}),
     headers: {

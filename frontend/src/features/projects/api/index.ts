@@ -1,8 +1,14 @@
+import { API_URL } from "@/config/API";
 import { IInboxItem } from "@/features/inbox/types"
 import { IProject, ProjectQueueNode, ListOfProjects, ProjectUpdatableInfoFields } from "../types"
 
 export async function getListOfProjects(): Promise<ListOfProjects> {
-  return [
+  const request = await fetch(`${API_URL}/projects`);
+  const response = await request.json();
+  console.log(response)  
+  return response;
+  
+  /* return [
     {
       _id: 'ProjetoUm',
       name: 'idzeroum',
@@ -53,11 +59,16 @@ export async function getListOfProjects(): Promise<ListOfProjects> {
       name: 'idzero7quatro',
       description: 'some description'
     }
-  ]
+  ] */
 }
 
-export async function getProject(args: { project_id: string }): Promise<IProject> {
-  return {
+export async function getProject({ project_id }: { project_id: string }): Promise<IProject> {
+  const request = await fetch(`${API_URL}/projects/${project_id}`);
+  const response = await request.json();
+
+  return response
+
+/*   return {
     _id: 'project_id',
     name: 'Project name',
     description: 'Project description',
@@ -66,7 +77,7 @@ export async function getProject(args: { project_id: string }): Promise<IProject
     attachments: {
       inbox: true
     }
-  }
+  } */
 }
 
 interface UpdateProjectInfo extends Partial<ProjectUpdatableInfoFields> {

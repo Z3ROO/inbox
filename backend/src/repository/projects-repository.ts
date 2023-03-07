@@ -16,4 +16,8 @@ export class ProjectsRepository extends Repository<Project> {
 
     return this.collection().findOne({ _id })
   }
+
+  public async createOne(properties: Project) {
+    await this.collection().insertOne(properties);
+  }
 }

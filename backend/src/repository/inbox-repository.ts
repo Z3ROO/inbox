@@ -1,3 +1,4 @@
+import { DeepPartial } from 'ts-essentials';
 import { database } from '@/infra/database';
 import { IInbox } from '@/types/Inbox';
 import { Collection, Db, ObjectId, WithId } from 'mongodb';
@@ -47,6 +48,14 @@ export class InboxRepository extends Repository<IInbox> {
   async updateItem(inboxItem_id: string, properties: Partial<IInbox>) {
     const _id = new ObjectId(inboxItem_id);
     const mutation = await this.collection().findOneAndUpdate({_id}, {$set: {...properties}}, { returnDocument: 'before' });
+    return {
+      originalValue: mutation.value
+    }
+  }
+
+  async enqueueItem(inboxItem_id: string, priority: 0|1|2|3|4|null) {
+    const _id = new ObjectId(inboxItem_id);
+    const mutation = await this.collection().findOneAndUpdate({_id}, {$set: {['project.queue']: priority}}, { returnDocument: 'before' });
     return {
       originalValue: mutation.value
     }

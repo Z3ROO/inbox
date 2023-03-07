@@ -31,3 +31,20 @@ router.put('/inbox', async (request, response) => {
     response.status(500).json([]);
   }  
 });
+
+router.put('/inbox/attach-project', async (request, response) => {
+  const { inboxItem_id, project_id } = request.body;
+
+  await inbox.attachProject(inboxItem_id, project_id);
+  
+  response.status(200).json();
+});
+
+router.put('/inbox/enqueue', async (request, response) => {
+  const { inboxItem_id, priority } = request.body;
+
+  await inbox.enqueueItem(inboxItem_id, priority);
+
+  response.status(200).json();
+});
+

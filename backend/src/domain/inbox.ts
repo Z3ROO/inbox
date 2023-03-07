@@ -47,7 +47,8 @@ export class Inbox {
     await this.repository.insertOne({
       content,
       last_delay: null,
-      allowed_after: new Date()
+      allowed_after: new Date(),
+      project: null
     })
   }
 
@@ -65,8 +66,8 @@ export class Inbox {
     undoCache.set = originalValue;
   }
 
-  public async removeItem(_id: string) {
-    await this.repository.deleteOne(_id);
+  public async removeItem(inboxItem_id: string) {
+    await this.repository.deleteOne(inboxItem_id);
   }
 
   public async undoChange() {
@@ -74,5 +75,16 @@ export class Inbox {
 
     if (_id !== undefined)
       await this.repository.updateItem(_id.toHexString(),  { last_delay, allowed_after });
+  }
+
+  public async attachProject(inboxItem_id: string, project_id: string) {
+    await this.repository.updateItem(inboxItem_id, { project: {
+      project_id,
+      queue: null
+    }}) 
+  }
+
+  public async enqueueItem(inboxItem_id: string, priority: 0|1|2|3|4|null) {
+    await this.repository.enqueueItem(inboxItem_id, priority) 
   }
 }

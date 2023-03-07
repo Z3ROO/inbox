@@ -1,4 +1,3 @@
-import { DeepPartial } from 'ts-essentials';
 import { database } from '@/infra/database';
 import { IInbox } from '@/types/Inbox';
 import { Collection, Db, ObjectId, WithId } from 'mongodb';

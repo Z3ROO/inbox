@@ -35,6 +35,10 @@ export class Projects {
       }
     })
   }
+  
+  public async editOne(project_id: string, properties: Partial<Project>) {
+    return this.repository.updateOne(project_id, properties);
+  }
 
   public async getInbox(project_id: string) {
     return await inbox.getByProject(project_id);

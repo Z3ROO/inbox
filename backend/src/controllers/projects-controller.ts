@@ -18,6 +18,20 @@ router.get('/project/:project_id', async (request, response) => {
   response.json(project);
 });
 
+router.put('/project/:project_id', async (request, response) => {
+  const { project_id } = request.params;
+
+  const { 
+    name,
+    description,
+    focused
+  } = request.body;
+  console.log(request.body); 
+  const updatedProject = await projects.editOne(project_id, { name, description, focused });
+  console.log(updatedProject); 
+  response.status(200).json(updatedProject)
+});
+
 router.post('/', async (request, response) => {
   const { name, description } = request.body;
   projects.createOne({ name, description });

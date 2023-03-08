@@ -1,6 +1,6 @@
 import { API_URL } from "@/config/API";
 import { IInboxItem } from "@/features/inbox/types"
-import { IProject, ProjectQueueNode, ListOfProjects, ProjectUpdatableInfoFields } from "../types"
+import { IProject, ProjectQueueNode, ListOfProjects, ProjectUpdatableFields } from "../types"
 
 export async function getListOfProjects(): Promise<ListOfProjects> {
   const request = await fetch(`${API_URL}/projects`);
@@ -16,22 +16,37 @@ export async function getProject({ project_id }: { project_id: string }): Promis
   return response
 }
 
-interface UpdateProjectInfo extends Partial<ProjectUpdatableInfoFields> {
+interface UpdateProjectInfo extends Partial<ProjectUpdatableFields> {
   project_id: string
 }
 
 export async function updateProjectInfo(args: UpdateProjectInfo): Promise<IProject> {
-  
-  return {
-    _id: 'project_id',
-    name: args.name ? args.name : 'Project name',
-    description: args.description ? args.description : 'Project description',
-    created_at: new Date(),
-    focused: true,
-    attachments: {
-      inbox: true
+  const { project_id, name, description, focused } = args;
+  console.log(args)
+  const request = await fetch(`${API_URL}/projects/project/${project_id}`, {
+    method: 'put',
+    body: JSON.stringify({
+      name,
+      description,
+      focused
+    }),
+    headers: {
+      'Content-Type': 'application/json'
     }
-  }
+  });
+
+  const response = await request.json();
+  return response; 
+  // return {
+  //   _id: 'project_id',
+  //   name: args.name ? args.name : 'Project name',
+  //   description: args.description ? args.description : 'Project description',
+  //   created_at: new Date(),
+  //   focused: true,
+  //   attachments: {
+  //     inbox: true
+  //   }
+  // }
 }
 
 export async function createProject(args: { name: string, description?: string }) {

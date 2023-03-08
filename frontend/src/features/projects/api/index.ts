@@ -10,7 +10,7 @@ export async function getListOfProjects(): Promise<ListOfProjects> {
 }
 
 export async function getProject({ project_id }: { project_id: string }): Promise<IProject> {
-  const request = await fetch(`${API_URL}/projects/${project_id}`);
+  const request = await fetch(`${API_URL}/projects/project/${project_id}`);
   const response = await request.json();
 
   return response
@@ -56,6 +56,7 @@ export async function getProjectInbox({ project_id }: { project_id: string }): P
 export async function getCurrentProjectTask({ project_id }: { project_id: string }): Promise<ProjectQueueNode|null>{
   const request = await fetch(`${API_URL}/projects/task/${project_id}`); 
   const response = await request.json();
+  console.log(response)
   return response;
 }
 

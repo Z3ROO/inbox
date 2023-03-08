@@ -1,6 +1,9 @@
 import { ProjectsRepository } from "@/repository/projects-repository";
 import { Project } from "@/types/Projects";
 import { WithId } from "mongodb";
+import { Inbox } from "./inbox";
+
+const inbox = new Inbox();
 
 export class Projects {
   repository = new ProjectsRepository();
@@ -10,7 +13,13 @@ export class Projects {
   }
 
   public async getOne(project_id: string): Promise<WithId<Project>> {
-    return this.repository.findOne(project_id);
+    try {
+      const project = await this.repository.findOne(project_id);
+      return project;
+    }
+    catch(err) {
+      return null
+    }
   }
   
   public async createOne(properties: Partial<Project>) {
@@ -25,5 +34,17 @@ export class Projects {
         queue: false
       }
     })
+  }
+
+  public async getInbox(project_id: string) {
+    return await inbox.getByProject(project_id);
+  }
+
+  public getTask(project_id: string) {
+
+  }
+
+  public finishTask(project_id: string) {
+
   }
 }

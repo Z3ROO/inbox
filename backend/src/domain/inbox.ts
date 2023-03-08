@@ -77,10 +77,15 @@ export class Inbox {
       await this.repository.updateItem(_id.toHexString(),  { last_delay, allowed_after });
   }
 
+  public async getByProject(project_id: string) {
+    return this.repository.findAllByProject(project_id);
+  }
+
   public async attachProject(inboxItem_id: string, project_id: string) {
     await this.repository.updateItem(inboxItem_id, { project: {
       project_id,
-      queue: null
+      queue: null,
+      queued_at: null
     }}) 
   }
 

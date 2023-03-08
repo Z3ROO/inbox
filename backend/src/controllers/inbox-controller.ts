@@ -1,6 +1,6 @@
 import { Inbox } from "@/domain/inbox";
 import { Router } from 'express'
-
+  
 export const router = Router();
 const inbox = new Inbox();
 
@@ -37,7 +37,8 @@ router.put('/inbox/attach-project', async (request, response) => {
 
   await inbox.attachProject(inboxItem_id, project_id);
   
-  response.status(200).json();
+  response.status(200);
+  response.json({});
 });
 
 router.put('/inbox/enqueue', async (request, response) => {
@@ -45,6 +46,6 @@ router.put('/inbox/enqueue', async (request, response) => {
 
   await inbox.enqueueItem(inboxItem_id, priority);
 
-  response.status(200).json();
+  response.status(200).json({});
 });
 

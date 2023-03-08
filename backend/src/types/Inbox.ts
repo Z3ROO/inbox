@@ -3,6 +3,7 @@ export interface IInbox {
   project: {
     project_id: string
     queue: 0|1|2|3|4|null
+    queued_at: Date|null
   }|null
   last_delay: null | {
     amount: 'day'|'week'|'month'|'3months'

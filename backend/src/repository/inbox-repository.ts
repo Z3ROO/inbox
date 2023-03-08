@@ -39,6 +39,16 @@ export class InboxRepository extends Repository<IInbox> {
     
     return result;
   }
+  
+  async findAllByProject(project_id: string) {
+    const result = await this.collection().find({ project: { project_id } }).toArray();
+    return result 
+  }
+
+  async findHeadOfQueue(project_id: string) {
+    const result = await this.collection().find({ project: { project_id } }).toArray();
+
+  }
 
   async insertOne(inboxItem: IInbox) {
     await this.collection().insertOne(inboxItem);
@@ -54,7 +64,11 @@ export class InboxRepository extends Repository<IInbox> {
 
   async enqueueItem(inboxItem_id: string, priority: 0|1|2|3|4|null) {
     const _id = new ObjectId(inboxItem_id);
-    const mutation = await this.collection().findOneAndUpdate({_id}, {$set: {['project.queue']: priority}}, { returnDocument: 'before' });
+    const mutation = await this.collection().findOneAndUpdate({_id}, {
+      $set: {
+        ['project.queue']: priority,
+        ['project.queued_at']: new Date()
+      }}, { returnDocument: 'before' });
     return {
       originalValue: mutation.value
     }

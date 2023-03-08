@@ -21,5 +21,5 @@ router.get('/:project_id', async (request, response) => {
 router.post('/', async (request, response) => {
   const { name, description } = request.body;
   projects.createOne({ name, description });
-  response.status(200).json();
+  response.status(200).json({});
 });

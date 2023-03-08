@@ -80,7 +80,7 @@ function TaskQueue() {
   return (
     <div className="flex">
       <div className="text-2xl text-white">
-        {task.requirements}
+        {task.content}
       </div>
       <BtnSecondary 
         onClick={() => {

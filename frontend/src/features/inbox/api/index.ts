@@ -51,6 +51,7 @@ export async function attachToProject(args: { project_id: string, inboxItem_id: 
   });
 
   const response = await request.json();
+  console.log(response)
 }
 
 export async function enqueueInboxItem(args: { inboxItem_id: string, priority: number }) {

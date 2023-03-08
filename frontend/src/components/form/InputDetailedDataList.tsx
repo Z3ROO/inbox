@@ -14,17 +14,17 @@ export interface DetailedDataList {
   setValue?: (value: DatalistDetailedOptionType) => void;
   options: DatalistDetailedOptionType[];
   className?: string;
-  onSubmit?: () => void
+  onSubmit?: (option: DatalistDetailedOptionType) => void
   onSelect?: (option: DatalistDetailedOptionType) => void
 }
 
 interface InputDetailedDataListContext {
   value: DatalistDetailedOptionType|undefined;
-  onSubmit: (() => void) | undefined;
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
   filteredOptions: DatalistDetailedOptionType[];
   autoSelectOptionIfMatch: (textContent: string) => void;
+  submitOption: (() => void) | undefined;
   selectOption: (option: DatalistDetailedOptionType) => void;
 }
 
@@ -48,7 +48,12 @@ export function InputDetailedDataList(props: DetailedDataList) {
       setValue({label: textContent, value: ''});
     }
   }
+  const submitOption = () => {
+    if (!value || !onSubmit)
+      return
 
+    onSubmit(value)
+  }
   function selectOption(option: DatalistDetailedOptionType) {
     setInputText(option.label);
 
@@ -67,7 +72,7 @@ export function InputDetailedDataList(props: DetailedDataList) {
 
   const contextValue = {
     value,
-    onSubmit,
+    submitOption,
     inputText, setInputText,
     filteredOptions, 
     autoSelectOptionIfMatch,
@@ -84,7 +89,7 @@ export function InputDetailedDataList(props: DetailedDataList) {
 }
 
 function InputContainer() {
-  const { inputText, setInputText, onSubmit, autoSelectOptionIfMatch } = useContext(Context)!;
+  const { inputText, setInputText, submitOption, autoSelectOptionIfMatch } = useContext(Context)!;
   return (
     <>
       <div className="flex">
@@ -99,7 +104,7 @@ function InputContainer() {
           <InexistentOptionIconWarning />
         </div>
         {
-          onSubmit && <BtnPrimary className="m-0 mx-2" onClick={onSubmit}>Submit</BtnPrimary>
+          submitOption && <BtnPrimary className="m-0 mx-2" onClick={submitOption}>Submit</BtnPrimary>
         }
       </div>
       <DataList  />

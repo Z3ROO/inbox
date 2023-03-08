@@ -23,7 +23,7 @@ export interface IInboxItem {
   content: string
   project: { 
     name: string
-    queue_priority: 0|1|2|3|4|null
+    queue: 0|1|2|3|4|null
   }|null
   last_delay: null|{
     amount: InboxDelayAmounts, 

@@ -13,7 +13,8 @@ export function ListOfProjectsWidget() {
   
   useEffect(() => {
     (async function() {
-      const data = await ProjectsAPI.getFocusedProjects();
+      const data = await ProjectsAPI.getListOfProjects();
+      //const data = await ProjectsAPI.getFocusedProjects();
       setList(data);
     })();
   }, []);

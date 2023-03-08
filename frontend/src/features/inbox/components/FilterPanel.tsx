@@ -120,15 +120,26 @@ function SelectProject() {
   
   const listOfProjects = useQuery('project-list', ProjectsAPI.getListOfProjects);
   const attachToProject = useMutation(InboxAPI.attachToProject);
+  const createProject = useMutation(ProjectsAPI.createProject);
 
   if (listOfProjects.isLoading)
     return <>Loading ...</>
   
   const projectDataList = listOfProjects.data!.map(project => ({ label: project.name, value: project._id }));
 
-  function submit(option?: any) {
-    if (!project?.value && !option)
-      return;
+  function submit(option: DatalistDetailedOptionType) {
+    if (option.value === '') {
+      if (option.label === '')
+        return
+
+      createProject.mutate({ name: option.label }, {
+        onSuccess() {
+          queryClient.refetchQueries(['inbox-items'], { active: true, exact: true });
+          setPanelMode('normal'); 
+        }
+      });
+      return
+    }
 
     let project_id:string;
     if (option)
@@ -136,9 +147,12 @@ function SelectProject() {
     else
       project_id = project!.value;
 
-    attachToProject.mutate({project_id, inboxItem_id});
-    queryClient.refetchQueries(['inbox-items'], { active: true, exact: true });
-    setPanelMode('normal');
+    attachToProject.mutate({project_id, inboxItem_id},{
+      onSuccess() {
+        queryClient.refetchQueries(['inbox-items'], { active: true, exact: true });
+        setPanelMode('normal'); 
+      }
+    });
   }
 
   return (
@@ -193,7 +207,7 @@ function LastDelayLog() {
         }
       </span>
       {
-        inboxItems.data[0].project?.queue_priority != null &&
+        inboxItems.data[0].project?.queue != null &&
           <>
             <br/>
             <span className="text-sm text-tanj-green">

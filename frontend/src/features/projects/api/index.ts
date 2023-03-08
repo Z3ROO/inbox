@@ -5,61 +5,8 @@ import { IProject, ProjectQueueNode, ListOfProjects, ProjectUpdatableInfoFields 
 export async function getListOfProjects(): Promise<ListOfProjects> {
   const request = await fetch(`${API_URL}/projects`);
   const response = await request.json();
-  console.log(response)  
+
   return response;
-  
-  /* return [
-    {
-      _id: 'ProjetoUm',
-      name: 'idzeroum',
-      description: 'some description'
-    },
-    {
-      _id: 'ProjetoDois',
-      name: 'idzerodois',
-      description: 'some description'
-    },
-    {
-      _id: 'ProjetoTres',
-      name: 'idzerotres',
-      description: 'some description'
-    },
-    {
-      _id: 'ProjetoQuatro',
-      name: 'idzeroquatro',
-      description: 'some description'
-    },
-    {
-      _id: 'Projeto1Dois',
-      name: 'idzero1doisasdasdasdasdasdasdasd',
-      description: 'some description'
-    },
-    {
-      _id: 'Projeto2Tres',
-      name: 'idzero2tres',
-      description: 'some description'
-    },
-    {
-      _id: 'Projeto3Quatro',
-      name: 'idzero4quatro',
-      description: 'some description'
-    },
-    {
-      _id: 'Projeto5Dois',
-      name: 'idzero5dois',
-      description: 'some description'
-    },
-    {
-      _id: 'Projeto6Tres',
-      name: 'idzero6tres',
-      description: 'some description'
-    },
-    {
-      _id: 'Projeto7Quatro',
-      name: 'idzero7quatro',
-      description: 'some description'
-    }
-  ] */
 }
 
 export async function getProject({ project_id }: { project_id: string }): Promise<IProject> {
@@ -67,17 +14,6 @@ export async function getProject({ project_id }: { project_id: string }): Promis
   const response = await request.json();
 
   return response
-
-/*   return {
-    _id: 'project_id',
-    name: 'Project name',
-    description: 'Project description',
-    created_at: new Date(),
-    focused: true,
-    attachments: {
-      inbox: true
-    }
-  } */
 }
 
 interface UpdateProjectInfo extends Partial<ProjectUpdatableInfoFields> {
@@ -98,25 +34,35 @@ export async function updateProjectInfo(args: UpdateProjectInfo): Promise<IProje
   }
 }
 
-export async function getProjectInbox(args: { project_id: string }): Promise<IInboxItem[]> {
-  return []
+export async function createProject(args: { name: string, description?: string }) {
+  const { name, description } = args;
+  const request = await fetch(`${API_URL}/projects`, {
+    method: 'post',
+    body: JSON.stringify({ name, description }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const response = await request.json();
 }
 
-export async function getCurrentProjectTask(args: { project_id: string }): Promise<ProjectQueueNode|null>{
-  return {
-    requirements: 'Queued 1',
-    priority: 1,
-    queued_at: new Date()
-  }
+export async function getProjectInbox({ project_id }: { project_id: string }): Promise<IInboxItem[]> {
+  const request = await fetch(`${API_URL}/projects/inbox/${project_id}`); 
+  const response = await request.json();
+  return response;
 }
 
-export async function finishCurrentProjectTaks(arg: { project_id: string }): Promise<ProjectQueueNode|null> {
-  return {
-    requirements: 'Queued 2',
-    priority: 2,
-    queued_at: new Date()
-  }
+export async function getCurrentProjectTask({ project_id }: { project_id: string }): Promise<ProjectQueueNode|null>{
+  const request = await fetch(`${API_URL}/projects/task/${project_id}`); 
+  const response = await request.json();
+  return response;
+}
 
+export async function finishCurrentProjectTaks({ project_id }: { project_id: string }): Promise<ProjectQueueNode|null> {
+  const request = await fetch(`${API_URL}/projects/task/${project_id}`, { method: 'delete' }); 
+  const response = await request.json();
+  return response;
 }
 
 export async function getFocusedProjects(): Promise<ListOfProjects> {

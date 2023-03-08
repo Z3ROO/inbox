@@ -30,14 +30,13 @@ function Info() {
   
   const editInfo = useMutation(ProjectsAPI.updateProjectInfo, {
     onSuccess(updatedProject) {
-      console.log(updatedProject)
       queryClient.setQueryData<IProject>('opened-project',updatedProject);
     }
   });
 
   const editProjectInfo = (field: string) => (e:React.FocusEvent) => {
-    const target = e.target as Element;
-    editInfo.mutate({project_id: project._id, [field]: target.textContent});
+    const target = e.target as HTMLElement;
+    editInfo.mutate({project_id: project._id, [field]: target.innerText});
   }
 
   return (
@@ -45,9 +44,11 @@ function Info() {
       <h3 contentEditable 
         onBlur={editProjectInfo('name')}
       >{project.name}</h3>
-      <p contentEditable 
-        onBlur={editProjectInfo('description')}
-      >{project.description}</p>
+      <pre>
+        <p contentEditable 
+          onBlur={editProjectInfo('description')}
+        >{project.description}</p>
+      </pre>
     </div>
   )
 }

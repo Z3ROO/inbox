@@ -1,5 +1,5 @@
 import { ProjectsRepository } from "@/repository/projects-repository";
-import { Project } from "@/types/Projects";
+import { Project, ProjectQueueNode } from "@/types/Projects";
 import { WithId } from "mongodb";
 import { Inbox } from "./inbox";
 
@@ -40,11 +40,28 @@ export class Projects {
     return await inbox.getByProject(project_id);
   }
 
-  public getTask(project_id: string) {
+  public async getTask(project_id: string): Promise<ProjectQueueNode> {
+    const task = await inbox.getHeadOfQueue(project_id);
+    if (!task)
+      return null;
 
+    return {
+      content: task.content,
+      priority: task.project.queue,
+      queued_at: task.project.queued_at
+    }
   }
 
-  public finishTask(project_id: string) {
+  public async finishTask(project_id: string): Promise<ProjectQueueNode> {
+    const task = await inbox.dequeueItem(project_id);
+    if (!task)
+      return null;
 
+    return {
+      content: task.content,
+      priority: task.project.queue,
+      queued_at: task.project.queued_at
+    }
   }
+
 }

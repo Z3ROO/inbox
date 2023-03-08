@@ -11,7 +11,7 @@ router.get('/', async (request, response) => {
   response.json(listOfProjects);
 });
 
-router.get('/:project_id', async (request, response) => {
+router.get('/project/:project_id', async (request, response) => {
   const { project_id } = request.params;
   const project = await projects.getOne(project_id);
 
@@ -23,3 +23,20 @@ router.post('/', async (request, response) => {
   projects.createOne({ name, description });
   response.status(200).json({});
 });
+
+router.get('/task/:project_id', async (request, response) => {
+  const { project_id } = request.params;
+
+  const task = await projects.getTask(project_id);
+
+  response.status(200).json(task);
+});
+
+router.delete('/task/:project_id', async (request, response) => {
+  const { project_id } = request.params;
+
+  const task = await projects.finishTask(project_id);
+
+  response.status(200).json(task);
+});
+

@@ -89,7 +89,18 @@ export class Inbox {
     }}) 
   }
 
+  public async getHeadOfQueue(project_id: string) {
+    return await this.repository.findHeadOfQueue(project_id);
+  }
+
   public async enqueueItem(inboxItem_id: string, priority: 0|1|2|3|4|null) {
     await this.repository.enqueueItem(inboxItem_id, priority) 
+  }
+
+  public async dequeueItem(project_id: string) {
+    const queueHead = await this.getHeadOfQueue(project_id);
+    await this.removeItem(queueHead._id.toHexString());
+    const newQueueHead = await this.getHeadOfQueue(project_id);
+    return newQueueHead;
   }
 }

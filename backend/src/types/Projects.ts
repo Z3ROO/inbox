@@ -8,3 +8,9 @@ export interface Project {
     queue: boolean
   }
 }
+
+export interface ProjectQueueNode {
+  content: string
+  priority: 0|1|2|3|4
+  queued_at: Date
+}

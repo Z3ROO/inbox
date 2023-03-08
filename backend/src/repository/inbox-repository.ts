@@ -46,8 +46,22 @@ export class InboxRepository extends Repository<IInbox> {
   }
 
   async findHeadOfQueue(project_id: string) {
-    const result = await this.collection().find({ project: { project_id } }).toArray();
+    const result = await this.collection()
+      .find({ 
+        "project.project_id": project_id,
+        $and: [
+          { "project.queue": { $ne: null } },
+          { "project.queued_at": { $ne: null } }
+        ]
+      })
+      .sort({ "project.queue": 1, "project.queued_at": 1 })
+      .limit(1)
+      .toArray();
 
+    if (result.length)
+      return result[0];
+
+    return null
   }
 
   async insertOne(inboxItem: IInbox) {

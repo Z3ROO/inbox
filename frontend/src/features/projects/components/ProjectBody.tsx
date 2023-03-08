@@ -79,23 +79,26 @@ function TaskQueue() {
   
 
   return (
-    <div className="flex">
-      <div className="text-2xl text-white">
+    <div className="flex flex-col">
+      <div className="flex justify-between">
+        <h4 className="text-white">Current Task:</h4>
+        <BtnSecondary 
+          onClick={() => {
+            updateTask.mutate({ project_id: project._id }, { 
+              onSuccess(nextTask) {
+                queryClient.setQueryData<ProjectQueueNode|null>('project-task', (task) => {
+                  if (task?.priority === 2) return null
+                  return nextTask
+                })
+              }})
+          }}
+        >
+          <FaCheck />
+        </BtnSecondary>
+      </div>
+      <div className="text-xl text-white p-4 border border-tanj-green border-opacity-75 rounded-sm">
         {task.content}
       </div>
-      <BtnSecondary 
-        onClick={() => {
-          updateTask.mutate({ project_id: project._id }, { 
-            onSuccess(nextTask) {
-              queryClient.setQueryData<ProjectQueueNode|null>('project-task', (task) => {
-                if (task?.priority === 2) return null
-                return nextTask
-              })
-            }})
-        }}
-      >
-        <FaCheck />
-      </BtnSecondary>
     </div>
   )
 }

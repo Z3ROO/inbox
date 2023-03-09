@@ -46,7 +46,7 @@ function FilterPanel() {
       <div className="flex justify-between">
         <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
         <BtnSecondary className="m-0" bgLess onClick={() => setPanelMode(prev => prev === 'select-project' ? 'normal' : 'select-project')}>
-          <span>Choose a project</span>
+          <span>{inboxItems.data[0].project?.name ? inboxItems.data[0].project.name : 'Choose a project'}</span>
         </BtnSecondary>
       </div>
       <div className="relative h-56">

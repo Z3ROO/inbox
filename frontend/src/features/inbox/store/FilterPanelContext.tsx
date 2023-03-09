@@ -14,7 +14,7 @@ export function FilterPanelContextProvider(props: { children?: JSX.Element|null|
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const toggleFilterPanel = () => setIsFilterPanelOpen(prev => !prev);
 
-  const inboxItems = useQuery('inbox-items', InboxAPI.getInboxItems);
+  const inboxQuery = useQuery('inbox-items', InboxAPI.getInboxItems);
 
   const [inboxFilterText, setInboxFilterText] = useState(''); 
 
@@ -34,13 +34,29 @@ export function FilterPanelContextProvider(props: { children?: JSX.Element|null|
     panelMode, setPanelMode,
     isFilterPanelOpen, toggleFilterPanel,
     inboxFilterText, setInboxFilterText,
-    inboxItems,
+    inboxQuery, inboxItems: inboxQuery.data!,
     updateInboxItem
+  }
+
+  const content = () => {
+    if (inboxQuery.isLoading)
+      return <>Loading...</>
+    if (inboxQuery.error)
+      return <>Something Went wrong</>
+
+    if (!inboxQuery.data || inboxQuery.data.length === 0)
+      return (
+        <h2 className="m-4 mx-10 text-tanj-green">Inbox empty.</h2>
+      )
+
+    return props.children
   }
 
   return (
     <Context.Provider value={contextValue}>
-      {props.children}
+      {
+        content()
+      }
     </Context.Provider>
   )
 }

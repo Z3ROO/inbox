@@ -13,7 +13,8 @@ export interface IFilterPanelContext {
       action: "day" | "week" | "month" | "3months"|"remove"|"undo";
     }, unknown>
   //insertInboxItem: UseMutationResult<any, unknown, { content: string }, unknown>
-  inboxItems: UseQueryResult<IInboxItem[]>
+  inboxQuery: UseQueryResult<IInboxItem[]>
+  inboxItems: IInboxItem[]
 }
 
 export type PanelMode = 'normal' | 'select-project' | 'enqueue'

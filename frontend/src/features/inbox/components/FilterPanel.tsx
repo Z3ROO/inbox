@@ -26,28 +26,11 @@ export function InboxFilterPanelModal() {
 function FilterPanel() {
   const { inboxItems, panelMode, setPanelMode } = useFilterPanelContext()!;
 
-  if (inboxItems.isLoading)
-    return (
-      <h2 className="m-4 mx-10 text-tanj-green">Loading...</h2>
-    )
-
-  if (inboxItems.isError)
-    return (
-      <h2 className="m-4 mx-10 text-tanj-green">Something went wrong.</h2>
-    )
-
-  if (!inboxItems.data || inboxItems.data.length === 0)
-    return (
-      <h2 className="m-4 mx-10 text-tanj-green">Inbox empty.</h2>
-    )
-
   return (
     <div className="w-[30rem] m-2">
       <div className="flex justify-between">
         <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
-        <BtnSecondary className="m-0" bgLess onClick={() => setPanelMode(prev => prev === 'select-project' ? 'normal' : 'select-project')}>
-          <span>{inboxItems.data[0].project?.name ? inboxItems.data[0].project.name : 'Choose a project'}</span>
-        </BtnSecondary>
+        <ChooseProjectButton />
       </div>
       <div className="relative h-56">
         {
@@ -55,9 +38,7 @@ function FilterPanel() {
         }
       </div>
       <div className="flex justify-between">
-        <BtnSecondary disabled={inboxItems.data[0].project == null} className="m-0 py-0" icon bgLess onClick={() => setPanelMode(prev => prev === 'enqueue' ? 'normal' : 'enqueue')}>
-          <HiArrowDownOnSquareStack className="w-4 h-4" />
-        </BtnSecondary>
+        <EnqueueInboxItemButton />
         <LastDelayLog />
       </div>
       <Controlls />
@@ -65,14 +46,43 @@ function FilterPanel() {
   )
 }
 
+function ChooseProjectButton() {
+  const { inboxItems, setPanelMode } = useFilterPanelContext()!;
+
+  const currentInboxItem = inboxItems[0];
+
+  return (
+    <BtnSecondary bgLess 
+      className="m-0"
+      onClick={() => setPanelMode(prev => prev === 'select-project' ? 'normal' : 'select-project')}
+    >
+      <span>{currentInboxItem.project?.name || 'Choose a project'}</span>
+    </BtnSecondary>
+  )
+}
+
+function EnqueueInboxItemButton() {
+  const { inboxItems, setPanelMode } = useFilterPanelContext()!;
+
+  const currentInboxItem = inboxItems[0];
+
+  return (
+    <BtnSecondary icon bgLess 
+      className="m-0 py-0" 
+      disabled={!currentInboxItem.project?.name} 
+      onClick={() => setPanelMode(prev => prev === 'enqueue' ? 'normal' : 'enqueue')}
+    >
+      <HiArrowDownOnSquareStack className="w-4 h-4" />
+    </BtnSecondary>
+  )
+}
+
 function InputField() {
   const { inboxItems, inboxFilterText, setInboxFilterText, updateInboxItem } = useFilterPanelContext()!;
 
   useEffect(() => {
-    if (inboxItems.isSuccess) {
-      setInboxFilterText(inboxItems.data[0].content);
-    }
-  }, [inboxItems.data]);
+    setInboxFilterText(inboxItems[0].content);
+  }, [inboxItems]);
 
 
   return (
@@ -116,7 +126,7 @@ function SwitchSetters(mode: PanelMode): JSX.Element | null {
 function SelectProject() {
   const { panelMode, setPanelMode, inboxItems } = useFilterPanelContext()!
   const [project, setProject] = useState<DatalistDetailedOptionType>();
-  const inboxItem_id = inboxItems.data![0]._id;
+  const inboxItem_id = inboxItems[0]._id;
   
   const listOfProjects = useQuery('project-list', ProjectsAPI.getListOfProjects);
   const attachToProject = useMutation(InboxAPI.attachToProject);
@@ -162,7 +172,7 @@ function SelectProject() {
 
 function Enqueue() {
   const { panelMode, setPanelMode, inboxItems } = useFilterPanelContext()!
-  const inboxItem_id = inboxItems.data![0]._id;
+  const inboxItem_id = inboxItems[0]._id;
 
   const enqueueMutation = useMutation(InboxAPI.enqueueInboxItem);
  
@@ -192,10 +202,7 @@ function Enqueue() {
 function LastDelayLog() {
   const { inboxItems } = useFilterPanelContext()!;
 
-  if (!inboxItems.data || inboxItems.data.length === 0)
-    return null
-
-  const { delayed_at, amount } = inboxItems.data[0].last_delay || {};
+  const { delayed_at, amount } = inboxItems[0].last_delay || {};
 
   return (
     <div className="text-right">
@@ -207,7 +214,7 @@ function LastDelayLog() {
         }
       </span>
       {
-        inboxItems.data[0].project?.queue != null &&
+        inboxItems[0].project?.queue != null &&
           <>
             <br/>
             <span className="text-sm text-tanj-green">
@@ -223,7 +230,7 @@ function Controlls() {
   const { inboxItems, updateInboxItem, inboxFilterText } = useFilterPanelContext()!
   const { mutate: updateItem, isLoading } = updateInboxItem;
 
-  const currentItem = (inboxItems.data || [])[0];
+  const currentItem = inboxItems[0];
 
   return (
     <div className="flex justify-between mt-2 text-sm">

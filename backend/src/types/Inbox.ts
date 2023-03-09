@@ -1,7 +1,9 @@
+import { ObjectId } from "mongodb"
+
 export interface IInbox {
   content: string
   project: {
-    project_id: string
+    project_id: ObjectId
     queue: 0|1|2|3|4|null
     queued_at: Date|null
   }|null

@@ -32,11 +32,53 @@ export class InboxRepository extends Repository<IInbox> {
   }
 
   async findAll() {
-    const result = await this.collection()
-      .find({allowed_after:{ $lte: new Date()}})
-      .sort({allowed_after: 1})
-      .toArray();
-    
+    // const result = await this.collection()
+    //   .find({allowed_after:{ $lte: new Date()}})
+    //   .sort({allowed_after: 1})
+    //   .toArray();
+    // 
+    const result = await this.collection().aggregate([
+      {
+        $match: {
+          allowed_after: { $lte: new Date() }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      },
+      {
+        $sort: {
+          allowed_after: 1
+        }
+      },
+      {
+        $lookup:
+        {
+          from: "projects",
+          localField: "project.project_id",
+          foreignField: "_id",
+          as: "project_details"
+        }
+      },
+      {
+        $project:
+        {
+          _id: 1,
+          content: 1,
+          last_delay: 1,
+          allowed_after: 1,
+          project:
+          {
+            $cond: { if: { $eq: [ "$project", null ] }, then: null, else: {
+              project_id: "$project.project_id",
+              queue: "$project.queue",
+              queued_at: "$project.queued_at",
+              name: { $arrayElemAt: [ "$project_details.name", 0 ] }
+            }}
+          }
+        }
+      }
+    ]).toArray()
     return result;
   }
   
@@ -46,9 +88,10 @@ export class InboxRepository extends Repository<IInbox> {
   }
 
   async findHeadOfQueue(project_id: string) {
+    const _id = new ObjectId(project_id);
     const result = await this.collection()
       .find({ 
-        "project.project_id": project_id,
+        "project.project_id": _id,
         $and: [
           { "project.queue": { $ne: null } },
           { "project.queued_at": { $ne: null } }

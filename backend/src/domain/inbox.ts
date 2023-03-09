@@ -1,6 +1,6 @@
 import { InboxRepository } from "@/repository/inbox-repository";
 import { IInbox } from "@/types/Inbox";
-import { WithId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 
 interface IInboxDTO {
   _id: string
@@ -82,8 +82,9 @@ export class Inbox {
   }
 
   public async attachProject(inboxItem_id: string, project_id: string) {
+    const _id = new ObjectId(project_id);
     await this.repository.updateItem(inboxItem_id, { project: {
-      project_id,
+      project_id: _id,
       queue: null,
       queued_at: null
     }}) 

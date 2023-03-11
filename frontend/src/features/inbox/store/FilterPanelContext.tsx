@@ -1,9 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { IFilterPanelContext, IInboxItem, PanelMode } from "@/features/inbox/types";
-
 import * as InboxAPI from '@/features/inbox/api'
-import { useQuery, QueryClient, QueryClientProvider, useMutation } from "react-query";
-import { queryClient } from "@/App";
 
 const Context = createContext<IFilterPanelContext|null>(null);
 
@@ -14,49 +11,24 @@ export function FilterPanelContextProvider(props: { children?: JSX.Element|null|
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const toggleFilterPanel = () => setIsFilterPanelOpen(prev => !prev);
 
-  const inboxQuery = useQuery('inbox-items', InboxAPI.getInboxItems);
+  const inboxQuery = InboxAPI.QueryInboxItems();
+  const inboxItems = inboxQuery.data;
 
   const [inboxFilterText, setInboxFilterText] = useState(''); 
 
-  const updateInboxItem = useMutation(InboxAPI.updateInboxItem, {
-    onSuccess: (data, variables) => {
-      const { action } = variables;
-
-      if (action !== 'undo') {
-        queryClient.setQueryData<IInboxItem[]>('inbox-items', (data) => (data||[]).slice(1));
-      }
-      else
-        queryClient.invalidateQueries('inbox-items');
-    }
-  });
+  const updateInboxItem = InboxAPI.UpdateInboxItem();
 
   const contextValue: IFilterPanelContext = {
     panelMode, setPanelMode,
     isFilterPanelOpen, toggleFilterPanel,
     inboxFilterText, setInboxFilterText,
-    inboxQuery, inboxItems: inboxQuery.data!,
+    inboxQuery, inboxItems,
     updateInboxItem
-  }
-
-  const content = () => {
-    if (inboxQuery.isLoading)
-      return <>Loading...</>
-    if (inboxQuery.error)
-      return <>Something Went wrong</>
-
-    if (!inboxQuery.data || inboxQuery.data.length === 0)
-      return (
-        <h2 className="m-4 mx-10 text-tanj-green">Inbox empty.</h2>
-      )
-
-    return props.children
   }
 
   return (
     <Context.Provider value={contextValue}>
-      {
-        content()
-      }
+      { props.children }
     </Context.Provider>
   )
 }

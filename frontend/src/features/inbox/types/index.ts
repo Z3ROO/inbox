@@ -14,7 +14,7 @@ export interface IFilterPanelContext {
     }, unknown>
   //insertInboxItem: UseMutationResult<any, unknown, { content: string }, unknown>
   inboxQuery: UseQueryResult<IInboxItem[]>
-  inboxItems: IInboxItem[]
+  inboxItems: IInboxItem[]|undefined
 }
 
 export type PanelMode = 'normal' | 'select-project' | 'enqueue'

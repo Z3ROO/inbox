@@ -6,7 +6,7 @@ import * as InboxAPI from '@/features/inbox/api';
 
 export function Enqueue() {
   const { panelMode, setPanelMode, inboxItems } = useFilterPanelContext()!
-  const inboxItem_id = inboxItems[0]._id;
+  const inboxItem_id = inboxItems![0]._id;
 
   const enqueueMutation = useMutation(InboxAPI.enqueueInboxItem);
  

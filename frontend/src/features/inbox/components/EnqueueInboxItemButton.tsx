@@ -5,7 +5,7 @@ import { useFilterPanelContext } from "../store/FilterPanelContext";
 export function EnqueueInboxItemButton() {
   const { inboxItems, setPanelMode } = useFilterPanelContext()!;
 
-  const currentInboxItem = inboxItems[0];
+  const currentInboxItem = inboxItems![0];
 
   return (
     <BtnSecondary icon bgLess 

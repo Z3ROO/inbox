@@ -9,7 +9,7 @@ import { queryClient } from "@/App";
 export function SelectProject() {
   const { panelMode, setPanelMode, inboxItems } = useFilterPanelContext()!
   const [project, setProject] = useState<DatalistDetailedOptionType>();
-  const inboxItem_id = inboxItems[0]._id;
+  const inboxItem_id = inboxItems![0]._id;
   
   const listOfProjects = useQuery('project-list', ProjectsAPI.getListOfProjects);
   const attachToProject = useMutation(InboxAPI.attachToProject);

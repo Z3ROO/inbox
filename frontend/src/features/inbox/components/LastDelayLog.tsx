@@ -2,7 +2,7 @@ import { useFilterPanelContext } from "../store/FilterPanelContext";
 
 export function LastDelayLog() {
   const { inboxItems } = useFilterPanelContext()!;
-  const currentInboxItem = inboxItems[0]
+  const currentInboxItem = inboxItems![0];
 
   if (currentInboxItem.last_delay == null)
     return null;

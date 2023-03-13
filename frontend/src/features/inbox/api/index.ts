@@ -1,10 +1,10 @@
 import { queryClient } from "@/App";
 import { API_URL } from "@/config/API";
 import { IInboxItem } from "@/features/inbox/types";
-import { useMutation, useQuery, UseQueryOptions, UseMutationOptions, QueryKey } from "react-query";
+import { useMutation, MutationOptions } from "@/lib/query";
+import { useQuery, UseQueryOptions, UseMutationOptions, QueryKey, UseMutationResult } from "react-query";
 
 type QueryOptions<T, K extends QueryKey = QueryKey> = Omit<UseQueryOptions<T, unknown, T, K>, 'queryKey' | 'queryFn'>
-type MutationOptions<TData, TVariables> = Omit<UseMutationOptions<TData, unknown, TVariables, unknown>, 'mutationKey' | 'mutationFn'>
 
 export async function getInboxItems(): Promise<IInboxItem[]> {
   const request = await fetch(`${API_URL}/inbox`);
@@ -12,6 +12,7 @@ export async function getInboxItems(): Promise<IInboxItem[]> {
 
   return response;
 }
+
 export function QueryInboxItems(config?: {
   options?: QueryOptions<IInboxItem[], 'inbox-items'> 
 }) {
@@ -32,8 +33,10 @@ export async function insertInboxItem(args: {content: string}) {
 
   return response;
 }
+
 type UpdateInboxArguments = {content?: string, inboxItem_id: string, action: 'day'|'week'|'month'|'3months'|'remove'|'undo'};
-async function updateInboxItem(args: UpdateInboxArguments): Promise<{}> {
+
+export async function updateInboxItem(args: UpdateInboxArguments): Promise<{}> {
   const { content, inboxItem_id, action } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
@@ -47,12 +50,11 @@ async function updateInboxItem(args: UpdateInboxArguments): Promise<{}> {
 
   return response;
 }
-export function UpdateInboxItem(config?: {
-  options?: MutationOptions<{}, UpdateInboxArguments>
-}) {
+
+export function UpdateInboxItem(options?: MutationOptions<{}, UpdateInboxArguments>) {
 
   return useMutation(updateInboxItem, {
-    ...config?.options,
+    ...options,
     onSuccess: (_, variables) => {
       const { action } = variables;
 

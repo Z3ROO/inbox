@@ -7,7 +7,7 @@ export function InputField() {
   const { inboxItems, inboxFilterText, setInboxFilterText, updateInboxItem } = useFilterPanelContext()!;
 
   useEffect(() => {
-    setInboxFilterText(inboxItems[0].content);
+    setInboxFilterText(inboxItems![0].content);
   }, [inboxItems]);
 
 

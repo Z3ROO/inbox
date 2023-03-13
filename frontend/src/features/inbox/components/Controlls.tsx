@@ -15,12 +15,11 @@ export function Controlls() {
 
 function DelayItemButtons() {
   const { inboxItems, updateInboxItem, inboxFilterText } = useFilterPanelContext()!
-  const { mutate: updateItem, isLoading } = updateInboxItem;
 
-  const currentItem = inboxItems[0];
+  const currentItem = inboxItems![0];
 
   const updateItemEvent = (amount: string) => () => { 
-    updateItem({ 
+    updateInboxItem({ 
       content: inboxFilterText, 
       inboxItem_id: currentItem._id, 
       action: amount.toLowerCase().replace(/ /g, '-') as InboxDelayAmounts 
@@ -33,7 +32,7 @@ function DelayItemButtons() {
         ['Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
             onClick={updateItemEvent(amount)}
-            disabled={isLoading}
+            disabled={updateInboxItem.isLoading}
           >{amount}</BtnPrimary>
         ))
       }
@@ -43,14 +42,13 @@ function DelayItemButtons() {
 
 function RemoveButton() {
   const { inboxItems, updateInboxItem } = useFilterPanelContext()!
-  const { mutate: updateItem, isLoading } = updateInboxItem;
 
-  const currentItem = inboxItems[0];
+  const currentItem = inboxItems![0];
 
   return (
     <BtnSecondary icon bgLess
-      disabled={isLoading}
-      onClick={() => updateItem({ inboxItem_id: currentItem._id, action: 'remove' })}
+      disabled={updateInboxItem.isLoading}
+      onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'remove' })}
     >
       <FaTrashAlt />
     </BtnSecondary>
@@ -59,14 +57,13 @@ function RemoveButton() {
 
 function UndoButton() {
   const { inboxItems, updateInboxItem } = useFilterPanelContext()!
-  const { mutate: updateItem, isLoading } = updateInboxItem;
 
-  const currentItem = inboxItems[0];
+  const currentItem = inboxItems![0];
 
   return (
     <BtnSecondary icon bgLess
-      disabled={isLoading}
-      onClick={() => updateItem({ inboxItem_id: currentItem._id, action: 'undo' })}
+      disabled={updateInboxItem.isLoading}
+      onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'undo' })}
     >
       <FaUndoAlt />
     </BtnSecondary>

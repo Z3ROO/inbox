@@ -19,7 +19,19 @@ export function InboxFilterPanelModal() {
 
 function FilterPanel() {
   const { panelMode, inboxQuery } = useFilterPanelContext()!;
-
+  
+/*
+* All the proceding use of inboxItems depends on these conditions
+* */
+  if (inboxQuery.isLoading)
+    return <h2 className="m-4 mx-10 text-tanj-green">Loading...</h2>
+  if (inboxQuery.error)
+    return <h2 className="m-4 mx-10 text-tanj-pink">Something Went wrong</h2>
+  // ?? check if is idle ??
+  if (!inboxQuery.data || inboxQuery.data.length === 0)
+    return (
+      <h2 className="m-4 mx-10 text-tanj-green">Inbox empty.</h2>
+    )
 
   return (
     <div className="w-[30rem] m-2">

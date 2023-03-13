@@ -4,7 +4,7 @@ import { useFilterPanelContext } from '@/features/inbox/store/FilterPanelContext
 export function ChooseProjectButton() {
   const { inboxItems, setPanelMode } = useFilterPanelContext()!;
 
-  const currentInboxItem = inboxItems[0];
+  const currentInboxItem = inboxItems![0];
 
   return (
     <BtnSecondary bgLess 

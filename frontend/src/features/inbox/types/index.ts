@@ -1,4 +1,5 @@
-import { UseMutationResult, UseQueryResult } from "react-query/types/react"
+import { Mutation } from "@/lib/query"
+import { UseQueryResult } from "react-query/types/react"
 
 export interface IFilterPanelContext {
   panelMode: PanelMode
@@ -7,12 +8,11 @@ export interface IFilterPanelContext {
   setInboxFilterText: React.Dispatch<React.SetStateAction<string>>
   isFilterPanelOpen: boolean
   toggleFilterPanel: () => void
-  updateInboxItem: UseMutationResult<any, unknown, {
+  updateInboxItem: Mutation<{}, {
       content?: string,
       inboxItem_id: string,
       action: "day" | "week" | "month" | "3months"|"remove"|"undo";
-    }, unknown>
-  //insertInboxItem: UseMutationResult<any, unknown, { content: string }, unknown>
+    }>
   inboxQuery: UseQueryResult<IInboxItem[]>
   inboxItems: IInboxItem[]|undefined
 }

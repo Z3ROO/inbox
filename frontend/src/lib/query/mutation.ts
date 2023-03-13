@@ -17,14 +17,8 @@ export function useMutation<TData = unknown, TVariables = unknown>(request: Muta
  }
 
 function mutationWrapper<TData, TVars>(mutation: ReactQuery.UseMutationResult<TData, unknown, TVars, unknown>) {
-  type MutationFn = typeof mutation.mutate;
-  interface Final extends MutationFn {
-    isLoading: boolean
-    isError: boolean
-  }
-
-  const mutationFn: Mutation<TData, TVars> = function (...arg) {
-    return mutation.mutate(...arg)
+  const mutationFn: Mutation<TData, TVars> = function (arg: TVars, options?: MutationOptions<TData, TVars>) {
+    return mutation.mutate(arg, options)
   }
 
   mutationFn.isLoading = mutation.isLoading; 

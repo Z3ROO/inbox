@@ -10,14 +10,10 @@ import { Textarea } from "@/components/form/Input";
 export function InboxInsertPanel() {
   const [insertFieldText, setInsertFieldText] = useState('');
 
-  const insertInboxItem = useMutation(InboxAPI.insertInboxItem, {
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries('inbox-items');
-    }
-  });
+  const insertInboxItem = InboxAPI.InsertInboxItem();
 
   async function insertInbox() {
-    insertInboxItem.mutate({content: insertFieldText});
+    insertInboxItem({content: insertFieldText});
     setInsertFieldText('');
     cacheInsertInputField('');
   }

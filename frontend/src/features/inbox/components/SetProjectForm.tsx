@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useFilterPanelContext } from "../store/FilterPanelContext";
 import * as ProjectsAPI from '@/features/projects/api';
-import * as InboxAPI from '@/features/inbox/api';
 import { DatalistDetailedOptionType, InputDetailedDataList } from "@/components/form/InputDetailedDataList";
 import { queryClient } from "@/App";
+import { AttachToProject } from "../api/AttachToProject";
 
 export function SelectProject() {
   const { panelMode, setPanelMode, inboxItems } = useFilterPanelContext()!
@@ -12,7 +12,7 @@ export function SelectProject() {
   const inboxItem_id = inboxItems![0]._id;
   
   const listOfProjects = useQuery('project-list', ProjectsAPI.getListOfProjects);
-  const attachToProject = useMutation(InboxAPI.attachToProject);
+  const attachToProject = AttachToProject();
   const createProject = useMutation(ProjectsAPI.createProject);
 
   if (listOfProjects.isLoading)
@@ -40,7 +40,7 @@ export function SelectProject() {
     else
       project_id = project!.value;
 
-    attachToProject.mutate({project_id, inboxItem_id},{
+    attachToProject({project_id, inboxItem_id},{
       onSuccess() {
         queryClient.refetchQueries(['inbox-items'], { active: true, exact: true });
         setPanelMode('normal'); 

@@ -1,23 +1,22 @@
 import { HiPlus } from "react-icons/hi";
 import { GiCaravel } from 'react-icons/gi';
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import * as ProjectsAPI from '@/features/projects/api';
-import { ListOfProjects } from "@/features/projects/types";
 import { InputDetailedDataList } from "@/components/form/InputDetailedDataList";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { Project } from "./Project";
 
 export function ListOfProjectsWidget() {
-  const [list, setList] = useState<ListOfProjects>([]);
   const [openedProject, setOpenedProject] = useState('');
-  
-  useEffect(() => {
-    (async function() {
-      const data = await ProjectsAPI.getListOfProjects();
-      //const data = await ProjectsAPI.getFocusedProjects();
-      setList(data);
-    })();
-  }, []);
+  const query = ProjectsAPI.QueryListOfProjects();
+
+  if (query.isLoading)
+    return <>Loading...</>
+
+  if (query.isError || query.isIdle)
+    return <>Something wentwrong</>
+
+  const list = query.data;
 
   return (
     <div className="m-2">
@@ -49,17 +48,20 @@ export function ListOfProjectsWidget() {
 function FocusProject() {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
  
-  const listOfProjects = useQuery('project-list', ProjectsAPI.getListOfProjects);
-  const focusMutation = useMutation(ProjectsAPI.focusProject, {
+  const listOfProjects = ProjectsAPI.QueryListOfProjects();
+  const focusMutation = ProjectsAPI.FocusProject({
     onSuccess() {
       setIsPickerOpen(false);
     }
   });
-  
+
   if (listOfProjects.isLoading)
     return <>Loading ...</>
 
-  const projectDataList = listOfProjects.data!.map(project => ({ label: project.name, value: project._id }));
+  if (listOfProjects.isError || listOfProjects.isIdle)
+    return <>Something went worng</>
+
+  const projectDataList = listOfProjects.data.map(project => ({ label: project.name, value: project._id }));
   
   return (
     <div className="relative w-8 h-8 p-1 m-1 rounded-sm bg-tanj-brown group">
@@ -70,11 +72,10 @@ function FocusProject() {
           <InputDetailedDataList
               options={projectDataList} 
               onSelect={(option) => {
-                focusMutation.mutate({ project_id: option.value });
+                focusMutation({ project_id: option.value });
               }} />
           </div> :
           <span className="absolute top-0 left-10 invisible group-hover:visible p-2 px-4 rounded-sm bg-tanj-brown text-white whitespace-nowrap">Focus a project</span>
-
       }
     </div>
   )

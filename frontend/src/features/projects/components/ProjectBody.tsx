@@ -2,11 +2,9 @@ import { HiArrowNarrowLeft } from "react-icons/hi";
 import { FaCheck } from 'react-icons/fa';
 import { BtnSecondary } from "@/components/Buttons";
 import { useProjectContext } from "../store/ProjectContext";
-import { useMutation, useQuery } from "react-query";
 import * as ProjectsAPI from '@/features/projects/api';
 import { queryClient } from "@/App";
-import { IProject, ProjectQueueNode } from "../types";
-import { useState } from "react";
+import { ProjectQueueNode } from "../types";
 
 export function ProjectBody({ closeProjectHandler }: { closeProjectHandler?: () => void }) {
   return (
@@ -28,15 +26,10 @@ export function ProjectBody({ closeProjectHandler }: { closeProjectHandler?: () 
 function Info() {
   const { project } = useProjectContext()!;
   
-  const editInfo = useMutation(ProjectsAPI.updateProjectInfo, {
-    onSuccess(updatedProject) {
-      queryClient.setQueryData<IProject>('opened-project',updatedProject);
-    }
-  });
-
+  const editInfo = ProjectsAPI.UpdateProjectInfo();
   const editProjectInfo = (field: string) => (e:React.FocusEvent) => {
     const target = e.target as HTMLElement;
-    editInfo.mutate({project_id: project._id, [field]: target.innerText});
+    editInfo({project_id: project._id, [field]: target.innerText});
   }
 
   return (
@@ -56,15 +49,8 @@ function Info() {
 
 function TaskQueue() {
   const { project } = useProjectContext()!;
-  const taskQuery = useQuery('project-task', () => ProjectsAPI.getCurrentProjectTask({project_id: project._id}), {
-    onSuccess(task) {
-      console.log(task)
-    },
-    refetchOnWindowFocus: false,
-    refetchInterval: false
-  });
-
-  const updateTask = useMutation(ProjectsAPI.finishCurrentProjectTaks);
+  const taskQuery = ProjectsAPI.QueryCurrentProjectTask({project_id: project._id});
+  const updateTask = ProjectsAPI.FinishCurrentProjectTask();
 
   if (taskQuery.isLoading)
     return <>Loading...</>
@@ -84,13 +70,14 @@ function TaskQueue() {
         <h4 className="text-white">Current Task:</h4>
         <BtnSecondary 
           onClick={() => {
-            updateTask.mutate({ project_id: project._id }, { 
+            updateTask({ project_id: project._id }, { 
               onSuccess(nextTask) {
                 queryClient.setQueryData<ProjectQueueNode|null>('project-task', (task) => {
                   if (task?.priority === 2) return null
                   return nextTask
-                })
-              }})
+                });
+              }
+            })
           }}
         >
           <FaCheck />

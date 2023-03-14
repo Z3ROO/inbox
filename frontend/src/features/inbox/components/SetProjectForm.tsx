@@ -11,21 +11,24 @@ export function SelectProject() {
   const [project, setProject] = useState<DatalistDetailedOptionType>();
   const inboxItem_id = inboxItems![0]._id;
   
-  const listOfProjects = useQuery('project-list', ProjectsAPI.getListOfProjects);
+  const listOfProjects = ProjectsAPI.QueryListOfProjects();
   const attachToProject = AttachToProject();
-  const createProject = useMutation(ProjectsAPI.createProject);
+  const createProject = ProjectsAPI.CreateProject();
 
   if (listOfProjects.isLoading)
     return <>Loading ...</>
-  
-  const projectDataList = listOfProjects.data!.map(project => ({ label: project.name, value: project._id }));
+ 
+  if (listOfProjects.isIdle || listOfProjects.isError)
+    return <>Something went wrong</>
+
+  const projectDataList = listOfProjects.data.map(project => ({ label: project.name, value: project._id }));
 
   function submit(option: DatalistDetailedOptionType) {
     if (option.value === '') {
       if (option.label === '')
         return
 
-      createProject.mutate({ name: option.label }, {
+      createProject({ name: option.label }, {
         onSuccess() {
           queryClient.refetchQueries(['inbox-items'], { active: true, exact: true });
           setPanelMode('normal'); 

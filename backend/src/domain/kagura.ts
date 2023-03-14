@@ -17,7 +17,7 @@ export class Kagura {
     const simpleTree = types.map( type => {
       return {
         type,
-        routines: categories.map(category => {
+        decks: categories.map(category => {
           const filteredCards = cards.filter(card => (card.type === type && card.category === category));
           return {
             category,

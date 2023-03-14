@@ -10,6 +10,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(inboxRouter);
-app.use('/kagura', kaguraRouter);
+app.use('/rehearsal', kaguraRouter);
 app.use('/projects', projectsRouter);
 

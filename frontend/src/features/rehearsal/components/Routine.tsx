@@ -6,7 +6,7 @@ import { GoThumbsup, GoThumbsdown, GoPrimitiveDot } from 'react-icons/go';
 import { Modal } from "@/components/Modal";
 import { useEffect, useRef, useState } from "react";
 import { BtnSecondary } from '@/components/Buttons';
-import { useKagura } from '@/features/kagura/store/KaguraContext';
+import { useKagura } from '@/features/rehearsal/store/KaguraContext';
 import * as Icons from '@/components/icons/kagura'
 
 export function Routine() {

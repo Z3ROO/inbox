@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react"
 import { useMutation, useQuery } from "react-query";
-import { IKagura, IKaguraContext, RoutineState } from "@/features/kagura/types";
-import * as KaguraAPI from "@/features/kagura/api";
+import { IKagura, IKaguraContext, RoutineState } from "@/features/rehearsal/types";
+import * as KaguraAPI from "@/features/rehearsal/api";
 import { queryClient } from "@/App";
 
 const Context = createContext<IKaguraContext|null>(null);

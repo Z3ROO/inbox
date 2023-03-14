@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import Inbox from './features/inbox';
-import { Kagura } from './features/kagura';
+import { Kagura } from './features/rehearsal';
 
 export const queryClient = new QueryClient();
 

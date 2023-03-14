@@ -1,6 +1,6 @@
 import { Notifications } from '@/components/Notifications';
 import { FaReact, FaCheck } from 'react-icons/fa';
-import { useKagura } from '@/features/kagura/store/KaguraContext';
+import { useKagura } from '@/features/rehearsal/store/KaguraContext';
 import * as Icons from '@/components/icons/kagura'
 
 export function Categories() {

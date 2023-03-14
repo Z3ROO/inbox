@@ -5,8 +5,8 @@ import { Modal } from "@/components/Modal";
 import { useEffect, useState } from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { HiPlus } from "react-icons/hi";
-import { useKagura } from "@/features/kagura/store/KaguraContext";
-import * as KaguraAPI from '@/features/kagura/api/index';
+import { useKagura } from "@/features/rehearsal/store/KaguraContext";
+import * as KaguraAPI from '@/features/rehearsal/api/index';
 
 export function AddCardForm() {
 const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,31 +1,31 @@
 import { Notifications } from '@/components/Notifications';
-import { FaReact, FaCheck } from 'react-icons/fa';
-import { useKagura } from '@/features/rehearsal/store/KaguraContext';
+import { FaReact } from 'react-icons/fa';
+import { useRehearsalContext } from '@/features/rehearsal/store/RehearsalContext';
 import * as Icons from '@/components/icons/kagura'
 
-export function Categories() {
-  const { kagura, setPerformingRoutine } = useKagura()!;
+export function Decks() {
+  const { rehearsalDecks, setPerformingRoutine } = useRehearsalContext()!;
   
-  if (kagura.isLoading)
+  if (rehearsalDecks.isLoading)
     return <>Loading...</>
 
-  if (kagura.isError)
+  if (rehearsalDecks.isError || rehearsalDecks.isIdle)
     return <>Something went wrong...</>
   
-  const data = kagura.data!
+  const data = rehearsalDecks.data;
 
   return (
     <div className='p-4 w-full flex flex-col'>
       {
         data.map(value => {
-          const { type, routines } = value;
+          const { type, decks } = value;
           return (
             <div>
               <h4 className='text-tanj-green'>{type}</h4>
               <div className='p-4 w-full flex'>
                 {
-                  routines.map(routine => {
-                    const { category, cards } = routine;
+                  decks.map(deck => {
+                    const { category, cards } = deck;
                     if (cards.length)
                       return (
                         <Category
@@ -41,8 +41,8 @@ export function Categories() {
                   })
                 }
                 {
-                  routines.map(routine => {
-                    const { category, cards } = routine;
+                  decks.map(deck => {
+                    const { category, cards } = deck;
 
                     if (cards.length === 0)
                       return (

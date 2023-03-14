@@ -5,8 +5,9 @@ import { Modal } from "@/components/Modal";
 import { useEffect, useState } from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { HiPlus } from "react-icons/hi";
-import { useKagura } from "@/features/rehearsal/store/KaguraContext";
-import * as KaguraAPI from '@/features/rehearsal/api/index';
+import { useRehearsalContext } from "@/features/rehearsal/store/RehearsalContext";
+import * as RehearsalAPI from '@/features/rehearsal/api/index';
+import { RehearsalType } from "../types";
 
 export function AddCardForm() {
 const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +43,7 @@ function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStat
 
   useEffect(() => {
     (async () => {
-      const data = await KaguraAPI.getKaguraMetaData();
+      const data = await RehearsalAPI.getRehearsalOptions();
       const { types, categories } = data;
 
       setTypesOptions(types.map(t =>
@@ -104,7 +105,7 @@ function DifficultyStar({ position, difficulty, setDifficulty }: { position: ( 1
 }
 
 function Submit(props: {typeInput: { label: string, value: string }, categoryInput: { label: string, value: string }, requirementsInput: string, difficulty: ( 1 | 2 | 3 ) , setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
-  const { insertCard } = useKagura()!;
+  const { insertCard } = useRehearsalContext()!;
   const { typeInput, categoryInput, requirementsInput, difficulty, setIsModalOpen } = props;
 
   return (
@@ -113,10 +114,10 @@ function Submit(props: {typeInput: { label: string, value: string }, categoryInp
       onClick={e => {
         e.preventDefault();
         
-        insertCard.mutate(
+        insertCard(
           { 
             difficulty,
-            type: typeInput.value !== '' ? typeInput.value : typeInput.label, 
+            type: (typeInput.value !== '' ? typeInput.value : typeInput.label) as RehearsalType, 
             category: categoryInput.value !== '' ? categoryInput.value : categoryInput.label,
             requirements: requirementsInput, 
           },

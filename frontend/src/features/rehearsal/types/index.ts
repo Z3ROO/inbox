@@ -1,16 +1,18 @@
-import { UseMutationResult, UseQueryResult } from "react-query"
+import { UseQueryResult } from "react-query"
+import { EvaluateCardDTO, RemoveCardDTO } from "../api"
+import { Mutation } from '@/lib/query';
 
-export interface IKagura {
-  type: 'Theoretical'
-  routines: IRoutine[]
+export interface RehearsalByType {
+  type: RehearsalType 
+  decks: RehearsalDeck[]
 }
 
-export interface IRoutine {
+export interface RehearsalDeck {
   category: string
-  cards: ICard[]
+  cards: RehearsalCard[]
 }  
 
-export interface ICard {
+export interface RehearsalCard {
   _id: string
   requirements: string
   // level: number
@@ -22,35 +24,31 @@ export interface ICard {
   // }
 }
 
-export type KagurasType = string
-export type KagurasCategory = string
+export type RehearsalType = 'Theoretical'|'Practical'
+export type RehearsalCategory = string
 
-export type KagurasCardEngageDate = Date
+export type RehearsalCardEngageDate = Date
 
-export type RoutineState = [KagurasType, KagurasCategory]|null
+export type RoutineState = [RehearsalType, RehearsalCategory]|null
 
-export interface IKaguraContext {
+export interface RehearsalContext {
   performingRoutine: RoutineState|null
   setPerformingRoutine: React.Dispatch<React.SetStateAction<RoutineState>>
-  kagura: UseQueryResult<IKagura[], unknown>
-  evaluateCard: UseMutationResult<void, unknown, {
-      card_id: string
-      note: 0 | 1 | -1
-      started_at: Date
-      finished_at: Date
-    }, unknown>
-  insertCard: UseMutationResult<void, unknown, KaguraCardDTO, unknown>
-  removeCard: UseMutationResult<void, unknown, { card_id: string }, unknown>
+  rehearsalDecks: UseQueryResult<RehearsalByType[], unknown>
+  evaluateCard: Mutation<{}, EvaluateCardDTO>
+  insertCard: Mutation<{}, RehearsalCardDTO>
+  removeCard: Mutation<{}, RemoveCardDTO>
 }
 
-export interface KaguraCardDTO {
-  type: KagurasType
+export interface RehearsalCardDTO {
+  type: RehearsalType
   requirements: string
-  category: KagurasCategory
+  category: RehearsalCategory
   difficulty: 1|2|3
 }
 
-export interface KaguraMetaData {
-  types: KagurasType[]
-  categories: KagurasCategory[]
+export interface RehearsalOptions {
+  types: RehearsalType[]
+  categories: RehearsalCategory[]
 }
+

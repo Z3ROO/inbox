@@ -6,11 +6,11 @@ import { GoThumbsup, GoThumbsdown, GoPrimitiveDot } from 'react-icons/go';
 import { Modal } from "@/components/Modal";
 import { useEffect, useRef, useState } from "react";
 import { BtnSecondary } from '@/components/Buttons';
-import { useKagura } from '@/features/rehearsal/store/KaguraContext';
+import { useRehearsalContext } from '@/features/rehearsal/store/RehearsalContext';
 import * as Icons from '@/components/icons/kagura'
 
-export function Routine() {
-  const { performingRoutine, setPerformingRoutine } = useKagura()!;
+export function DeckRoutine() {
+  const { performingRoutine, setPerformingRoutine } = useRehearsalContext()!;
 
   return (
     <Modal isModalOpen={!!performingRoutine} closeFn={()=> {setPerformingRoutine(null)}}>
@@ -21,7 +21,7 @@ export function Routine() {
 }
 
 function RoutineHeader() {
-  const { performingRoutine } = useKagura()!;
+  const { performingRoutine } = useRehearsalContext()!;
 
   const [type, category] = performingRoutine!;
 
@@ -40,12 +40,10 @@ function RoutineHeader() {
 }
 
 function RoutineBody() {
-  const { kagura, performingRoutine, evaluateCard } = useKagura()!;
+  const { rehearsalDecks, performingRoutine, evaluateCard } = useRehearsalContext()!;
 
   const [type, category] = performingRoutine!;
-  const { _id, requirements } = kagura.data?.find(k => k.type === type)?.routines.find(r => r.category === category)?.cards[0]!||{};
-
-  const { mutate: takeNote } = evaluateCard;
+  const { _id, requirements } = rehearsalDecks.data?.find(k => k.type === type)?.decks.find(r => r.category === category)?.cards[0]!||{};
 
   const cardEngageDate = useRef<Date>(new Date());
 
@@ -67,7 +65,7 @@ function RoutineBody() {
         <BtnSecondary
           onClick={() => {
             const finished_at = new Date();
-            takeNote({ card_id: _id, note: -1, started_at: cardEngageDate.current, finished_at})
+            evaluateCard({ card_id: _id, note: -1, started_at: cardEngageDate.current, finished_at})
           }}
         >
           <GoThumbsdown className='p-1 w-7 h-7' />
@@ -75,7 +73,7 @@ function RoutineBody() {
         <BtnSecondary
           onClick={() => {
             const finished_at = new Date();
-            takeNote({ card_id: _id, note: 0, started_at: cardEngageDate.current, finished_at})
+            evaluateCard({ card_id: _id, note: 0, started_at: cardEngageDate.current, finished_at})
           }}
         >
           <GoPrimitiveDot className='p-1 w-7 h-7' />
@@ -83,7 +81,7 @@ function RoutineBody() {
         <BtnSecondary
           onClick={() => {
             const finished_at = new Date();
-            takeNote({ card_id: _id, note: 1, started_at: cardEngageDate.current, finished_at})
+            evaluateCard({ card_id: _id, note: 1, started_at: cardEngageDate.current, finished_at})
           }}
         >
           <GoThumbsup className='p-1 w-7 h-7' />   
@@ -95,7 +93,7 @@ function RoutineBody() {
 
 function RoutineOptions({card_id}: {card_id: string}) {
   const [isOpen, setIsOpen] = useState(false);
-  const { removeCard } = useKagura()!;
+  const { removeCard } = useRehearsalContext()!;
 
   const divStyle: React.CSSProperties = {
     backgroundColor: 'rgba(70, 176, 119, .1)',
@@ -116,7 +114,7 @@ function RoutineOptions({card_id}: {card_id: string}) {
         <div className='flex flex-col'>
           <RoutineOptionsItem confirm 
             action={async () => {
-              removeCard.mutate({card_id}, {
+              removeCard({card_id}, {
                 onSuccess: () => {
                   setIsOpen(false);
                 }

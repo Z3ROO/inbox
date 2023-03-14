@@ -1,18 +1,18 @@
-import { KaguraProvider } from './store/KaguraContext';
-import { Categories } from './components/Categories';
+import { RehearsalProvider } from './store/RehearsalContext';
+import { Decks } from './components/Decks';
 import { AddCardForm } from './components/AddCardForm';
-import { Routine } from './components/Routine';
+import { DeckRoutine } from './components/DeckRoutine';
 
-export function Kagura() {
+export function Rehearsal() {
   return (
-    <KaguraProvider>
+    <RehearsalProvider>
       <div className='w-full flex justify-center'>
         <div className='relative w-3/6'>
-          <Categories />
+          <Decks />
           <AddCardForm />
-          <Routine />
+          <DeckRoutine />
         </div>
       </div>
-    </KaguraProvider>
+    </RehearsalProvider>
   )
 }

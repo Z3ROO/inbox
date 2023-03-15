@@ -1,7 +1,7 @@
 import { Notifications } from '@/components/Notifications';
 import { FaReact } from 'react-icons/fa';
 import { useRehearsalContext } from '@/features/rehearsal/store/RehearsalContext';
-import * as Icons from '@/components/icons/kagura'
+import * as Icons from '@/components/icons/rehearsal'
 
 export function Decks() {
   const { rehearsalDecks, setPerformingRoutine } = useRehearsalContext()!;

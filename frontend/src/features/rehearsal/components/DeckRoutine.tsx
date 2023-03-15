@@ -7,7 +7,7 @@ import { Modal } from "@/components/Modal";
 import { useEffect, useRef, useState } from "react";
 import { BtnSecondary } from '@/components/Buttons';
 import { useRehearsalContext } from '@/features/rehearsal/store/RehearsalContext';
-import * as Icons from '@/components/icons/kagura'
+import * as Icons from '@/components/icons/rehearsal'
 
 export function DeckRoutine() {
   const { performingRoutine, setPerformingRoutine } = useRehearsalContext()!;

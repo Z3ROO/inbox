@@ -3,7 +3,6 @@ import { GiCaravel } from 'react-icons/gi';
 import { useState } from "react"
 import * as ProjectsAPI from '@/features/projects/api';
 import { InputDetailedDataList } from "@/components/form/InputDetailedDataList";
-import { useMutation } from "react-query";
 import { Project } from "./Project";
 
 export function ListOfProjectsWidget() {
@@ -19,7 +18,7 @@ export function ListOfProjectsWidget() {
   const list = query.data;
 
   return (
-    <div className="m-2">
+    <div className="m-2 flex flex-wrap w-full">
       {
         list.map(project => {
           return (
@@ -27,7 +26,7 @@ export function ListOfProjectsWidget() {
               onClick={() => setOpenedProject(project._id)}
               className="relative w-8 h-8 p-1 m-1 rounded-sm bg-tanj-brown group">
               <GiCaravel className="w-full h-full" />
-              <span className="absolute top-0 left-10 invisible group-hover:visible p-2 px-4 rounded-sm bg-tanj-brown text-white whitespace-nowrap">{project.name}</span>
+              <span className="z-10 absolute top-0 left-10 invisible group-hover:visible p-2 px-4 rounded-sm bg-tanj-brown text-white whitespace-nowrap">{project.name}</span>
             </div>
           )
         })

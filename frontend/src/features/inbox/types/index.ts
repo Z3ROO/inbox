@@ -2,8 +2,6 @@ import { Mutation } from "@/lib/query"
 import { UseQueryResult } from "react-query/types/react"
 
 export interface IFilterPanelContext {
-  panelMode: PanelMode
-  setPanelMode: React.Dispatch<React.SetStateAction<PanelMode>>
   inboxFilterText: string
   setInboxFilterText: React.Dispatch<React.SetStateAction<string>>
   isFilterPanelOpen: boolean
@@ -17,15 +15,10 @@ export interface IFilterPanelContext {
   inboxItems: IInboxItem[]|undefined
 }
 
-export type PanelMode = 'normal' | 'select-project' | 'enqueue'
 
 export interface IInboxItem {
   _id: string
   content: string
-  project: { 
-    name: string
-    queue: 0|1|2|3|4|null
-  }|null
   last_delay: null|{
     amount: InboxDelayAmounts, 
     delayed_at: Date, 

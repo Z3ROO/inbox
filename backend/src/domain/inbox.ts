@@ -48,7 +48,6 @@ export class Inbox {
       content,
       last_delay: null,
       allowed_after: new Date(),
-      project: null
     })
   }
 
@@ -76,32 +75,5 @@ export class Inbox {
     if (_id !== undefined)
       await this.repository.updateItem(_id.toHexString(),  { last_delay, allowed_after });
   }
-
-  public async getByProject(project_id: string) {
-    return this.repository.findAllByProject(project_id);
-  }
-
-  public async attachProject(inboxItem_id: string, project_id: string) {
-    const _id = new ObjectId(project_id);
-    await this.repository.updateItem(inboxItem_id, { project: {
-      project_id: _id,
-      queue: null,
-      queued_at: null
-    }}) 
-  }
-
-  public async getHeadOfQueue(project_id: string) {
-    return await this.repository.findHeadOfQueue(project_id);
-  }
-
-  public async enqueueItem(inboxItem_id: string, priority: 0|1|2|3|4|null) {
-    await this.repository.enqueueItem(inboxItem_id, priority) 
-  }
-
-  public async dequeueItem(project_id: string) {
-    const queueHead = await this.getHeadOfQueue(project_id);
-    await this.removeItem(queueHead._id.toHexString());
-    const newQueueHead = await this.getHeadOfQueue(project_id);
-    return newQueueHead;
-  }
 }
+

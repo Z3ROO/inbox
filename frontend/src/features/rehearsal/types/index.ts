@@ -2,6 +2,12 @@ import { UseQueryResult } from "react-query"
 import { EvaluateCardDTO, RemoveCardDTO } from "../api"
 import { Mutation } from '@/lib/query';
 
+export interface RehearsalByArea {
+  area: string
+  practical: RehearsalDeck[]
+  theoretical: RehearsalDeck[]
+}
+
 export interface RehearsalByType {
   type: RehearsalType 
   decks: RehearsalDeck[]

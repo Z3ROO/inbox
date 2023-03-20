@@ -1,18 +1,13 @@
+import { Root } from '@/routes';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import Inbox from './features/inbox';
-import { Rehearsal } from './features/rehearsal';
-
 export const queryClient = new QueryClient();
 
-function App() {
+export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={`w-screen h-screen flex flex-col items-center bg-gray-800`}>
-        <Inbox />
-        <Rehearsal />
+      <div className={`w-screen h-screen bg-gray-800`}>
+        <Root />
       </div>
     </QueryClientProvider>
   );
 }
-
-export default App;

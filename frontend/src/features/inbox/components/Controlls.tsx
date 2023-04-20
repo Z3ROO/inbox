@@ -3,6 +3,9 @@ import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useFilterPanelContext } from "../store/FilterPanelContext";
 import { InboxDelayAmounts } from "../types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
+import { ImCross } from "react-icons/im";
+import { FaCheck } from "react-icons/fa";
+import { useState, useEffect } from "react";
 
 export function Controlls() {
   return (
@@ -48,12 +51,12 @@ function TodoButton() {
   const currentItem = inboxItems![0];
 
   return (
-    <BtnSecondary icon bgLess
+    <OptionBtn confirm
       disabled={updateInboxItem.isLoading}
       onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'remove' })}
     >
       <BsFillCheckSquareFill />
-    </BtnSecondary>
+    </OptionBtn>
   )
 }
 
@@ -64,12 +67,12 @@ function RemoveButton() {
   const currentItem = inboxItems![0];
 
   return (
-    <BtnSecondary icon bgLess
+    <OptionBtn confirm
       disabled={updateInboxItem.isLoading}
       onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'remove' })}
     >
       <FaTrashAlt />
-    </BtnSecondary>
+    </OptionBtn>
   )
 }
 
@@ -79,18 +82,18 @@ function UndoButton() {
   const currentItem = inboxItems![0];
 
   return (
-    <BtnSecondary icon bgLess
+    <OptionBtn
       disabled={updateInboxItem.isLoading}
       onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'undo' })}
     >
       <FaUndoAlt />
-    </BtnSecondary>
+    </OptionBtn>
   )
 }
 
-function RoutineOptionsItem(props: { action: () => void, confirm?: boolean, children: JSX.Element}) {
+function OptionBtn(props: { onClick: () => void, disabled?: boolean, confirm?: boolean, children: JSX.Element}) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const { action, confirm, children } = props;
+  const { onClick, disabled, confirm, children } = props;
 
   return (
     <div className='relative'>
@@ -101,16 +104,17 @@ function RoutineOptionsItem(props: { action: () => void, confirm?: boolean, chil
             setIsConfirmOpen(prev => !prev);
             return;
           }
-          action();
+          onClick();
         }}
+        disabled={disabled}
       >
         {children}
       </BtnSecondary>
       { 
         isConfirmOpen && ( 
           <ConfirmationWidget 
-            className='absolute top-0.5 left-[calc(100%+.5rem)]'
-            y={() => { action(); setIsConfirmOpen(false); }} 
+            className='absolute bottom-14 left-[calc(50%)] translate-x-[-50%]'
+            y={() => { onClick(); setIsConfirmOpen(false); }} 
             n={() => setIsConfirmOpen(false)} 
           /> 
         )
@@ -119,3 +123,32 @@ function RoutineOptionsItem(props: { action: () => void, confirm?: boolean, chil
   )
 }
 
+function ConfirmationWidget({y, n, className}: { y: () => void, n: () => void, className?: string}) {
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      n(); 
+    }
+    const delay = setTimeout( () => window.addEventListener('click', handler), 0);
+
+    return () => {
+      clearTimeout(delay);
+      window.removeEventListener('click', handler);
+    }
+  }, []);
+
+  return (
+    <div onClick={e => e.stopPropagation()} 
+      style={{
+        backdropFilter: 'blur(8px)'
+      }}
+      className={`flex rounded-sm bg-tanj-brown bg-opacity-70 shadow ${className}`}>
+      <BtnSecondary icon onClick={n}>
+        <ImCross className='w-2.5 h-2.5 text-tanj-pink' />
+      </BtnSecondary>
+      <BtnSecondary icon onClick={y}>
+        <FaCheck className='w-2.5 h-2.5 text-tanj-green' />
+      </BtnSecondary>
+    </div>
+  )
+}

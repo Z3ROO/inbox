@@ -69,3 +69,35 @@ function UndoButton() {
     </BtnSecondary>
   )
 }
+
+function RoutineOptionsItem(props: { action: () => void, confirm?: boolean, children: JSX.Element}) {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const { action, confirm, children } = props;
+
+  return (
+    <div className='relative'>
+      <BtnSecondary icon 
+        className=''
+        onClick={e => {
+          if (confirm) {
+            setIsConfirmOpen(prev => !prev);
+            return;
+          }
+          action();
+        }}
+      >
+        {children}
+      </BtnSecondary>
+      { 
+        isConfirmOpen && ( 
+          <ConfirmationWidget 
+            className='absolute top-0.5 left-[calc(100%+.5rem)]'
+            y={() => { action(); setIsConfirmOpen(false); }} 
+            n={() => setIsConfirmOpen(false)} 
+          /> 
+        )
+      }
+    </div>
+  )
+}
+

@@ -31,9 +31,9 @@ function FilterPanel() {
     )
 
   return (
-    <div className="w-[30rem] m-2">
+    <div className="w-[36rem] m-2">
       <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
-      <InputField className="relative h-56"/>
+      <InputField className="relative h-64"/>
       <StatusLog />
       <Controlls />
     </div>

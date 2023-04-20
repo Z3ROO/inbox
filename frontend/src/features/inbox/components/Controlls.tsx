@@ -2,11 +2,13 @@ import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useFilterPanelContext } from "../store/FilterPanelContext";
 import { InboxDelayAmounts } from "../types";
+import { BsFillCheckSquareFill } from "react-icons/bs";
 
 export function Controlls() {
   return (
     <div className="flex justify-between mt-2 text-sm">
       <DelayItemButtons />
+      <TodoButton />
       <RemoveButton />
       <UndoButton />
     </div>
@@ -29,7 +31,7 @@ function DelayItemButtons() {
   return (
     <>
       {
-        ['Day', 'Week', 'Month', '3 Months'].map(amount => (
+        ['Next', 'Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
             onClick={updateItemEvent(amount)}
             disabled={updateInboxItem.isLoading}
@@ -39,6 +41,22 @@ function DelayItemButtons() {
     </>
   )
 }
+
+function TodoButton() {
+  const { inboxItems, updateInboxItem } = useFilterPanelContext()!
+
+  const currentItem = inboxItems![0];
+
+  return (
+    <BtnSecondary icon bgLess
+      disabled={updateInboxItem.isLoading}
+      onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'remove' })}
+    >
+      <BsFillCheckSquareFill />
+    </BtnSecondary>
+  )
+}
+
 
 function RemoveButton() {
   const { inboxItems, updateInboxItem } = useFilterPanelContext()!

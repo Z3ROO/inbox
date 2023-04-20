@@ -35,6 +35,9 @@ export class Kagura {
     return simpleTree;
   }
 
+  public async getAreas() {
+    return this.repository.findUniqueAreas();
+  }
   public async getTypes() {
     return this.repository.findUniqueTypes();
   }
@@ -66,10 +69,11 @@ export class Kagura {
   }
 
   public async newCard(card: INewCardDTO) {
-    const { requirements, type, category, difficulty } = card;
+    const { requirements, area, type, category, difficulty } = card;
     
     await this.repository.insertCard({
       requirements,
+      area: area.replace(/ /g, '_'),
       type: type.replace(/ /g, '_'),
       category: category.replace(/ /g, '_'),
       level: 1, 

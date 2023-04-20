@@ -3,11 +3,11 @@ import { MutationOptions, useMutation } from "@/lib/query";
 import { RehearsalCardDTO } from "../types";
 
 async function insertCard(args: RehearsalCardDTO): Promise<{}> {
-  const { requirements, type, category, difficulty } = args;
+  const { requirements, area, type, category, difficulty } = args;
 
   const request = await fetch(API_URL+'/rehearsal/card', {
     method: 'post',
-    body: JSON.stringify({ requirements, type, category, difficulty }),
+    body: JSON.stringify({ requirements, area, type, category, difficulty }),
     headers: {
       'Content-type': 'application/json'
     }

@@ -10,6 +10,7 @@ export interface IRoutine {
 
 export interface ICard {
   requirements: string
+  area: string
   type: string
   category: string
   level: number
@@ -33,6 +34,7 @@ export interface ICardDTO {
 }
 
 export interface INewCardDTO {
+  area: string
   requirements: string
   type: string
   category: string

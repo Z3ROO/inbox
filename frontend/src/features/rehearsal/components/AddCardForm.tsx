@@ -33,9 +33,11 @@ function OpenModalButton({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<Re
 }
 
 function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+  const [areasOptions, setAreasOptions] = useState<{label: string, value: string}[]>([]);
   const [typesOptions, setTypesOptions] = useState<{label: string, value: string}[]>([]);
   const [categoriesOptions, setCategoriesOptions] = useState<{label: string, value: string}[]>([]);
-
+  
+  const [areaInput, setAreaInput] = useState({value:'', label: ''});
   const [difficulty, setDifficulty] = useState<1|2|3>(3);
   const [typeInput, setTypeInput] = useState({value: '', label: ''});
   const [requirementsInput, setRequirementsInput] = useState('');
@@ -44,7 +46,11 @@ function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStat
   useEffect(() => {
     (async () => {
       const data = await RehearsalAPI.getRehearsalOptions();
-      const { types, categories } = data;
+      const { areas, types, categories } = data;
+
+      setAreasOptions(areas.map(t =>
+        ({label: t.replace(/_/g, ' '), value: t})
+      ));
 
       setTypesOptions(types.map(t =>
         ({label: t.replace(/_/g, ' '), value: t})
@@ -62,6 +68,10 @@ function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStat
       <form id="insert-card-form" className='flex flex-col mb-4 w-72'>
         <DifficultyField {...{difficulty, setDifficulty}} />
         <label>
+          <div className='text-tanj-white '>Area: </div>
+          <InputDataList className='w-full' options={areasOptions} value={areaInput} setValue={val => setAreaInput(val)} />
+        </label>
+        <label>
           <div className='text-tanj-white '>Type: </div>
           <InputDataList className='w-full' options={typesOptions} value={typeInput} setValue={val => setTypeInput(val)} />
         </label>
@@ -74,7 +84,7 @@ function Form({ setIsModalOpen }: { setIsModalOpen: React.Dispatch<React.SetStat
           <Textarea className={`w-full resize-none h-32`} value={requirementsInput} onChange={e => setRequirementsInput(e.target.value)} />
         </label>
       </form>
-      <Submit {...{typeInput, categoryInput, requirementsInput, difficulty, setIsModalOpen }} />
+      <Submit {...{areaInput, typeInput, categoryInput, requirementsInput, difficulty, setIsModalOpen }} />
     </div>
   )
 }
@@ -104,9 +114,9 @@ function DifficultyStar({ position, difficulty, setDifficulty }: { position: ( 1
   )
 }
 
-function Submit(props: {typeInput: { label: string, value: string }, categoryInput: { label: string, value: string }, requirementsInput: string, difficulty: ( 1 | 2 | 3 ) , setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
+function Submit(props: { areaInput: { label: string, value: string }, typeInput: { label: string, value: string }, categoryInput: { label: string, value: string }, requirementsInput: string, difficulty: ( 1 | 2 | 3 ) , setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
   const { insertCard } = useRehearsalContext()!;
-  const { typeInput, categoryInput, requirementsInput, difficulty, setIsModalOpen } = props;
+  const { areaInput, typeInput, categoryInput, requirementsInput, difficulty, setIsModalOpen } = props;
 
   return (
     <BtnPrimary type="submit" 
@@ -116,6 +126,7 @@ function Submit(props: {typeInput: { label: string, value: string }, categoryInp
         
         insertCard(
           { 
+            area: areaInput.value !== '' ? areaInput.value : areaInput.label,
             difficulty,
             type: (typeInput.value !== '' ? typeInput.value : typeInput.label) as RehearsalType, 
             category: categoryInput.value !== '' ? categoryInput.value : categoryInput.label,

@@ -17,6 +17,10 @@ export class KaguraRepository extends Repository<ICard> {
     return this.collection().find({allowed_after: {$lte: new Date()}}).toArray();
   }
 
+  public async findUniqueAreas() {
+    return this.collection().distinct('area');
+  }
+
   public async findUniqueCategories() {
     return this.collection().distinct('category');
   }

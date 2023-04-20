@@ -47,6 +47,7 @@ export interface RehearsalContext {
 }
 
 export interface RehearsalCardDTO {
+  area: string
   type: RehearsalType
   requirements: string
   category: RehearsalCategory
@@ -54,6 +55,7 @@ export interface RehearsalCardDTO {
 }
 
 export interface RehearsalOptions {
+  areas: string[]
   types: RehearsalType[]
   categories: RehearsalCategory[]
 }

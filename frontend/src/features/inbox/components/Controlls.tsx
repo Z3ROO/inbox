@@ -23,11 +23,11 @@ function DelayItemButtons() {
 
   const currentItem = inboxItems![0];
 
-  const updateItemEvent = (amount: string) => () => { 
+  const updateItemEvent = (amount: InboxDelayAmounts) => () => { 
     updateInboxItem({ 
       content: inboxFilterText, 
       inboxItem_id: currentItem._id, 
-      action: amount.toLowerCase().replace(/ /g, '-') as InboxDelayAmounts 
+      action: amount 
     });
   }
 
@@ -36,7 +36,7 @@ function DelayItemButtons() {
       {
         ['Next', 'Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
-            onClick={updateItemEvent(amount)}
+            onClick={updateItemEvent(amount.toLowerCase().replace(/ /g, '-') as InboxDelayAmounts)}
             disabled={updateInboxItem.isLoading}
           >{amount}</BtnPrimary>
         ))

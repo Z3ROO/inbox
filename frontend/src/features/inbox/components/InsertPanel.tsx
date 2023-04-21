@@ -34,7 +34,7 @@ function InsertPanelInputField(props: { insertFieldText: string , setInsertField
 
   return (
     <Textarea 
-      className={`resize-none w-72 h-36`} 
+      className={`resize-none w-96 h-56`} 
       value={insertFieldText} 
       onChange={e => { 
         setInsertFieldText(e.target.value); 

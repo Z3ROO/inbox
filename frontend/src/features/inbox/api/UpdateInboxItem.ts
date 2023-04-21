@@ -1,11 +1,10 @@
 import { queryClient } from "@/App";
 import { API_URL } from "@/config/API";
 import { useMutation, MutationOptions } from "@/lib/query";
-import { IInboxItem } from "../types";
+import { IInboxItem, InboxItemDTO } from "../types";
 
-type UpdateInboxArguments = {content?: string, inboxItem_id: string, action: 'day'|'week'|'month'|'3months'|'remove'|'undo'};
 
-async function updateInboxItem(args: UpdateInboxArguments): Promise<{}> {
+async function updateInboxItem(args: InboxItemDTO): Promise<{}> {
   const { content, inboxItem_id, action } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
@@ -20,7 +19,7 @@ async function updateInboxItem(args: UpdateInboxArguments): Promise<{}> {
   return response;
 }
 
-export function UpdateInboxItem(options?: MutationOptions<{}, UpdateInboxArguments>) {
+export function UpdateInboxItem(options?: MutationOptions<{}, InboxItemDTO>) {
 
   return useMutation(updateInboxItem, {
     ...options,

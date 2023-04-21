@@ -1,16 +1,18 @@
 import { Mutation } from "@/lib/query"
 import { UseQueryResult } from "react-query/types/react"
 
+export interface InboxItemDTO {
+  content?: string,
+  inboxItem_id: string,
+  action: InboxDelayAmounts|"remove"|"undo";
+}
+
 export interface IFilterPanelContext {
   inboxFilterText: string
   setInboxFilterText: React.Dispatch<React.SetStateAction<string>>
   isFilterPanelOpen: boolean
   toggleFilterPanel: () => void
-  updateInboxItem: Mutation<{}, {
-      content?: string,
-      inboxItem_id: string,
-      action: "day" | "week" | "month" | "3months"|"remove"|"undo";
-    }>
+  updateInboxItem: Mutation<{}, InboxItemDTO>
   inboxQuery: UseQueryResult<IInboxItem[]>
   inboxItems: IInboxItem[]|undefined
 }
@@ -26,4 +28,4 @@ export interface IInboxItem {
   allowed_after: Date
 }
 
-export type InboxDelayAmounts = 'day'|'week'|'month'|'3months';
+export type InboxDelayAmounts = 'next'|'day'|'week'|'month'|'3-months';

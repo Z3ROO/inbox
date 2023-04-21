@@ -5,10 +5,11 @@ import { ObjectId, WithId } from "mongodb";
 interface IInboxDTO {
   _id: string
   content: string
-  amount: 'day'|'week'|'month'|'3months'
+  amount: 'next'|'day'|'week'|'month'|'3-months'
 }
 
-const DELAY_AMOUNT = { 
+const DELAY_AMOUNT = {
+  'next': (1000),
   'day': (24*60*60*1000),
   'week': ((24*60*60*1000)*7),
   'month': (((24*60*60*1000)*7)*4),
@@ -53,12 +54,19 @@ export class Inbox {
 
   public async delayItem(inboxItem: IInboxDTO) {
     const { _id, content, amount } = inboxItem;
+    let allowed_after: Date;
+    
+    if (amount === 'next')
+      allowed_after = new Date();
+    else
+      allowed_after = new Date(new Date().setHours(4,0,0,0) + DELAY_AMOUNT[amount]);
+
     const { originalValue } = await this.repository.updateItem(_id, {
       content,
-      allowed_after: new Date(new Date().setHours(4,0,0,0) + DELAY_AMOUNT[amount]),
+      allowed_after,
       last_delay: {
         delayed_at: new Date(),
-        amount
+        amount,
       }
     });
 

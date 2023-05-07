@@ -24,13 +24,9 @@ export function UpdateInboxItem(options?: MutationOptions<{}, InboxItemDTO>) {
   return useMutation(updateInboxItem, {
     ...options,
     onSuccess: (_, variables) => {
-      const { action } = variables;
 
-      if (action !== 'undo') {
-        queryClient.setQueryData<IInboxItem[]>('inbox-items', (data) => (data||[]).slice(1));
-      }
-      else
-        queryClient.invalidateQueries('inbox-items');
+      queryClient.invalidateQueries('inbox-todos');
+      queryClient.invalidateQueries('inbox-items');
     }
   });
 }

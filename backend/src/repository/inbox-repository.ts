@@ -33,11 +33,19 @@ export class InboxRepository extends Repository<IInbox> {
 
   async findAll() {
     const result = await this.collection()
-      .find({allowed_after:{ $lte: new Date()}})
+      .find({allowed_after:{ $lte: new Date() }, todo: false })
       .sort({allowed_after: 1})
       .toArray();
 
    return result;
+  }
+
+  async findAllTodos() {
+    const result = await this.collection()
+      .find({todo: true})
+      .toArray();
+
+    return result;
   }
   
   async insertOne(inboxItem: IInbox) {
@@ -51,7 +59,7 @@ export class InboxRepository extends Repository<IInbox> {
       originalValue: mutation.value
     }
   }
-  
+ 
   async deleteOne(inboxItem_id: string) {
     const _id = new ObjectId(inboxItem_id);
     const mutation = await this.collection().findOneAndDelete({_id});

@@ -44,9 +44,14 @@ export class Inbox {
     return await this.repository.findAll();
   }
 
+  public async getTodos() {
+    return await this.repository.findAllTodos();
+  }
+
   public async insertItem(content: string) {
     await this.repository.insertOne({
       content,
+      todo: false,
       last_delay: null,
       allowed_after: new Date(),
     })
@@ -71,6 +76,10 @@ export class Inbox {
     });
 
     undoCache.set = originalValue;
+  }
+
+  public async toggleTodo(inboxItem_id: string, state: boolean) {
+    await this.repository.updateItem(inboxItem_id, {todo: state})
   }
 
   public async removeItem(inboxItem_id: string) {

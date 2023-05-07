@@ -7,6 +7,11 @@ export interface InboxItemDTO {
   action: InboxDelayAmounts|"remove"|"undo";
 }
 
+export interface ToggleTodoDTO {
+  inboxItem_id: string
+  state: boolean
+}
+
 export interface IFilterPanelContext {
   inboxFilterText: string
   setInboxFilterText: React.Dispatch<React.SetStateAction<string>>

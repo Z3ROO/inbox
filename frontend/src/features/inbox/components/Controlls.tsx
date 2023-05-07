@@ -7,6 +7,8 @@ import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
+import * as InboxAPI from '@/features/inbox/api';
+
 export function Controlls() {
   return (
     <div className="flex justify-between mt-2 text-sm">
@@ -46,14 +48,14 @@ function DelayItemButtons() {
 }
 
 function TodoButton() {
-  const { inboxItems, updateInboxItem } = useFilterPanelContext()!
-
+  const { inboxItems } = useFilterPanelContext()!
+  const toggleTodo = InboxAPI.ToggleInboxTodo();
   const currentItem = inboxItems![0];
 
   return (
     <OptionBtn confirm
-      disabled={updateInboxItem.isLoading}
-      onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'remove' })}
+      disabled={toggleTodo.isLoading}
+      onClick={() => toggleTodo({ inboxItem_id: currentItem._id, state: true })}
     >
       <BsFillCheckSquareFill />
     </OptionBtn>

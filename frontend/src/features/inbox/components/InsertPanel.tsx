@@ -49,6 +49,7 @@ function InsertPanelInputField(props: { insertFieldText: string , setInsertField
 function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
   const { toggleFilterPanel } = useFilterPanelContext()!;
   const { insertInbox } = props;
+  const inboxItems = InboxAPI.QueryInboxItems().data;
 
   return (
     <div className="flex justify-between">
@@ -57,6 +58,7 @@ function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
       >Add</BtnPrimary>
       <BtnPrimary
         onClick={toggleFilterPanel}
+        disabled={!(inboxItems?.length)}
       >Free</BtnPrimary>
     </div>
   )

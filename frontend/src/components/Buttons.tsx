@@ -16,7 +16,7 @@ export function BtnPrimary (props: BtnProps) {
       ${ (bgLess || outline) ? '  ' : ' bg-gradient-to-br from-tanj-pink to-tanj-gray hover:from-tanj-green hover:to-tanj-pink '}
       ${ outline ? ' border border-tanj-pink hover:border-tanj-green ' : ' border border-tanj-gray '}
       ${ round ? ' rounded-full ' : ' rounded-sm ' }
-      m-2 text-tanj-white  ${props.className}
+      m-2 text-tanj-white disabled:grayscale disabled:opacity-50 disabled:pointer-events-none disabled:filter disabled:contrast-75 ${props.className}
     `} />
   )
 }

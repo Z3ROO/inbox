@@ -11,6 +11,8 @@ export function InboxInsertPanel() {
   const insertInboxItem = InboxAPI.InsertInboxItem();
 
   async function insertInbox() {
+    if (insertFieldText.trim() === '')
+      return;
     insertInboxItem({content: insertFieldText});
     setInsertFieldText('');
     cacheInsertInputField('');

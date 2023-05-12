@@ -1,5 +1,3 @@
-import { Mutation } from "@/lib/query"
-import { UseQueryResult } from "react-query/types/react"
 
 export interface InboxItemDTO {
   content?: string,
@@ -13,13 +11,10 @@ export interface ToggleTodoDTO {
 }
 
 export interface IFilterPanelContext {
-  inboxFilterText: string
-  setInboxFilterText: React.Dispatch<React.SetStateAction<string>>
+  inboxFilterTextarea: string
+  setInboxFilterTextarea: React.Dispatch<React.SetStateAction<string>>
   isFilterPanelOpen: boolean
   toggleFilterPanel: () => void
-  updateInboxItem: Mutation<{}, InboxItemDTO>
-  inboxQuery: UseQueryResult<IInboxItem[]>
-  inboxItems: IInboxItem[]|undefined
 }
 
 

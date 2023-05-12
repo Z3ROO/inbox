@@ -1,10 +1,10 @@
 import Inbox from './features/inbox';
-import { Todo } from './features/todo-list';
+import { TodoList } from './features/todo-list';
 
 export function HomePage() {
   return (
     <div className='flex h-screen' >
-      <Todo />
+      <TodoList />
       <Inbox />
     </div>
   );

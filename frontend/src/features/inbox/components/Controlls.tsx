@@ -17,17 +17,19 @@ export function Controlls() {
       <RemoveButton />
       <UndoButton />
     </div>
-  )
+  );
 }
 
 function DelayItemButtons() {
-  const { inboxItems, updateInboxItem, inboxFilterText } = useFilterPanelContext()!
-
+  const { inboxFilterTextarea } = useFilterPanelContext()!
+  const inboxItems = InboxAPI.QueryInboxItems().data;
   const currentItem = inboxItems![0];
+
+  const updateInboxItem = InboxAPI.UpdateInboxItem();
 
   const updateItemEvent = (amount: InboxDelayAmounts) => () => { 
     updateInboxItem({ 
-      content: inboxFilterText, 
+      content: inboxFilterTextarea, 
       inboxItem_id: currentItem._id, 
       action: amount 
     });
@@ -44,13 +46,14 @@ function DelayItemButtons() {
         ))
       }
     </>
-  )
+  );
 }
 
 function TodoButton() {
-  const { inboxItems } = useFilterPanelContext()!
-  const toggleTodo = InboxAPI.ToggleInboxTodo();
+  const inboxItems = InboxAPI.QueryInboxItems().data;
   const currentItem = inboxItems![0];
+
+  const toggleTodo = InboxAPI.ToggleInboxTodo();
 
   return (
     <OptionBtn confirm
@@ -59,14 +62,15 @@ function TodoButton() {
     >
       <BsFillCheckSquareFill />
     </OptionBtn>
-  )
+  );
 }
 
 
 function RemoveButton() {
-  const { inboxItems, updateInboxItem } = useFilterPanelContext()!
-
+  const inboxItems = InboxAPI.QueryInboxItems().data;
   const currentItem = inboxItems![0];
+
+  const updateInboxItem = InboxAPI.UpdateInboxItem();
 
   return (
     <OptionBtn confirm
@@ -75,13 +79,14 @@ function RemoveButton() {
     >
       <FaTrashAlt />
     </OptionBtn>
-  )
+  );
 }
 
 function UndoButton() {
-  const { inboxItems, updateInboxItem } = useFilterPanelContext()!
-
+  const inboxItems = InboxAPI.QueryInboxItems().data;
   const currentItem = inboxItems![0];
+
+  const updateInboxItem = InboxAPI.UpdateInboxItem();
 
   return (
     <OptionBtn
@@ -90,7 +95,7 @@ function UndoButton() {
     >
       <FaUndoAlt />
     </OptionBtn>
-  )
+  );
 }
 
 function OptionBtn(props: { onClick: () => void, disabled?: boolean, confirm?: boolean, children: JSX.Element}) {
@@ -122,7 +127,7 @@ function OptionBtn(props: { onClick: () => void, disabled?: boolean, confirm?: b
         )
       }
     </div>
-  )
+  );
 }
 
 function ConfirmationWidget({y, n, className}: { y: () => void, n: () => void, className?: string}) {
@@ -152,5 +157,5 @@ function ConfirmationWidget({y, n, className}: { y: () => void, n: () => void, c
         <FaCheck className='w-2.5 h-2.5 text-tanj-green' />
       </BtnSecondary>
     </div>
-  )
+  );
 }

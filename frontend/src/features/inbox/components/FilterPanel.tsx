@@ -3,6 +3,7 @@ import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext
 import { StatusLog } from "./StatusLog";
 import { InputField } from "./InputField";
 import { Controlls } from "./Controlls";
+import * as InboxAPI from '@/features/inbox/api';
 
 export function InboxFilterPanelModal() {
   const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;
@@ -15,7 +16,7 @@ export function InboxFilterPanelModal() {
 }
 
 function FilterPanel() {
-  const { inboxQuery } = useFilterPanelContext()!;
+  const inboxQuery = InboxAPI.QueryInboxItems();
   
 /*
 * All the proceding use of inboxItems depends on these conditions
@@ -33,7 +34,7 @@ function FilterPanel() {
   return (
     <div className="w-[36rem] m-2">
       <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
-      <InputField className="relative h-72"/>
+      <InputField />
       <StatusLog />
       <Controlls />
     </div>

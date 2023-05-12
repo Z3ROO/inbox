@@ -1,5 +1,4 @@
-import { useFilterPanelContext } from "../store/FilterPanelContext";
-
+import * as InboxAPI from '@/features/inbox/api';
 export function StatusLog() {
   return (
     <div className="text-right">
@@ -9,7 +8,9 @@ export function StatusLog() {
 }
 
 export function LastDelayLog() {
-  const { inboxItems } = useFilterPanelContext()!;
+  const inboxQuery = InboxAPI.QueryInboxItems();
+  const inboxItems = inboxQuery.data; 
+
   const currentInboxItem = inboxItems![0];
 
   if (currentInboxItem.last_delay == null)

@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { IInboxItem } from "../types";
 
 
-export async function getInboxItems(): Promise<IInboxItem[]> {
+async function getInboxItems(): Promise<IInboxItem[]> {
   const request = await fetch(`${API_URL}/inbox`);
   const response = await request.json();
 

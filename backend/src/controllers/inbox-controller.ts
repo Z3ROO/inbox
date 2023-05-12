@@ -18,7 +18,7 @@ router.post('/inbox', async (request, response) => {
   const { content } = request.body;
   await inbox.insertItem(content);
   
-  response.sendStatus(200)
+  response.status(200).json([])
 })
 
 router.put('/inbox', async (request, response) => {

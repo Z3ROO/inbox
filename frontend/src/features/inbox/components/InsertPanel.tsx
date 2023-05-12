@@ -50,7 +50,7 @@ function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
   const { toggleFilterPanel } = useFilterPanelContext()!;
   const { insertInbox } = props;
   const inboxItems = InboxAPI.QueryInboxItems().data;
-
+  console.log(inboxItems);
   return (
     <div className="flex justify-between">
       <BtnPrimary

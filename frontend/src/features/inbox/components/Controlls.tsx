@@ -1,4 +1,4 @@
-import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
+import { BtnPrimary, BtnSecondary, DropDownOnHoldButton } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useFilterPanelContext } from "../store/FilterPanelContext";
 import { InboxDelayAmounts } from "../types";
@@ -45,43 +45,12 @@ function DelayItemButtons() {
           >{amount}</BtnPrimary>
         ))
       }
+      <DropDownOnHoldButton buttons={[
+        {children:"Button 1"}, 
+        {children: "Button 2"},
+        {children: "Button 3"}
+      ]} />
     </>
-  );
-}
-
-function DropDownOnHoldButton() {
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const timeout = useRef<NodeJS.Timeout>();
-
-  return (
-    <button
-      onMouseDown={
-        (event) => {
-          if (event.button !== 0)
-            return; 
-          timeout.current = setTimeout(()=>{
-            setIsDropDownOpen(true);
-          }, 1000);
-        }
-      }
-      onMouseUp={
-        (event) => {
-          if (event.button !== 0)
-            return; 
-         
-          clearTimeout(timeout.current)
-        }
-      }
-
-      style={{
-        width: isDropDownOpen ? "50px" : "50px",
-        height: isDropDownOpen ? "140px" : "35px",
-        //width: isDropDownOpen ? "" : "",
-      }}
-      className="bg-red-300 rounded p-2"
-    >
-      Teste test
-    </button>
   );
 }
 

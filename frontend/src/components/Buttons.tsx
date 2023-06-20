@@ -1,4 +1,5 @@
-import { ButtonHTMLAttributes } from "react";
+import { release } from "os";
+import { ButtonHTMLAttributes, useRef, useState } from "react";
 
 interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: boolean
@@ -34,3 +35,66 @@ export function BtnSecondary (props: BtnProps) {
     `} />
   )
 }
+
+
+type DropDownOnHoldButtonProps = {
+  buttons: BtnProps[]
+}
+
+export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const timeout = useRef<NodeJS.Timeout>();
+  const releaseClick = useRef(true);
+
+  return (
+    <div className="relative">
+      <BtnPrimary
+        {...buttons[0]}
+        className='z-10 relative'
+        onMouseDown={
+          (event) => {
+            if (event.button !== 0)
+            return; 
+            timeout.current = setTimeout(()=>{
+              setIsDropDownOpen(prev => !prev);
+              releaseClick.current = false
+            }, 1000);
+          }
+        }
+        onMouseUp={
+          (event) => {
+            if (event.button !== 0)
+            return; 
+
+            clearTimeout(timeout.current)
+
+            if (releaseClick && buttons[0].onClick !== undefined)
+              buttons[0].onClick(event);
+            else
+              releaseClick.current = true;
+          }
+        }
+        onClick={undefined}
+      />
+      {
+        isDropDownOpen && 
+          <div 
+            className="absolute -top-1 -left-1 bg-tanj-gray rounded p-1"
+            style={{
+              //width: isDropDownOpen ? "" : "",
+            }}
+          >
+            {
+              buttons.map((button, index) => {
+                if (index === 0)
+                return <BtnPrimary>{button.children}</BtnPrimary>;
+
+                return <BtnPrimary {...button} />
+              })
+            }
+          </div>
+      }
+    </div>
+  );
+}
+

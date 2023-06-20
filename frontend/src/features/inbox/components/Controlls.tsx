@@ -38,17 +38,17 @@ function DelayItemButtons() {
   return (
     <>
       {
-        ['Next', 'Day', 'Week', 'Month', '3 Months'].map(amount => (
+        /* ['Next', 'Day', 'Week', 'Month', '3 Months'].map(amount => (
           <BtnPrimary
             onClick={updateItemEvent(amount.toLowerCase().replace(/ /g, '-') as InboxDelayAmounts)}
             disabled={updateInboxItem.isLoading}
           >{amount}</BtnPrimary>
-        ))
+        )) */
       }
       <DropDownOnHoldButton buttons={[
-        {children:"Button 1"}, 
-        {children: "Button 2"},
-        {children: "Button 3"}
+        {children:"Button 1", onClick:() => {console.log(1)}}, 
+        {children: "Button 2", onClick:() => {console.log(2)}},
+        {children: "ButtonBigButton3", onClick:() => {console.log(3)}}
       ]} />
     </>
   );

@@ -1,5 +1,5 @@
 import { release } from "os";
-import { ButtonHTMLAttributes, useRef, useState } from "react";
+import { ButtonHTMLAttributes, ReactEventHandler, useEffect, useRef, useState } from "react";
 
 interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: boolean
@@ -45,41 +45,53 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const timeout = useRef<NodeJS.Timeout>();
   const releaseClick = useRef(true);
+  const mouseDown = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (event.button !== 0)
+      return; 
+    timeout.current = setTimeout(()=>{
+      setIsDropDownOpen(prev => !prev);
+      releaseClick.current = false;
+    }, 350);
+  }
+
+  const mouseUp = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (event.button !== 0)
+      return; 
+
+    clearTimeout(timeout.current)
+
+    if (releaseClick.current && buttons[0].onClick !== undefined) {
+      buttons[0].onClick(event);
+      setIsDropDownOpen(false);
+    }
+    else
+      releaseClick.current = true;
+  }
+
+  useEffect(() => {
+    const handler = () => {
+      setIsDropDownOpen(false);
+      console.log("teste");
+    }
+
+    if (isDropDownOpen)
+      window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  }, [isDropDownOpen])
 
   return (
-    <div className="relative">
+    <div className="relative" onClick={e => e.stopPropagation()}>
       <BtnPrimary
         {...buttons[0]}
-        className='z-10 relative'
-        onMouseDown={
-          (event) => {
-            if (event.button !== 0)
-            return; 
-            timeout.current = setTimeout(()=>{
-              setIsDropDownOpen(prev => !prev);
-              releaseClick.current = false
-            }, 1000);
-          }
-        }
-        onMouseUp={
-          (event) => {
-            if (event.button !== 0)
-            return; 
-
-            clearTimeout(timeout.current)
-
-            if (releaseClick && buttons[0].onClick !== undefined)
-              buttons[0].onClick(event);
-            else
-              releaseClick.current = true;
-          }
-        }
+        onMouseDown={mouseDown}
+        onMouseUp={mouseUp}
         onClick={undefined}
       />
       {
         isDropDownOpen && 
           <div 
-            className="absolute -top-1 -left-1 bg-tanj-gray rounded p-1"
+            className="absolute -top-0 bg-tanj-gray rounded flex flex-col"
             style={{
               //width: isDropDownOpen ? "" : "",
             }}
@@ -87,9 +99,25 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
             {
               buttons.map((button, index) => {
                 if (index === 0)
-                return <BtnPrimary>{button.children}</BtnPrimary>;
+                return (
+                  <BtnPrimary {...button} 
+                    onMouseDown={mouseDown}
+                    onMouseUp={mouseUp}
+                    onClick={undefined} 
+                  />
+                );
 
-                return <BtnPrimary {...button} />
+                return (
+                  <BtnPrimary {...button} 
+                    onClick={
+                      e => { 
+                        setIsDropDownOpen(false); 
+                        if (button.onClick)
+                          button.onClick(e);
+                      }
+                    }
+                  />
+                );
               })
             }
           </div>

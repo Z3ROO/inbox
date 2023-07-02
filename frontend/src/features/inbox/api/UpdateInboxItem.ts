@@ -5,11 +5,11 @@ import { IInboxItem, InboxItemDTO } from "../types";
 
 
 async function updateInboxItem(args: InboxItemDTO): Promise<{}> {
-  const { content, inboxItem_id, action } = args;
+  const { content, inboxItem_id, action, quantity } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
     method: 'put',
-    body: JSON.stringify({content, action, item_id: inboxItem_id}),
+    body: JSON.stringify({content, action, quantity, item_id: inboxItem_id}),
     headers: {
       'Content-Type':'application/json'
     }

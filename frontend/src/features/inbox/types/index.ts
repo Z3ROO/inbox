@@ -3,6 +3,7 @@ export interface InboxItemDTO {
   content?: string,
   inboxItem_id: string,
   action: InboxDelayAmounts|"remove"|"undo";
+  quantity?: 1|2|3
 }
 
 export interface ToggleTodoDTO {
@@ -28,4 +29,4 @@ export interface IInboxItem {
   allowed_after: Date
 }
 
-export type InboxDelayAmounts = 'next'|'day'|'week'|'month'|'3-months';
+export type InboxDelayAmounts = 'next'|'day'|'week'|'month';

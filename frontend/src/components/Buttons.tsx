@@ -1,4 +1,3 @@
-import { release } from "os";
 import { ButtonHTMLAttributes, ReactEventHandler, useEffect, useRef, useState } from "react";
 
 interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -51,7 +50,7 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
     timeout.current = setTimeout(()=>{
       setIsDropDownOpen(prev => !prev);
       releaseClick.current = false;
-    }, 350);
+    }, 250);
   }
 
   const mouseUp = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -91,7 +90,7 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
       {
         isDropDownOpen && 
           <div 
-            className="absolute -top-0 bg-tanj-gray rounded flex flex-col"
+            className="absolute -top-0 left-1/2 -translate-x-1/2 bg-tanj-gray rounded flex flex-col"
             style={{
               //width: isDropDownOpen ? "" : "",
             }}
@@ -109,6 +108,7 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
 
                 return (
                   <BtnPrimary {...button} 
+                    className={`whitespace-nowrap `+button.className}
                     onClick={
                       e => { 
                         setIsDropDownOpen(false); 

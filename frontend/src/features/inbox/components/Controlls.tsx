@@ -27,29 +27,43 @@ function DelayItemButtons() {
 
   const updateInboxItem = InboxAPI.UpdateInboxItem();
 
-  const updateItemEvent = (amount: InboxDelayAmounts) => () => { 
+  const updateItemEvent = (delay: InboxDelayAmounts, quantity?: 1|2|3) => () => { 
     updateInboxItem({ 
       content: inboxFilterTextarea, 
       inboxItem_id: currentItem._id, 
-      action: amount 
+      action: delay,
+      quantity
     });
   }
 
   return (
     <>
+      <BtnPrimary
+        onClick={updateItemEvent('next')}
+        disabled={updateInboxItem.isLoading}
+      >Next</BtnPrimary>
       {
-        /* ['Next', 'Day', 'Week', 'Month', '3 Months'].map(amount => (
-          <BtnPrimary
-            onClick={updateItemEvent(amount.toLowerCase().replace(/ /g, '-') as InboxDelayAmounts)}
-            disabled={updateInboxItem.isLoading}
-          >{amount}</BtnPrimary>
-        )) */
+        ['Day', 'Week', 'Month'].map(amount => (
+          <DropDownOnHoldButton 
+            buttons={[
+              { 
+                children: amount, 
+                onClick: updateItemEvent(amount.toLowerCase() as InboxDelayAmounts),
+                disabled: updateInboxItem.isLoading
+              },
+              {
+                children: `2 ${amount}s`,
+                onClick: updateItemEvent(amount.toLowerCase() as InboxDelayAmounts, 2),
+              },
+              {
+                children: `3 ${amount}s`,
+                onClick: updateItemEvent(amount.toLowerCase() as InboxDelayAmounts, 3),
+
+              }
+            ]}
+          />
+        ))
       }
-      <DropDownOnHoldButton buttons={[
-        {children:"Button 1", onClick:() => {console.log(1)}}, 
-        {children: "Button 2", onClick:() => {console.log(2)}},
-        {children: "ButtonBigButton3", onClick:() => {console.log(3)}}
-      ]} />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { BtnPrimary, BtnSecondary, DropDownOnHoldButton } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useFilterPanelContext } from "../store/FilterPanelContext";
-import { InboxDelayAmounts } from "../types";
+import { DraftDelayAmounts } from "../types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa";
@@ -12,7 +12,7 @@ import * as InboxAPI from '@/features/inbox/api';
 export function Controlls() {
   return (
     <div className="flex justify-between mt-2 text-sm">
-      <DelayItemButtons />
+      <DelayDraftButtons />
       <TodoButton />
       <RemoveButton />
       <UndoButton />
@@ -20,17 +20,17 @@ export function Controlls() {
   );
 }
 
-function DelayItemButtons() {
+function DelayDraftButtons() {
   const { inboxFilterTextarea } = useFilterPanelContext()!
-  const inboxItems = InboxAPI.QueryInboxItems().data;
-  const currentItem = inboxItems![0];
+  const inbox = InboxAPI.QueryInbox().data;
+  const currentDraft = inbox![0];
 
-  const updateInboxItem = InboxAPI.UpdateInboxItem();
+  const updateDraft = InboxAPI.UpdateDraft();
 
-  const updateItemEvent = (delay: InboxDelayAmounts, quantity?: 1|2|3) => () => { 
-    updateInboxItem({ 
+  const updateDraftEvent = (delay: DraftDelayAmounts, quantity?: 1|2|3) => () => { 
+    updateDraft({ 
       content: inboxFilterTextarea, 
-      inboxItem_id: currentItem._id, 
+      draft_id: currentDraft._id, 
       action: delay,
       quantity
     });
@@ -39,8 +39,8 @@ function DelayItemButtons() {
   return (
     <>
       <BtnPrimary
-        onClick={updateItemEvent('next')}
-        disabled={updateInboxItem.isLoading}
+        onClick={updateDraftEvent('next')}
+        disabled={updateDraft.isLoading}
       >Next</BtnPrimary>
       {
         ['Day', 'Week', 'Month'].map(amount => (
@@ -48,16 +48,16 @@ function DelayItemButtons() {
             buttons={[
               { 
                 children: amount, 
-                onClick: updateItemEvent(amount.toLowerCase() as InboxDelayAmounts),
-                disabled: updateInboxItem.isLoading
+                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmounts),
+                disabled: updateDraft.isLoading
               },
               {
                 children: `2 ${amount}s`,
-                onClick: updateItemEvent(amount.toLowerCase() as InboxDelayAmounts, 2),
+                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmounts, 2),
               },
               {
                 children: `3 ${amount}s`,
-                onClick: updateItemEvent(amount.toLowerCase() as InboxDelayAmounts, 3),
+                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmounts, 3),
 
               }
             ]}
@@ -69,15 +69,15 @@ function DelayItemButtons() {
 }
 
 function TodoButton() {
-  const inboxItems = InboxAPI.QueryInboxItems().data;
-  const currentItem = inboxItems![0];
+  const inbox = InboxAPI.QueryInbox().data;
+  const currentDraft = inbox![0];
 
   const toggleTodo = InboxAPI.ToggleInboxTodo();
 
   return (
     <OptionBtn confirm
       disabled={toggleTodo.isLoading}
-      onClick={() => toggleTodo({ inboxItem_id: currentItem._id, state: true })}
+      onClick={() => toggleTodo({ draft_id: currentDraft._id, state: true })}
     >
       <BsFillCheckSquareFill />
     </OptionBtn>
@@ -86,15 +86,15 @@ function TodoButton() {
 
 
 function RemoveButton() {
-  const inboxItems = InboxAPI.QueryInboxItems().data;
-  const currentItem = inboxItems![0];
+  const inbox = InboxAPI.QueryInbox().data;
+  const currentDraft = inbox![0];
 
-  const updateInboxItem = InboxAPI.UpdateInboxItem();
+  const updateDraft = InboxAPI.UpdateDraft();
 
   return (
     <OptionBtn confirm
-      disabled={updateInboxItem.isLoading}
-      onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'remove' })}
+      disabled={updateDraft.isLoading}
+      onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'remove' })}
     >
       <FaTrashAlt />
     </OptionBtn>
@@ -102,15 +102,15 @@ function RemoveButton() {
 }
 
 function UndoButton() {
-  const inboxItems = InboxAPI.QueryInboxItems().data;
-  const currentItem = inboxItems![0];
+  const inbox = InboxAPI.QueryInbox().data;
+  const currentDraft = inbox![0];
 
-  const updateInboxItem = InboxAPI.UpdateInboxItem();
+  const updateDraft = InboxAPI.UpdateDraft();
 
   return (
     <OptionBtn
-      disabled={updateInboxItem.isLoading}
-      onClick={() => updateInboxItem({ inboxItem_id: currentItem._id, action: 'undo' })}
+      disabled={updateDraft.isLoading}
+      onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'undo' })}
     >
       <FaUndoAlt />
     </OptionBtn>

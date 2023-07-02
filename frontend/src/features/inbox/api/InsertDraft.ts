@@ -2,9 +2,9 @@ import { queryClient } from "@/App";
 import { API_URL } from "@/config/API";
 import { useMutation, MutationOptions } from "@/lib/query";
 
-type InsertInboxItemArguments = {content: string}
+type InsertDraftArguments = {content: string}
 
-async function insertInboxItem(args: InsertInboxItemArguments) {
+async function insertDraft(args: InsertDraftArguments) {
   const { content } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
@@ -19,11 +19,11 @@ async function insertInboxItem(args: InsertInboxItemArguments) {
   return response;
 }
 
-export function InsertInboxItem(options?: MutationOptions<{}, InsertInboxItemArguments>) {
-  return useMutation(insertInboxItem, {
+export function InsertDraft(options?: MutationOptions<{}, InsertDraftArguments>) {
+  return useMutation(insertDraft, {
     ...options,
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries('inbox-items');
+      queryClient.invalidateQueries('inbox');
     }
   });
 }

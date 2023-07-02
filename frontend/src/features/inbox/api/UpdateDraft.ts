@@ -1,15 +1,15 @@
 import { queryClient } from "@/App";
 import { API_URL } from "@/config/API";
 import { useMutation, MutationOptions } from "@/lib/query";
-import { IInboxItem, InboxItemDTO } from "../types";
+import { DraftDTO } from "../types";
 
 
-async function updateInboxItem(args: InboxItemDTO): Promise<{}> {
-  const { content, inboxItem_id, action, quantity } = args;
+async function updateDraft(args: DraftDTO): Promise<{}> {
+  const { content, draft_id, action, quantity } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
     method: 'put',
-    body: JSON.stringify({content, action, quantity, item_id: inboxItem_id}),
+    body: JSON.stringify({content, action, quantity, item_id: draft_id}),
     headers: {
       'Content-Type':'application/json'
     }
@@ -19,14 +19,14 @@ async function updateInboxItem(args: InboxItemDTO): Promise<{}> {
   return response;
 }
 
-export function UpdateInboxItem(options?: MutationOptions<{}, InboxItemDTO>) {
+export function UpdateDraft(options?: MutationOptions<{}, DraftDTO>) {
 
-  return useMutation(updateInboxItem, {
+  return useMutation(updateDraft, {
     ...options,
     onSuccess: (_, variables) => {
 
       queryClient.invalidateQueries('inbox-todos');
-      queryClient.invalidateQueries('inbox-items');
+      queryClient.invalidateQueries('inbox');
     }
   });
 }

@@ -5,11 +5,11 @@ import { ToggleTodoDTO } from "../types";
 
 
 async function toggleInboxTodo(args: ToggleTodoDTO): Promise<{}> {
-  const { inboxItem_id, state } = args;
+  const { draft_id, state } = args;
   
   const request = await fetch(`${API_URL}/inbox/todos`, {
     method: 'put',
-    body: JSON.stringify({item_id: inboxItem_id, state }),
+    body: JSON.stringify({item_id: draft_id, state }),
     headers: {
       'Content-Type':'application/json'
     }
@@ -26,7 +26,7 @@ export function ToggleInboxTodo(options?: MutationOptions<{}, ToggleTodoDTO>) {
     onSuccess: (_, variables) => {
       // MUST CONFIGURE A MORE PRECISE UPDATE OF THE WHOLE ITEMS LIST
       //queryClient.setQueryData<IInboxItem[]>('inbox-items', (data) => (data||[]).slice(1));
-      queryClient.invalidateQueries('inbox-items');
+      queryClient.invalidateQueries('inbox');
       queryClient.invalidateQueries('inbox-todos');
     }
   });

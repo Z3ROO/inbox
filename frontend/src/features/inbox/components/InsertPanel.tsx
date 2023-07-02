@@ -8,12 +8,12 @@ import { Textarea } from "@/components/form/Input";
 export function InboxInsertPanel() {
   const [insertFieldText, setInsertFieldText] = useState('');
 
-  const insertInboxItem = InboxAPI.InsertInboxItem();
+  const insertDraft = InboxAPI.InsertDraft();
 
   async function insertInbox() {
     if (insertFieldText.trim() === '')
       return;
-    insertInboxItem({content: insertFieldText});
+    insertDraft({content: insertFieldText});
     setInsertFieldText('');
     cacheInsertInputField('');
   }
@@ -49,8 +49,8 @@ function InsertPanelInputField(props: { insertFieldText: string , setInsertField
 function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
   const { toggleFilterPanel } = useFilterPanelContext()!;
   const { insertInbox } = props;
-  const inboxItems = InboxAPI.QueryInboxItems().data;
-  console.log(inboxItems);
+  const inbox = InboxAPI.QueryInbox().data;
+  console.log(inbox);
   return (
     <div className="flex justify-between">
       <BtnPrimary
@@ -58,7 +58,7 @@ function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
       >Add</BtnPrimary>
       <BtnPrimary
         onClick={toggleFilterPanel}
-        disabled={!(inboxItems?.length)}
+        disabled={!(inbox?.length)}
       >Free</BtnPrimary>
     </div>
   )

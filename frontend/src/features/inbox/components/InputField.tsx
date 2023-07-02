@@ -6,14 +6,14 @@ import * as InboxAPI from '@/features/inbox/api';
 
 export function InputField(props: React.HTMLAttributes<HTMLDivElement>){
   const { inboxFilterTextarea, setInboxFilterTextarea } = useFilterPanelContext()!;
-  const inboxQuery = InboxAPI.QueryInboxItems();
-  const inboxItems = inboxQuery.data; 
+  const inboxQuery = InboxAPI.QueryInbox();
+  const inbox = inboxQuery.data; 
 
-  const updateInboxItem = InboxAPI.UpdateInboxItem();
+  const updateDraft = InboxAPI.UpdateDraft();
 
   useEffect(() => {
-    setInboxFilterTextarea(inboxItems![0].content);
-  }, [inboxItems]);
+    setInboxFilterTextarea(inbox![0].content);
+  }, [inbox]);
 
 
   return (
@@ -23,7 +23,7 @@ export function InputField(props: React.HTMLAttributes<HTMLDivElement>){
         value={inboxFilterTextarea} onChange={e => setInboxFilterTextarea(e.target.value)}
       />
       {
-        updateInboxItem.isLoading &&
+        updateDraft.isLoading &&
         <BiLoaderAlt className="absolute top-4 right-4 animate-spin" />
       }
     </div>

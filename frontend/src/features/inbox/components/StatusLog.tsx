@@ -8,17 +8,17 @@ export function StatusLog() {
 }
 
 export function LastDelayLog() {
-  const inboxQuery = InboxAPI.QueryInboxItems();
-  const inboxItems = inboxQuery.data; 
+  const inboxQuery = InboxAPI.QueryInbox();
+  const inbox = inboxQuery.data; 
 
-  const currentInboxItem = inboxItems![0];
+  const currentDraft = inbox![0];
 
-  if (currentInboxItem.last_delay == null)
+  if (currentDraft.last_delay == null)
     return null;
 
-  const { delayed_at, amount, quantity } = currentInboxItem.last_delay;
+  const { delayed_at, amount, quantity } = currentDraft.last_delay;
 
-  let amountDelayed = quantity ? ` %{quantity} ${amount}` : `a ${amount}`
+  let amountDelayed = quantity ? ` ${quantity} ${amount}` : `a ${amount}`
 
   const dateDelayed = new Date(delayed_at).toLocaleDateString(['pt-BR']);
 

@@ -1,10 +1,10 @@
 import { FaCheck, FaTrashAlt } from "react-icons/fa";
 import * as InboxAPI from '@/features/inbox/api';
-import { IInboxItem } from "@/features/inbox/types";
+import { IDraft } from "@/features/inbox/types";
 
-export function Item({todo}: {todo: IInboxItem}) {
-  const inboxItem_id = todo._id;
-  const updateInboxItem = InboxAPI.UpdateInboxItem();
+export function Item({todo}: {todo: IDraft}) {
+  const draft_id = todo._id;
+  const updateDraft = InboxAPI.UpdateDraft();
   const toggleTodo = InboxAPI.ToggleInboxTodo();
 
   return (
@@ -14,9 +14,9 @@ export function Item({todo}: {todo: IInboxItem}) {
         <FaCheck 
           className="m-1 cursor-pointer text-tanj-green opacity-40 hover:opacity-100" 
           onClick={() => {
-            updateInboxItem({
+            updateDraft({
               action: 'remove',
-              inboxItem_id
+              draft_id
             })
           }}
         />
@@ -24,7 +24,7 @@ export function Item({todo}: {todo: IInboxItem}) {
           className="m-1 cursor-pointer text-tanj-pink opacity-40 hover:opacity-100" 
           onClick={() => {
             toggleTodo({
-              inboxItem_id,
+              draft_id,
               state: false
             })
           }}

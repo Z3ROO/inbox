@@ -1,13 +1,13 @@
 
-export interface InboxItemDTO {
+export interface DraftDTO {
   content?: string,
-  inboxItem_id: string,
-  action: InboxDelayAmounts|"remove"|"undo";
+  draft_id: string,
+  action: DraftDelayAmounts|"remove"|"undo";
   quantity?: 1|2|3
 }
 
 export interface ToggleTodoDTO {
-  inboxItem_id: string
+  draft_id: string
   state: boolean
 }
 
@@ -19,15 +19,15 @@ export interface IFilterPanelContext {
 }
 
 
-export interface IInboxItem {
+export interface IDraft {
   _id: string
   content: string
   last_delay: null|{
-    amount: InboxDelayAmounts, 
+    amount: DraftDelayAmounts, 
     delayed_at: Date, 
     quantity: 1|2|3
   },
   allowed_after: Date
 }
 
-export type InboxDelayAmounts = 'next'|'day'|'week'|'month';
+export type DraftDelayAmounts = 'next'|'day'|'week'|'month';

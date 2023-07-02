@@ -1,9 +1,9 @@
 import { API_URL } from "@/config/API";
 import { QueryOptions } from "@/lib/query";
 import { useQuery } from "react-query";
-import { IInboxItem } from "../types";
+import { IDraft } from "../types";
 
-async function getInboxTodos(): Promise<IInboxItem[]> {
+async function getInboxTodos(): Promise<IDraft[]> {
   const request = await fetch(`${API_URL}/inbox/todos`);
   const response = await request.json();
 
@@ -11,7 +11,7 @@ async function getInboxTodos(): Promise<IInboxItem[]> {
 }
 
 export function QueryInboxTodos(config?: {
-  options?: QueryOptions<IInboxItem[], 'inbox-todos'>
+  options?: QueryOptions<IDraft[], 'inbox-todos'>
 }) {
   return useQuery('inbox-todos', getInboxTodos, {...config?.options });
 }

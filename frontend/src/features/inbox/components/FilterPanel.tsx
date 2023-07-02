@@ -16,7 +16,7 @@ export function InboxFilterPanelModal() {
 }
 
 function FilterPanel() {
-  const inboxQuery = InboxAPI.QueryInboxItems();
+  const inboxQuery = InboxAPI.QueryInbox();
   
 /*
 * All the proceding use of inboxItems depends on these conditions

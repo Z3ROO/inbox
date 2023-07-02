@@ -2,7 +2,7 @@
 export interface IInbox {
   content: string
     last_delay: null | {
-    amount: 'next'|'day'|'week'|'month'|'3-months'
+    amount: 'next'|'day'|'week'|'month'
     delayed_at: Date
     quantity: 1|2|3
   }

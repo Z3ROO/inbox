@@ -4,6 +4,7 @@ export interface IInbox {
     last_delay: null | {
     amount: 'next'|'day'|'week'|'month'|'3-months'
     delayed_at: Date
+    quantity: 1|2|3
   }
   todo: boolean
   allowed_after: Date

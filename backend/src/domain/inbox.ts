@@ -74,6 +74,7 @@ export class Inbox {
       last_delay: {
         delayed_at: new Date(),
         amount,
+        quantity
       }
     });
 

@@ -40,7 +40,7 @@ const undoCache = new UndoCache<WithId<IInbox>>();
 export class Inbox {
   repository = new InboxRepository();
 
-  public async getItems() {
+  public async getInbox() {
     return await this.repository.findAll();
   }
 
@@ -48,7 +48,7 @@ export class Inbox {
     return await this.repository.findAllTodos();
   }
 
-  public async insertItem(content: string) {
+  public async insertDraft(content: string) {
     await this.repository.insertOne({
       content,
       todo: false,
@@ -57,8 +57,8 @@ export class Inbox {
     })
   }
 
-  public async delayItem(inboxItem: IInboxDTO) {
-    let { _id, content, amount, quantity } = inboxItem;
+  public async delayDraft(draft: IInboxDTO) {
+    let { _id, content, amount, quantity } = draft;
     if (!quantity)
       quantity = 1;
     let allowed_after: Date;
@@ -68,7 +68,7 @@ export class Inbox {
     else
       allowed_after = new Date(new Date().setHours(4,0,0,0) + (quantity * DELAY_AMOUNT[amount]));
 
-    const { originalValue } = await this.repository.updateItem(_id, {
+    const { originalValue } = await this.repository.updateDraft(_id, {
       content,
       allowed_after,
       last_delay: {
@@ -81,19 +81,19 @@ export class Inbox {
     undoCache.set = originalValue;
   }
 
-  public async toggleTodo(inboxItem_id: string, state: boolean) {
-    await this.repository.updateItem(inboxItem_id, {todo: state})
+  public async toggleTodo(draft_id: string, state: boolean) {
+    await this.repository.updateDraft(draft_id, {todo: state});
   }
 
-  public async removeItem(inboxItem_id: string) {
-    await this.repository.deleteOne(inboxItem_id);
+  public async removeDraft(draft_id: string) {
+    await this.repository.deleteOne(draft_id);
   }
 
   public async undoChange() {
     const { _id, content, last_delay, allowed_after} = undoCache.get || {};
 
     if (_id !== undefined)
-      await this.repository.updateItem(_id.toHexString(),  { last_delay, allowed_after });
+      await this.repository.updateDraft(_id.toHexString(),  { last_delay, allowed_after });
   }
 }
 

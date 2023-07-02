@@ -48,20 +48,20 @@ export class InboxRepository extends Repository<IInbox> {
     return result;
   }
   
-  async insertOne(inboxItem: IInbox) {
-    await this.collection().insertOne(inboxItem);
+  async insertOne(draft: IInbox) {
+    await this.collection().insertOne(draft);
   }
 
-  async updateItem(inboxItem_id: string, properties: Partial<IInbox>) {
-    const _id = new ObjectId(inboxItem_id);
+  async updateDraft(draft_id: string, properties: Partial<IInbox>) {
+    const _id = new ObjectId(draft_id);
     const mutation = await this.collection().findOneAndUpdate({_id}, {$set: {...properties}}, { returnDocument: 'before' });
     return {
       originalValue: mutation.value
     }
   }
  
-  async deleteOne(inboxItem_id: string) {
-    const _id = new ObjectId(inboxItem_id);
+  async deleteOne(draft_id: string) {
+    const _id = new ObjectId(draft_id);
     const mutation = await this.collection().findOneAndDelete({_id});
     return {
       originalValue: mutation.value

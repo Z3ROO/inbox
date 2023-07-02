@@ -5,8 +5,8 @@ export const router = Router();
 const inbox = new Inbox();
 
 router.get('/inbox', async (request, response) => {
-  const inboxItems = await inbox.getItems();
-  response.json(inboxItems);
+  const drafts = await inbox.getInbox();
+  response.json(drafts);
 });
 
 router.get('/inbox/todos', async (request, response) => {
@@ -16,20 +16,20 @@ router.get('/inbox/todos', async (request, response) => {
 
 router.post('/inbox', async (request, response) => {
   const { content } = request.body;
-  await inbox.insertItem(content);
+  await inbox.insertDraft(content);
   
   response.status(200).json([])
 })
 
 router.put('/inbox', async (request, response) => {
-  const { action, item_id, content, quantity } = request.body;
+  const { action, draft_id, content, quantity } = request.body;
   try {
     if (action === 'undo')
       await inbox.undoChange();
     else if (action === 'remove')
-      await inbox.removeItem(item_id);
+      await inbox.removeDraft(draft_id);
     else
-      await inbox.delayItem({_id: item_id, content, amount: action, quantity});
+      await inbox.delayDraft({_id: draft_id, content, amount: action, quantity});
 
     response.status(200).json([]);
   }catch(err){
@@ -38,13 +38,13 @@ router.put('/inbox', async (request, response) => {
 });
 
 router.put('/inbox/todos', async (request, response) => {
-  const { item_id, state } = request.body;
+  const { draft_id, state } = request.body;
   console.log(request.body);
   try {
     if (state === true)
-      await inbox.toggleTodo(item_id, true);
+      await inbox.toggleTodo(draft_id, true);
     else
-      await inbox.toggleTodo(item_id, false);
+      await inbox.toggleTodo(draft_id, false);
 
     response.status(200).json([]);
   }

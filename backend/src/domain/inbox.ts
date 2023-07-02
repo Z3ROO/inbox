@@ -48,10 +48,13 @@ export class Inbox {
     return await this.repository.findAllTodos();
   }
 
-  public async insertDraft(content: string) {
+  public async insertDraft(content: string, todo?: boolean) {
+    if (todo === undefined)
+      todo = false;
+
     await this.repository.insertOne({
       content,
-      todo: false,
+      todo,
       last_delay: null,
       allowed_after: new Date(),
     })

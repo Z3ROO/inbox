@@ -15,8 +15,8 @@ router.get('/inbox/todos', async (request, response) => {
 });
 
 router.post('/inbox', async (request, response) => {
-  const { content } = request.body;
-  await inbox.insertDraft(content);
+  const { content, todo } = request.body;
+  await inbox.insertDraft(content, todo);
   
   response.status(200).json([])
 })

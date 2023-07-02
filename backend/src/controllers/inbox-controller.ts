@@ -22,14 +22,14 @@ router.post('/inbox', async (request, response) => {
 })
 
 router.put('/inbox', async (request, response) => {
-  const { action, item_id, content } = request.body;
+  const { action, item_id, content, quantity } = request.body;
   try {
     if (action === 'undo')
       await inbox.undoChange();
     else if (action === 'remove')
       await inbox.removeItem(item_id);
     else
-      await inbox.delayItem({_id: item_id, content, amount: action});
+      await inbox.delayItem({_id: item_id, content, amount: action, quantity});
 
     response.status(200).json([]);
   }catch(err){

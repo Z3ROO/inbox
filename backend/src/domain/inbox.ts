@@ -5,7 +5,8 @@ import { ObjectId, WithId } from "mongodb";
 interface IInboxDTO {
   _id: string
   content: string
-  amount: 'next'|'day'|'week'|'month'|'3-months'
+  amount: 'next'|'day'|'week'|'month'
+  quantity?: 1|2|3
 }
 
 const DELAY_AMOUNT = {
@@ -13,7 +14,6 @@ const DELAY_AMOUNT = {
   'day': (24*60*60*1000),
   'week': ((24*60*60*1000)*7),
   'month': (((24*60*60*1000)*7)*4),
-  '3-months': ((((24*60*60*1000)*7)*4)*3)
 }
 
 class UndoCache<T>{
@@ -58,13 +58,15 @@ export class Inbox {
   }
 
   public async delayItem(inboxItem: IInboxDTO) {
-    const { _id, content, amount } = inboxItem;
+    let { _id, content, amount, quantity } = inboxItem;
+    if (!quantity)
+      quantity = 1;
     let allowed_after: Date;
     
     if (amount === 'next')
       allowed_after = new Date();
     else
-      allowed_after = new Date(new Date().setHours(4,0,0,0) + DELAY_AMOUNT[amount]);
+      allowed_after = new Date(new Date().setHours(4,0,0,0) + (quantity * DELAY_AMOUNT[amount]));
 
     const { originalValue } = await this.repository.updateItem(_id, {
       content,

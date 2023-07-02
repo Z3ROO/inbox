@@ -25,6 +25,7 @@ export interface IInboxItem {
   last_delay: null|{
     amount: InboxDelayAmounts, 
     delayed_at: Date, 
+    quantity: 1|2|3
   },
   allowed_after: Date
 }

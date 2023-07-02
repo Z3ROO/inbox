@@ -16,11 +16,9 @@ export function LastDelayLog() {
   if (currentInboxItem.last_delay == null)
     return null;
 
-  const { delayed_at, amount } = currentInboxItem.last_delay;
+  const { delayed_at, amount, quantity } = currentInboxItem.last_delay;
 
-  let amountDelayed = amount.replace(/-/g, ' ');
-  if (amount.includes('-'))
-    amountDelayed = 'a ' + amountDelayed;
+  let amountDelayed = quantity ? ` %{quantity} ${amount}` : `a ${amount}`
 
   const dateDelayed = new Date(delayed_at).toLocaleDateString(['pt-BR']);
 

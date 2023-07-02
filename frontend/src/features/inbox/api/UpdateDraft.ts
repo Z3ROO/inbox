@@ -9,7 +9,7 @@ async function updateDraft(args: DraftDTO): Promise<{}> {
   
   const request = await fetch(`${API_URL}/inbox`, {
     method: 'put',
-    body: JSON.stringify({content, action, quantity, item_id: draft_id}),
+    body: JSON.stringify({content, action, quantity, draft_id: draft_id}),
     headers: {
       'Content-Type':'application/json'
     }

@@ -9,7 +9,7 @@ async function toggleInboxTodo(args: ToggleTodoDTO): Promise<{}> {
   
   const request = await fetch(`${API_URL}/inbox/todos`, {
     method: 'put',
-    body: JSON.stringify({item_id: draft_id, state }),
+    body: JSON.stringify({ draft_id, state }),
     headers: {
       'Content-Type':'application/json'
     }

@@ -35,14 +35,14 @@ function ActiveGoals() {
         <span className="text-tanj-green hover:text-[#4dbf82] whitespace-pre-wrap">aaaaaaaaaaaaaaaaa aaaaaaaaa aaqweqweqw</span>
         <div>
           <ul>
-            <li>
+            <li className='rounded-sm hover:bg-tanj-green hover:bg-opacity-5 cursor-pointer p-3 my-1'>
               <RadioButton checked={radio} onChange={e => setRadio(prev => !prev)}>
-                <span>Teste testoso asd asdasdasdsadas dasdasd sadasdasda sdasd asd asd asd asdasdasdasdasdasd asdasdasdasd asdasdasdasd asdasd asdasd asdasdas das.</span>
+                <span>Teste testoso asd asdasdasdsadas dasdasd sadasdasda sdasd asd asd das.</span>
               </RadioButton>
             </li>
             <li>
               <RadioButton checked={radio} onChange={e => setRadio(prev => !prev)}>
-                <span>Teste testoso asd asdasdasdsadas dasdasd sadasdasda sdasd asd asd asd asdasdasdasdasdasd asdasdasdasd asdasdasdasd asdasd asdasd asdasdas das.</span>
+                <span>Teste testoso asd asdasdasdsadas dasdasd sadasdasda sdasd asd asd</span>
               </RadioButton>
             </li>
           </ul>
@@ -60,8 +60,8 @@ const CheckBox_TW = 'text-tanj-green mt-1 mr-1.5 shrink-0';
 function RadioButton(props : CustomRadioButton) {
   
   return (
-    <label>
-      <input className="opacity-0" {...props} children={undefined} type="checkbox" />
+    <label className='cursor-pointer'>
+      <input className="opacity-0" {...props} children={undefined} type="checkbox" hidden />
       <div className='flex'>
     
       {

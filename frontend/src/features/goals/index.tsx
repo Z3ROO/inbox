@@ -2,6 +2,7 @@ import { BtnSecondary } from "@/components/Buttons";
 import { HiMiniBackspace } from 'react-icons/hi2';
 import { Link } from "react-router-dom";
 import { ActiveGoalsManager } from "./components/ActiveGoalsManager";
+import { AwaitingGoalsManager } from "./components/AwaitingGoalsManager";
 
 export * from './components/Widget';
 
@@ -16,6 +17,9 @@ export function Manager() {
       <div>
         <div>
           <ActiveGoalsManager />
+        </div>
+        <div>
+          <AwaitingGoalsManager />
         </div>
       </div>
     </div>

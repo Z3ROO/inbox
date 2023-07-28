@@ -1,10 +1,17 @@
 import * as GoalsAPI from '@/features/goals/api';
 import { EditableGoal } from './EditableGoal';
+import { BtnSecondary } from '@/components/Buttons';
+import { FaPlus } from 'react-icons/fa';
 
 export function AwaitingGoalsManager() {
   return (
     <div className="flex flex-col p-8 mx-4 w-max">
-      <h4 className="text-tanj-green">Awaiting Goals</h4>
+      <div className=''>
+        <h4 className="text-tanj-green inline-block">Awaiting Goals</h4>
+        <BtnSecondary className='align-bottom' icon>
+          <FaPlus className='text-tanj-green' />
+        </BtnSecondary>
+      </div>
       <AwaitingGoalsEditable />
     </div>
   );

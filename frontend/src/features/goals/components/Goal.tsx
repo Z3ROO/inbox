@@ -35,19 +35,19 @@ function Task({task, goal}: { task: ITask, goal: IGoal}) {
 
   return (
     <li>
-      <RadioButton checked={radio} onChange={e => completeTask({goal_id: goal._id, task_id: task._id})}>
+      <CheckBox checked={radio} onChange={e => completeTask({goal_id: goal._id, task_id: task._id})}>
         <span>{task.description}</span>
-      </RadioButton>
+      </CheckBox>
     </li>
   )
 }
 
-interface CustomRadioButton extends React.InputHTMLAttributes<HTMLInputElement> {
+interface CustomCheckBox extends React.InputHTMLAttributes<HTMLInputElement> {
 
 }
 
 const CheckBox_TW = 'text-tanj-green mt-1 mr-1.5 shrink-0';
-function RadioButton(props : CustomRadioButton) {
+function CheckBox(props : CustomCheckBox) {
   
   return (
     <label className='cursor-pointer'>

@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation } from "@/lib/query";
 import { CompleteTaskDTO, CompleteTaskResponse } from "../types";
 import { MutationOptions } from "@/lib/query";
 import { API_URL } from "@/config/API";
@@ -22,7 +22,7 @@ async function completeTask(args: CompleteTaskDTO): Promise<CompleteTaskResponse
   };
 }
 
-export function CompleteTask(options: MutationOptions<CompleteTaskResponse, CompleteTaskDTO>) {
+export function CompleteTask(options?: MutationOptions<CompleteTaskResponse, CompleteTaskDTO>) {
   return useMutation(completeTask, {
     ...options
   })

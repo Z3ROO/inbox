@@ -56,9 +56,15 @@ function Goal({ goal }: { goal: IGoal}) {
 
 function Task({task, goal}: { task: ITask, goal: IGoal}) {  
   const [radio, setRadio] = useState(task.complete);
+  const completeTask = GoalsAPI.CompleteTask({
+    onSuccess(data) {
+      setRadio(data.current_state);
+    }
+  });
+  
   return (
     <li>
-      <RadioButton checked={radio} onChange={e => setRadio(prev => !prev)}>
+      <RadioButton checked={radio} onChange={e => completeTask({goal_id: goal._id, task_id: task._id})}>
         <span>{task.description}</span>
       </RadioButton>
     </li>

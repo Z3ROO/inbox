@@ -1,7 +1,5 @@
 import * as GoalsAPI from '@/features/goals/api';
-import { Goal } from "./Goal";
-import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
-import { AiTwotoneEdit } from 'react-icons/ai';
+import { EditableGoal } from './EditableGoal';
 
 export function ActiveGoalsManager() {
   return (
@@ -24,12 +22,7 @@ function ActiveGoalsEditable() {
     <div>
       {
         goals!.map(goal => (
-          <div className="relative">
-            <BtnSecondary className='absolute top-1 right-1' icon>
-              <AiTwotoneEdit className='text-tanj-green' />
-            </BtnSecondary>
-            <Goal {...{goal}} />
-          </div>
+          <EditableGoal {...{goal}} />
         ))
       }
     </div>

@@ -21,6 +21,6 @@ async function getGoals(): Promise<IGoal[]> {
   // return response;
 }
 
-export function QueryGoals(config?: { options?: QueryOptions<IGoal[], 'goals'>}) {
-  return useQuery('goals', getGoals, { ...config?.options });
+export function QueryGoals(options?: QueryOptions<IGoal[], 'ActiveGoals'>) {
+  return useQuery('ActiveGoals', getGoals, { ...options });
 }

@@ -3,6 +3,7 @@ import { IoRadioButtonOnOutline, IoRadioButtonOffOutline } from 'react-icons/io5
 import { Link } from "react-router-dom";
 import * as GoalsAPI from '@/features/goals/api';
 import { IGoal, ITask } from '@/features/goals/types';
+import { Container } from '@/components/structure/container';
 
 
 export function Widget() {
@@ -42,7 +43,7 @@ function Goal({ goal }: { goal: IGoal}) {
   } = goal;
 
   return (
-    <div className="relative p-4 my-4 to-tanj-gray from-tanj-brown bg-gradient-to-br rounded-sm w-full max-w-md group">
+    <Container className='my-4 w-full max-w-md'>
       <h5 className="text-tanj-green">{title}</h5>
       <span className="text-tanj-green hover:text-[#4dbf82] whitespace-pre-wrap">{description}</span>
       <div>
@@ -50,7 +51,7 @@ function Goal({ goal }: { goal: IGoal}) {
           { tasks.map( task => <Task {...{goal, task}} />) }
         </ul>
       </div>
-    </div>
+    </Container>
   )
 }
 
@@ -61,7 +62,7 @@ function Task({task, goal}: { task: ITask, goal: IGoal}) {
       setRadio(data.current_state);
     }
   });
-  
+
   return (
     <li>
       <RadioButton checked={radio} onChange={e => completeTask({goal_id: goal._id, task_id: task._id})}>

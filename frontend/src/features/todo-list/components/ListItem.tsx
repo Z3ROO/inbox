@@ -1,6 +1,7 @@
 import { FaCheck, FaTrashAlt } from "react-icons/fa";
 import * as InboxAPI from '@/features/inbox/api';
 import { IDraft } from "@/features/inbox/types";
+import { Container } from "@/components/structure/container";
 
 export function Item({todo}: {todo: IDraft}) {
   const draft_id = todo._id;
@@ -8,7 +9,7 @@ export function Item({todo}: {todo: IDraft}) {
   const toggleTodo = InboxAPI.ToggleInboxTodo();
 
   return (
-    <div className="relative p-4 my-4 to-tanj-gray from-tanj-brown bg-gradient-to-br rounded-sm w-full group">
+    <Container className="relative my-4 w-full group">
       <span className="text-tanj-green hover:text-[#4dbf82] whitespace-pre-wrap">{todo.content}</span>
       <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 flex bg-tanj-gray bg-opacity-90 rounded-sm p-0.5">
         <FaCheck 
@@ -30,7 +31,7 @@ export function Item({todo}: {todo: IDraft}) {
           }}
         />
       </div>
-    </div>
+    </Container>
   )
 }
 

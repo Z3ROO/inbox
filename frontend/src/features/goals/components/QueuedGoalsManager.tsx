@@ -6,13 +6,13 @@ import { AddGoal } from './AddGoal';
 import { useState } from 'react';
 import { Modal } from '@/components/Modal';
 
-export function AwaitingGoalsManager() {
+export function QueuedGoalsManager() {
   const [modal, setModal] = useState(false);
 
   return (
     <div className="flex flex-col p-8 mx-4 w-max">
       <div className=''>
-        <h4 className="text-tanj-green inline-block">Awaiting Goals</h4>
+        <h4 className="text-tanj-green inline-block">Queued Goals</h4>
         <BtnSecondary icon
           className='align-bottom'
           onClick={() => setModal(prev => !prev)}
@@ -23,14 +23,14 @@ export function AwaitingGoalsManager() {
           <AddGoal onSubmit={() => setModal(false)} />
         </Modal>
       </div>
-      <AwaitingGoalsEditable />
+      <QueuedGoals />
     </div>
   );
 }
 
 
-function AwaitingGoalsEditable() {
-  const queryGoals = GoalsAPI.QueryAwaitingGoals();
+function QueuedGoals() {
+  const queryGoals = GoalsAPI.QueryQueuedGoals();
   const goals = queryGoals.data;
 
   if (queryGoals.isError || queryGoals.isIdle || queryGoals.isLoading)

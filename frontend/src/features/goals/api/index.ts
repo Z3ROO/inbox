@@ -1,5 +1,5 @@
 export * from './QueryGoals';
-export * from './QueryAwaitingGoals';
+export * from './QueryQueuedGoals';
 export * from './CompleteTask';
 export * from './AddGoal';
 export * from './EditGoal';

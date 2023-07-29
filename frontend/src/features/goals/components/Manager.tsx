@@ -2,7 +2,7 @@ import { BtnSecondary } from "@/components/Buttons";
 import { HiMiniBackspace } from 'react-icons/hi2';
 import { Link } from "react-router-dom";
 import { ActiveGoalsManager } from "@/features/goals/components/ActiveGoalsManager";
-import { AwaitingGoalsManager } from "@/features/goals/components/AwaitingGoalsManager";
+import { QueuedGoalsManager } from "@/features/goals/components/QueuedGoalsManager";
 
 export function Manager() {
   return (
@@ -14,7 +14,7 @@ export function Manager() {
       </Link>
       <div>
         <ActiveGoalsManager />
-        <AwaitingGoalsManager />
+        <QueuedGoalsManager />
       </div>
     </div>
   );

@@ -3,8 +3,8 @@ import { IGoal } from "../types";
 import { useQuery } from "react-query";
 import { QueryOptions } from "@/lib/query";
 
-async function getAwaitingGoals(): Promise<IGoal[]> {
-  // const request = await fetch(`${API_URL}/goals/awaiting`);
+async function getQueuedGoals(): Promise<IGoal[]> {
+  // const request = await fetch(`${API_URL}/goals/queued`);
   // const response = await request.json();
 
   // return response;
@@ -21,6 +21,6 @@ async function getAwaitingGoals(): Promise<IGoal[]> {
   }]
 }
 
-export function QueryAwaitingGoals(options?: QueryOptions<IGoal[], 'AwaitingGoals'>) {
-  return useQuery('AwaitingGoals', getAwaitingGoals, { ...options });
+export function QueryQueuedGoals(options?: QueryOptions<IGoal[], 'QueuedGoals'>) {
+  return useQuery('QueuedGoals', getQueuedGoals, { ...options });
 }

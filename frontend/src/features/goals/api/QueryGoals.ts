@@ -10,11 +10,16 @@ async function getGoals(): Promise<IGoal[]> {
   return [{ 
     _id: '',
     title: 'Goal title', 
-    description: 'Description of this goal that summarizes basically what I want to do.', 
+    description: 'Description of this goal that summarizes basically what I want to do.',
+    active: true,
+    position: 0,
+    finished: false,
+    created_at: new Date(),
+    finished_at: null,
     tasks: [
-      { _id: '', description: 'Description of a task 1', complete: false },
+      { _id: '', description: 'Description of a task 1', complete: true },
       { _id: '', description: 'Description of a task 2', complete: false },
-      { _id: '', description: 'Description of a task 3', complete: true }
+      { _id: '', description: 'Description of a task 3', complete: false }
     ]
   }]
 

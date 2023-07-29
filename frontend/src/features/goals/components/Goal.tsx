@@ -29,7 +29,7 @@ function Task({task, goal}: { task: ITask, goal: IGoal}) {
   const [check, setCheck] = useState(task.complete);
   const completeTask = GoalsAPI.CompleteTask({
     onSuccess(data) {
-      setCheck(data.current_state);
+      setCheck(data.currentState);
     }
   });
 

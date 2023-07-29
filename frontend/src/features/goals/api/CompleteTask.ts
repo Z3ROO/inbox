@@ -18,7 +18,7 @@ async function completeTask(args: CompleteTaskDTO): Promise<CompleteTaskResponse
 
   return {
     task_id:"tananan",
-    current_state: true
+    currentState: true
   };
 }
 

@@ -2,6 +2,11 @@ export interface IGoal {
   _id: string
   title: string
   description: string
+  active: boolean
+  position: number
+  finished: boolean
+  created_at: Date
+  finished_at: Date|null
   tasks: ITask[]
 }
 
@@ -18,7 +23,7 @@ export interface CompleteTaskDTO {
 
 export interface CompleteTaskResponse {
   task_id: string
-  current_state: boolean
+  currentState: boolean
 }
 
 export interface AddGoalDTO {

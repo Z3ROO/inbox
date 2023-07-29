@@ -1,4 +1,5 @@
-import { ButtonHTMLAttributes, ReactEventHandler, useEffect, useRef, useState } from "react";
+import { ButtonHTMLAttributes, HTMLAttributes, ReactEventHandler, useEffect, useRef, useState } from "react";
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: boolean
@@ -70,7 +71,6 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
   useEffect(() => {
     const handler = () => {
       setIsDropDownOpen(false);
-      console.log("teste");
     }
 
     if (isDropDownOpen)
@@ -124,5 +124,68 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
       }
     </div>
   );
+}
+
+export function OptionsButton(props: { className: string, options: { onClick: () => void, text: string}[]}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const { options } = props;
+  
+  useEffect(() => {
+    const handler = () => {
+      setIsOpen(false);
+    }
+
+    if (isOpen)
+      window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  }, [isOpen])
+
+  return (
+    <div className={props.className+" "}>
+      <BtnSecondary icon
+        onClick={e => {
+          setIsOpen(prev => !prev);
+          e.stopPropagation();
+        }}
+        style={{
+          backgroundColor: isOpen ? 'rgb(34 32 31)' : undefined,
+          color: isOpen ? 'rgb(70 176 119)' : undefined
+        }}
+      >
+        <BsThreeDotsVertical className="text-tanj-green" />
+      </BtnSecondary>
+      {
+        isOpen && (
+          <div 
+            className="absolute top-2 max-w-xs w-max right-full rounded-sm bg-tanj-gray shadow"
+            onClick={e => e.stopPropagation()}
+          >
+            <ul
+              className={`list-none p-1.5`}
+            >
+              {
+                options.map(({text, onClick}) => (
+                    <Li onClick={() => {
+                      onClick();
+                      setIsOpen(false);
+                    }}>{text}</Li>
+                  )
+                )
+              }
+            </ul>
+          </div>
+        )
+      }
+      
+    </div>
+  )
+}
+
+
+function Li(props: HTMLAttributes<HTMLLIElement>) {
+  return (
+    <li {...props} className="p-1 px-2.5 select-none hover:bg-tanj-green hover:bg-opacity-5 rounded-sm text-tanj-green text-sm cursor-pointer" />
+  )
 }
 

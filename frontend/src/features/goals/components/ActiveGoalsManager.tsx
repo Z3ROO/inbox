@@ -5,13 +5,13 @@ export function ActiveGoalsManager() {
   return (
     <div className="flex flex-col p-8 mx-4 w-max">
       <h4 className="text-tanj-green">Active Goals</h4>
-      <ActiveGoalsEditable />
+      <ActiveGoals />
     </div>
   );
 }
 
 
-function ActiveGoalsEditable() {
+function ActiveGoals() {
   const queryGoals = GoalsAPI.QueryGoals();
   const goals = queryGoals.data;
 

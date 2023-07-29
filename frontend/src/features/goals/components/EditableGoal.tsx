@@ -1,4 +1,4 @@
-import { BtnSecondary } from "@/components/Buttons";
+import { BtnSecondary, OptionsButton } from "@/components/Buttons";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { IGoal } from "../types";
 import { Goal } from "./Goal";
@@ -10,9 +10,24 @@ export function EditableGoal({ goal }: { goal: IGoal }) {
   const [modal, setModal] = useState(false);
   return (
     <div className="relative">
-      <BtnSecondary className='absolute top-1 right-1' onClick={() => setModal(true)} icon>
-        <AiTwotoneEdit className='text-tanj-green' />
-      </BtnSecondary>
+      <OptionsButton className="absolute top-1 right-1" options={[
+        {
+          text: 'Focus',
+          onClick: () => {}
+        },
+        {
+          text: 'Activate',
+          onClick: () => {}
+        },
+        {
+          text: 'Edit',
+          onClick: () => { setModal(true)}
+        },
+        {
+          text: 'Delete',
+          onClick: () => {}
+        }
+      ]} />
       <Modal isModalOpen={modal} closeFn={() => setModal(false)}>
         <EditGoal data={goal} onSubmit={() => setModal(false)} />
       </Modal>
@@ -20,3 +35,7 @@ export function EditableGoal({ goal }: { goal: IGoal }) {
     </div>
   )
 }
+
+//<BtnSecondary className='absolute top-1 right-1' onClick={() => setModal(true)} icon>
+//        <AiTwotoneEdit className='text-tanj-green' />
+//      </BtnSecondary>

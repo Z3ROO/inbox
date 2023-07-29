@@ -47,3 +47,13 @@ export interface EditGoalDTO {
     description: string
   }[]
 }
+
+export interface FocusGoalDTO {
+  goal_id: string
+  focus?: boolean 
+}
+
+export interface ActivateGoalDTO {
+  goal_id: string
+  activate?: boolean 
+}

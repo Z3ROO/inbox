@@ -2,15 +2,26 @@ import * as GoalsAPI from '@/features/goals/api';
 import { EditableGoal } from './EditableGoal';
 import { BtnSecondary } from '@/components/Buttons';
 import { FaPlus } from 'react-icons/fa';
+import { AddGoal } from './AddGoal';
+import { useState } from 'react';
+import { Modal } from '@/components/Modal';
 
 export function AwaitingGoalsManager() {
+  const [modal, setModal] = useState(false);
+
   return (
     <div className="flex flex-col p-8 mx-4 w-max">
       <div className=''>
         <h4 className="text-tanj-green inline-block">Awaiting Goals</h4>
-        <BtnSecondary className='align-bottom' icon>
+        <BtnSecondary icon
+          className='align-bottom'
+          onClick={() => setModal(prev => !prev)}
+        >
           <FaPlus className='text-tanj-green' />
         </BtnSecondary>
+        <Modal isModalOpen={modal} closeFn={() => setModal(false)}>
+          <AddGoal onSubmit={() => setModal(false)} />
+        </Modal>
       </div>
       <AwaitingGoalsEditable />
     </div>

@@ -12,6 +12,7 @@ async function getGoals(): Promise<IGoal[]> {
     title: 'Goal title', 
     description: 'Description of this goal that summarizes basically what I want to do.',
     active: true,
+    focused: true,
     position: 0,
     finished: false,
     created_at: new Date(),

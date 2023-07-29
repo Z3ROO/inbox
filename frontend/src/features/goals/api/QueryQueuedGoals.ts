@@ -14,6 +14,7 @@ async function getQueuedGoals(): Promise<IGoal[]> {
     title: 'Goal title', 
     description: 'Description of this goal that summarizes basically what I want to do.',
     active: false,
+    focused: false,
     position: 5,
     finished: false,
     created_at: new Date(),

@@ -3,6 +3,7 @@ export interface IGoal {
   title: string
   description: string
   active: boolean
+  focused: boolean
   position: number
   finished: boolean
   created_at: Date

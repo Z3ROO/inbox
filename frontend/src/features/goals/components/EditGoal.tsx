@@ -5,22 +5,37 @@ import * as GoalsAPI from '@/features/goals/api';
 import { InputList } from "@/components/form/InputList";
 import { IGoal } from "../types";
 
-export function EditGoal(props: { data: IGoal, onSubmit: () => void}) {
-  const {onSubmit, data} = props;
-  const [title, setTitle] = useState(data.description);
-  const [description, setDescription] = useState(data.description);
-  const [taskList, setTaskList] = useState<{_id: string|undefined, value: string}[]>(data.tasks.map(
+export function EditGoal({onSubmit, data}: { data: IGoal, onSubmit: () => void}) {
+
+  return (
+    <div className="h-[78vh] w-screen max-w-3xl">
+      <h3>Edit Goal</h3>
+      <Form {...{onSubmit, data}} />
+      <BtnPrimary form="edit-goal">Insert</BtnPrimary>
+    </div>
+  );
+}
+
+function restructureTaskList(data: IGoal) {
+  return data.tasks.map(
     ({description, _id}) => {
       return {_id, value: description}
-    }) || []);
+    }) || []
+}
+
+function Form(props: { data: IGoal, onSubmit: () => void}) {
+  const {onSubmit, data} = props;
+  
+  const [title, setTitle] = useState(data.description);
+  const [description, setDescription] = useState(data.description);
+  const [taskList, setTaskList] = useState<{_id: string|undefined, value: string}[]>(restructureTaskList(data));
   const [deletedTasks, setDeletedTasks] = useState<{_id: string, value: string}[]>([]);
 
   const editGoal = GoalsAPI.EditGoal();
 
   return (
-    <div className="h-[78vh] w-screen max-w-3xl">
-      <h3>Edit Goal</h3>
-      <form className="flex flex-col" id="add-goal" 
+      <form id="edit-goal" 
+        className="flex flex-col"
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -47,19 +62,15 @@ export function EditGoal(props: { data: IGoal, onSubmit: () => void}) {
           <div>Description: </div>
           <Textarea className="w-full resize-none h-24" value={description} onChange={(e) => setDescription(e.target.value)} />
         </label>
-        <label>
-          <div>Task list: </div>
-        </label>
-          <InputList values={taskList} setValues={(data) => setTaskList(data)} 
-            onDelete={(data) => {
-              if (data._id !== undefined)
-                setDeletedTasks(prev => {
-                  return prev.concat(data as { _id: string, value: string });
-                })
-            }}
-          />
+        <div>Task list: </div>
+        <InputList values={taskList} setValues={(data) => setTaskList(data)} 
+          onDelete={(data) => {
+            if (data._id !== undefined)
+              setDeletedTasks(prev => {
+                return prev.concat(data as { _id: string, value: string });
+              });
+          }}
+        />
       </form>
-      <BtnPrimary form="add-goal">Insert</BtnPrimary>
-    </div>
   );
 }

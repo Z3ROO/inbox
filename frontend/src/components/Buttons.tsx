@@ -126,7 +126,7 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
   );
 }
 
-export function OptionsButton(props: { className: string, options: { onClick: () => void, text: string}[]}) {
+export function OptionsButton(props: { className: string, options: { onClick: () => void, text: string, disabled?: boolean}[]}) {
   const [isOpen, setIsOpen] = useState(false);
   const { options } = props;
   
@@ -165,7 +165,7 @@ export function OptionsButton(props: { className: string, options: { onClick: ()
               className={`list-none p-1.5`}
             >
               {
-                options.map(({text, onClick}) => (
+                options.map(({text, onClick, disabled}) => disabled ? null :(
                     <Li onClick={() => {
                       onClick();
                       setIsOpen(false);

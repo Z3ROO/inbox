@@ -12,11 +12,12 @@ export function EditableGoal({ goal }: { goal: IGoal }) {
     <div className="relative">
       <OptionsButton className="absolute top-1 right-1" options={[
         {
-          text: 'Focus',
+          text: goal.focused ? 'Unfocus' : 'Focus',
+          disabled: !goal.active,
           onClick: () => {}
         },
         {
-          text: 'Activate',
+          text: goal.active ? 'Deactivate' : 'Activate',
           onClick: () => {}
         },
         {

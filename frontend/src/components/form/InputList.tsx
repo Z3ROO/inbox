@@ -10,7 +10,7 @@ interface IInputList<T extends { value: string }> {
 
 export function InputList<T extends { value: string }>(props: IInputList<T>) {
   const { values, setValues, onDelete } = props;
-
+  console.log("Review this");
   return (
     <div>
       <BtnPrimary onClick={() => {

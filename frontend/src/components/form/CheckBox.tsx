@@ -17,9 +17,13 @@ export function CheckBox(props : CustomCheckBox) {
           <IoRadioButtonOnOutline className={CheckBox_TW} /> :
           <IoRadioButtonOffOutline className={CheckBox_TW} />
       }
-      <span>
-        {props.children}
-      </span>
+      {
+        props.children && (
+          <span>
+            {props.children}
+          </span>
+        )
+      }
       </div>
     </label>
   );

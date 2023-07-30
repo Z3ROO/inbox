@@ -1,11 +1,13 @@
 import express from 'express';
 import cors from 'cors';
-import { router as inboxRouter } from '@/controllers/inbox-controller';
+import inboxRouter from '@/controllers/inbox-controller';
+import goalsRouter from '@/controllers/goals-controller';
 
 export const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(inboxRouter);
+app.use('/inbox', inboxRouter);
+app.use('/goals', goalsRouter);
 

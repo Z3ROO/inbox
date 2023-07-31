@@ -1,6 +1,7 @@
 import { API_URL } from "@/config/API";
 import { ActivateGoalDTO } from "../types";
 import { MutationOptions, useMutation } from "@/lib/query";
+import { queryClient } from "@/App";
 
 async function activateGoal(args: ActivateGoalDTO): Promise<{}> {
   const { goal_id, activate } = args;
@@ -14,6 +15,10 @@ async function activateGoal(args: ActivateGoalDTO): Promise<{}> {
 
 export function ActivateGoal(options?: MutationOptions<{}, ActivateGoalDTO>) {
   return useMutation(activateGoal, {
-    ...options
+    ...options,
+    onSuccess() {
+      queryClient.invalidateQueries('ActiveGoals');
+      queryClient.invalidateQueries('QueuedGoals');
+    }
   })
 }

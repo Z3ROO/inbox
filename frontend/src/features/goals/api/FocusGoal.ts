@@ -1,6 +1,7 @@
 import { API_URL } from "@/config/API";
 import { MutationOptions, useMutation } from "@/lib/query";
 import { FocusGoalDTO } from "../types";
+import { queryClient } from "@/App";
 
 async function focusGoal(args: FocusGoalDTO): Promise<{}> {
   const {goal_id, focus} = args;
@@ -14,6 +15,10 @@ async function focusGoal(args: FocusGoalDTO): Promise<{}> {
 
 export function FocusGoal(options?: MutationOptions<{}, FocusGoalDTO>) {
   return useMutation(focusGoal, {
-    ...options
+    ...options,
+    onSuccess() {
+      queryClient.invalidateQueries('ActiveGoals');
+      queryClient.invalidateQueries('QueuedGoals');
+    }
   })
 }

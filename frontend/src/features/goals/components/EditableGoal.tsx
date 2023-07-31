@@ -12,6 +12,7 @@ export function EditableGoal({ goal }: { goal: IGoal }) {
 
   const focusGoal = GoalsAPI.FocusGoal();
   const activateGoal = GoalsAPI.ActivateGoal();
+  const deleteGoal = GoalsAPI.DeleteGoal();
 
   return (
     <div className="relative">
@@ -58,7 +59,9 @@ export function EditableGoal({ goal }: { goal: IGoal }) {
         },
         {
           text: 'Delete',
-          onClick: () => {}
+          onClick: () => {
+            deleteGoal({goal_id: goal._id});
+          }
         }
       ]} />
       <Modal isModalOpen={modal} closeFn={() => setModal(false)}>

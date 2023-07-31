@@ -3,7 +3,7 @@ import { EditableGoal } from './EditableGoal';
 
 export function ActiveGoalsManager() {
   return (
-    <div className="flex flex-col p-8 mx-4 w-max">
+    <div className="flex flex-col p-8 px-12 w-full">
       <h4 className="text-tanj-green">Active Goals</h4>
       <ActiveGoals />
     </div>

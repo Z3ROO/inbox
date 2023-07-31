@@ -9,7 +9,7 @@ import { Modal } from '@/components/Modal';
 export function QueuedGoalsManager() {
 
   return (
-    <div className="flex flex-col p-8 mx-4 w-max">
+    <div className="flex flex-col p-8 px-12 w-full">
       <TitleAndAddButton />
       <QueuedGoals />
     </div>

@@ -12,7 +12,7 @@ export function Manager() {
           <HiMiniBackspace />
         </BtnSecondary>
       </Link>
-      <div>
+      <div className="w-full max-w-3xl">
         <ActiveGoalsManager />
         <QueuedGoalsManager />
       </div>

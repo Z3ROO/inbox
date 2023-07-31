@@ -11,8 +11,11 @@ export function ErrorHandler(cb: (rq: Request, rs: Response, next?: NextFunction
       if (typeof status === 'number')
         res.status(status);
 
-      if (!errorType)
+      if (!errorType) {
+        console.error(err);
         res.status(500).json({ errorType: 'server', message: 'A not expected error ocurred'})
+        return
+      }
 
       res.json({
         errorType,

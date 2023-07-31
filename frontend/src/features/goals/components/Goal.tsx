@@ -35,7 +35,7 @@ function Task({task, goal}: { task: ITask, goal: IGoal}) {
 
   return (
     <li>
-      <CheckBox checked={check} onChange={e => completeTask({goal_id: goal._id, task_id: task._id})}>
+      <CheckBox checked={check} onChange={e => completeTask({goal_id: goal._id, task_id: task._id, state: e.target.checked})}>
         <span>{task.description}</span>
       </CheckBox>
     </li>

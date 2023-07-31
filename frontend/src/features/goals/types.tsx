@@ -20,6 +20,7 @@ export interface ITask {
 export interface CompleteTaskDTO {
   goal_id: string
   task_id: string
+  state: boolean
 }
 
 export interface CompleteTaskResponse {
@@ -36,16 +37,14 @@ export interface AddGoalDTO {
 }
 
 export interface EditGoalDTO {
+  _id: string
   title?: string
   description?: string
   tasks?: {
     _id?: string
     description: string
   }[]
-  deletedTasks?: {
-    _id: string
-    description: string
-  }[]
+  deletedTasks?: string[]
 }
 
 export interface FocusGoalDTO {

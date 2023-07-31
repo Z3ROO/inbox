@@ -15,7 +15,7 @@ export function Widget() {
 
 
 function ActiveGoals() {
-  const queryGoals = GoalsAPI.QueryGoals();
+  const queryGoals = GoalsAPI.QueryActiveGoals();
   const goals = queryGoals.data;
 
   if (queryGoals.isError || queryGoals.isIdle || queryGoals.isLoading)

@@ -6,8 +6,8 @@ async function focusGoal(args: FocusGoalDTO): Promise<{}> {
   const {goal_id, focus} = args;
   const action = focus === false ? 'unfocus' : 'focus';
   
-  // const request = await fetch(`${API_URL}/goal/focus/${action}/${goal_id}`);
-  // const response = await request.json();
+  const request = await fetch(`${API_URL}/goals/${action}/${goal_id}`);
+  const response = await request.json();
 
   return {}
 }

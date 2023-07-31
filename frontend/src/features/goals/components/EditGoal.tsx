@@ -26,7 +26,7 @@ function restructureTaskList(data: IGoal) {
 function Form(props: { data: IGoal, onSubmit: () => void}) {
   const {onSubmit, data} = props;
   
-  const [title, setTitle] = useState(data.description);
+  const [title, setTitle] = useState(data.title);
   const [description, setDescription] = useState(data.description);
   const [taskList, setTaskList] = useState<{_id: string|undefined, value: string}[]>(restructureTaskList(data));
   const [deletedTasks, setDeletedTasks] = useState<{_id: string, value: string}[]>([]);
@@ -43,10 +43,11 @@ function Form(props: { data: IGoal, onSubmit: () => void}) {
             return;
 
           editGoal({
+            _id: data._id,
             title,
             description,
             tasks: taskList.map( t => ({ _id: t._id, description: t.value })),
-            deletedTasks: deletedTasks.map( t => ({ _id: t._id, description: t.value })),
+            deletedTasks: deletedTasks.map( ({_id}) => _id),
           }, {
             onSuccess(){
               onSubmit()

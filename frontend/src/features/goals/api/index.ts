@@ -1,4 +1,4 @@
-export * from './QueryGoals';
+export * from './QueryActiveGoals';
 export * from './QueryQueuedGoals';
 export * from './CompleteTask';
 export * from './AddGoal';

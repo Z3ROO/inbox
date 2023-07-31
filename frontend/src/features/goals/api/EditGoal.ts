@@ -3,18 +3,18 @@ import { EditGoalDTO } from "../types";
 import { MutationOptions, useMutation } from "@/lib/query";
 
 async function editGoal(args: EditGoalDTO): Promise<{}> {
-  // const request = await fetch(`${API_URL}/goals/add`, {
-  //   method: 'post',
-  //   body: JSON.stringify({
-  //     ...args
-  //   }),
-  //   headers:{
-  //     'Content-type': 'application/json; charset=utf-8'
-  //   }
-  // });
+  const request = await fetch(`${API_URL}/goals/edit`, {
+    method: 'put',
+    body: JSON.stringify({
+      ...args
+    }),
+    headers:{
+      'Content-type': 'application/json; charset=utf-8'
+    }
+  });
 
-  // const response = await request.json();
-  console.log(args)
+  const response = await request.json();
+  
   return {}
 }
 

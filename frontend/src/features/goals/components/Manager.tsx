@@ -8,7 +8,7 @@ export function Manager() {
   return (
     <div className="w-full h-full">
       <Link to="/">
-        <BtnSecondary className="absolute top-6 left-6 p-2" icon>
+        <BtnSecondary className="absolute top-6 left-6 p-2 z-10" icon>
           <HiMiniBackspace />
         </BtnSecondary>
       </Link>

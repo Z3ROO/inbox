@@ -6,15 +6,17 @@ import { QueuedGoalsManager } from "@/features/goals/components/QueuedGoalsManag
 
 export function Manager() {
   return (
-    <div className="w-full h-full relative flex justify-center">
+    <div className="w-full h-full">
       <Link to="/">
         <BtnSecondary className="absolute top-6 left-6 p-2" icon>
           <HiMiniBackspace />
         </BtnSecondary>
       </Link>
-      <div className="w-full max-w-3xl">
-        <ActiveGoalsManager />
-        <QueuedGoalsManager />
+      <div className="w-full h-full relative flex justify-center overflow-auto">
+        <div className="w-full max-w-3xl ">
+          <ActiveGoalsManager />
+          <QueuedGoalsManager />
+        </div>
       </div>
     </div>
   );

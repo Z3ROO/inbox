@@ -24,7 +24,11 @@ function ActiveGoals() {
   return (
     <div className="max-w-md">
       {
-        goals!.map(goal => <Goal {...{goal}} />)
+        goals!.sort((x, y) => {
+          if (x.focused)
+            return -1
+          return 1
+        }).map(goal => <Goal {...{goal}} />)
       }
     </div>
   )

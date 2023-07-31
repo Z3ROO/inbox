@@ -2,6 +2,7 @@ import { useMutation } from "@/lib/query";
 import { CompleteTaskDTO, CompleteTaskResponse } from "../types";
 import { MutationOptions } from "@/lib/query";
 import { API_URL } from "@/config/API";
+import { queryClient } from "@/App";
 
 async function completeTask(args: CompleteTaskDTO): Promise<CompleteTaskResponse> {
   const { task_id, goal_id, state } = args;
@@ -25,6 +26,11 @@ async function completeTask(args: CompleteTaskDTO): Promise<CompleteTaskResponse
 
 export function CompleteTask(options?: MutationOptions<CompleteTaskResponse, CompleteTaskDTO>) {
   return useMutation(completeTask, {
-    ...options
+    ...options,
+    onSuccess(data, variables, context){
+      
+      queryClient.invalidateQueries('QueuedGoals');
+      queryClient.invalidateQueries('ActiveGoals');
+    }
   })
 }

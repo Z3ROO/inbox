@@ -5,4 +5,5 @@ export * from './AddGoal';
 export * from './EditGoal';
 export * from './ActivateGoal';
 export * from './FocusGoal';
+export * from './FinishGoal';
 export * from './DeleteGoal';

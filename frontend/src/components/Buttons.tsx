@@ -158,7 +158,7 @@ export function OptionsButton(props: { className: string, options: { onClick: ()
       {
         isOpen && (
           <div 
-            className="absolute top-2 max-w-xs w-max right-full rounded-sm bg-tanj-gray shadow"
+            className="absolute top-2 max-w-xs w-max right-full rounded-sm bg-tanj-gray shadow z-10"
             onClick={e => e.stopPropagation()}
           >
             <ul

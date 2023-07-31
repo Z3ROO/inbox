@@ -26,10 +26,10 @@ router.get('/focused', async (req: Request, res: Response) => {
 });
 
 router.put('/task/complete', async (req: Request, res: Response) => {
-  const { goal_id, task_id } = req.body;
-  await goals.completeTask({ goal_id, task_id });
+  const { goal_id, task_id, state } = req.body;
+  const result = await goals.completeTask({ goal_id, task_id, state });
 
-  res.json({});
+  res.json(result);
 });
 
 router.get('/activate/:goal_id', async (req: Request, res: Response) => {
@@ -73,12 +73,13 @@ router.post('/new', async (req: Request, res: Response) => {
 });
 
 router.put('/edit', async (req: Request, res: Response) => {
-  const { _id, title, description, tasks }: EditGoalDTO = req.body;
+  const { _id, title, description, tasks, deletedTasks }: EditGoalDTO = req.body;
   await goals.editGoal({
     _id,
     title,
     description,
-    tasks
+    tasks, 
+    deletedTasks
   });
 
   res.json({});

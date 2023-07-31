@@ -24,11 +24,14 @@ export class Goals {
     return this.repository.findQueued();
   }
 
-  public async completeTask({goal_id, task_id}: {goal_id: string, task_id: string}) {
-    await this.repository.updateTask(goal_id, task_id, {
-      complete: true,
-      completed_at: new Date()
+  public async completeTask({goal_id, task_id, state}: {goal_id: string, task_id: string, state: boolean}) {
+
+    const result = await this.repository.updateTask(goal_id, task_id, {
+      complete: state,
+      completed_at: state ? new Date() : null
     });
+
+    return { currentState: state, task_id };
   }
   
   public async activateGoal(goal_id: string) {
@@ -133,7 +136,7 @@ export class Goals {
     const { _id, title, description, tasks, deletedTasks } = props;
 
     const update: any = {};
-
+    console.log(props)
     if (title)
       update.title = title;
     if (description)
@@ -154,7 +157,7 @@ export class Goals {
       }
     }
 
-    if (deletedTasks.length > 0)
+    if (deletedTasks && deletedTasks.length > 0)
       await this.repository.deleteTasks(_id, deletedTasks);
 
   }

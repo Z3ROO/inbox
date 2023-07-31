@@ -60,7 +60,7 @@ export class GoalsRepo extends Repository<IGoal> {
       restructuredProps["tasks.$[task]."+prop] = props[prop];
     }
 
-    await this.collection().updateOne({_id}, 
+    return await this.collection().findOneAndUpdate({_id}, 
       {
         $set: {
           ...restructuredProps
@@ -69,7 +69,8 @@ export class GoalsRepo extends Repository<IGoal> {
       {
         arrayFilters: [{
           "task._id": t_id
-        }]
+        }],
+        returnDocument: 'after'
       }
     )
   }
@@ -119,7 +120,7 @@ export class GoalsRepo extends Repository<IGoal> {
   public async deleteTasks(goal_id: string, tasks_ids: string[]) {
     const _id = new ObjectId(goal_id);
     const t_ids = tasks_ids.map(t_id => new ObjectId(t_id));
-    
+
     this.collection().updateOne({ _id }, {
       $pull: {
         tasks: { 

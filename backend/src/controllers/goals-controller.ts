@@ -1,6 +1,7 @@
 import { Goals } from '@/domain/goals';
 import { ErrorHandler } from '@/infra/http-server/config/ErrorHandler';
 import { EditGoalDTO } from '@/types/Goals';
+import { ClientError } from '@/util/error/ClientError';
 import { Request, Response, Router } from 'express';
 
 const router = Router();

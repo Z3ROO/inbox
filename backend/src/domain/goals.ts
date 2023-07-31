@@ -1,5 +1,6 @@
 import { GoalsRepo } from "@/repository/goals-repository";
 import { EditGoalDTO, INewGoal, ITask } from "@/types/Goals";
+import { ClientError } from "@/util/error/ClientError";
 
 export class Goals {
   repository = new GoalsRepo();
@@ -166,7 +167,7 @@ export class Goals {
     const goal = await this.getGoal(goal_id);
 
     if (!goal)
-      throw new Error('Goal not found.');
+      throw new ClientError('Goal not found.', 400);
     
     await this.repository.deleteGoal(goal_id);
 

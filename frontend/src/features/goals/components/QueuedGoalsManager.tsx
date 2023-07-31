@@ -7,25 +7,32 @@ import { useState } from 'react';
 import { Modal } from '@/components/Modal';
 
 export function QueuedGoalsManager() {
-  const [modal, setModal] = useState(false);
 
   return (
     <div className="flex flex-col p-8 mx-4 w-max">
-      <div className=''>
-        <h4 className="text-tanj-green inline-block">Queued Goals</h4>
-        <BtnSecondary icon
-          className='align-bottom'
-          onClick={() => setModal(prev => !prev)}
-        >
-          <FaPlus className='text-tanj-green' />
-        </BtnSecondary>
-        <Modal isModalOpen={modal} closeFn={() => setModal(false)}>
-          <AddGoal onSubmit={() => setModal(false)} />
-        </Modal>
-      </div>
+      <TitleAndAddButton />
       <QueuedGoals />
     </div>
   );
+}
+
+function TitleAndAddButton() {
+  const [modal, setModal] = useState(false);
+
+  return (
+    <div className=''>
+      <h4 className="text-tanj-green inline-block">Queued Goals</h4>
+      <BtnSecondary icon
+        className='align-bottom'
+        onClick={() => setModal(prev => !prev)}
+      >
+        <FaPlus className='text-tanj-green' />
+      </BtnSecondary>
+      <Modal isModalOpen={modal} closeFn={() => setModal(false)}>
+        <AddGoal onSubmit={() => setModal(false)} />
+      </Modal>
+    </div>
+  )
 }
 
 

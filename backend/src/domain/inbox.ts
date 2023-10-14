@@ -104,7 +104,8 @@ export class Inbox {
   }
 
   public async toggleTodo(draft_id: string, state: boolean) {
-    await this.repository.updateDraft(draft_id, {todo: state});
+    const {originalValue} = await this.repository.updateDraft(draft_id, {todo: state});
+    undoCache.set = originalValue;
   }
 
   public async removeDraft(draft_id: string) {
@@ -112,10 +113,10 @@ export class Inbox {
   }
 
   public async undoChange() {
-    const { _id, content, last_delay, allowed_after} = undoCache.get || {};
+    const { _id, content, last_delay, allowed_after, todo} = undoCache.get || {};
 
     if (_id !== undefined)
-      await this.repository.updateDraft(_id.toHexString(),  { last_delay, allowed_after });
+      await this.repository.updateDraft(_id.toHexString(),  { last_delay, allowed_after, todo });
   }
 }
 

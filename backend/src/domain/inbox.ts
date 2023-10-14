@@ -64,6 +64,15 @@ export class Inbox {
 
   public async delayDraft(draft: IInboxDTO) {
     let { _id, content, amount, quantity } = draft;
+    
+    if (amount === 'none') {
+      const { originalValue } = await this.repository.updateDraft(_id, {
+        content
+      });
+      return;
+    }
+      
+
     if (!quantity)
       quantity = 1;
     let allowed_after: Date;

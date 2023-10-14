@@ -1,5 +1,5 @@
 
-export type DelayAmount = 'next'|'later'|'dawn'|'day'|'week'|'month'
+export type DelayAmount = 'none'|'next'|'later'|'dawn'|'day'|'week'|'month'
 
 export interface IInbox {
   content: string

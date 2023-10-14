@@ -30,4 +30,4 @@ export interface IDraft {
   allowed_after: Date
 }
 
-export type DraftDelayAmounts = 'next'|'later'|'dawn'|'day'|'week'|'month';
+export type DraftDelayAmounts = 'none'|'next'|'later'|'dawn'|'day'|'week'|'month';

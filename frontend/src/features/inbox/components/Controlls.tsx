@@ -83,15 +83,24 @@ function DelayDraftButtons() {
 }
 
 function TodoButton() {
+  const { inboxFilterTextarea } = useFilterPanelContext()!;
   const inbox = InboxAPI.QueryInbox().data;
   const currentDraft = inbox![0];
 
+  const updateDraft = InboxAPI.UpdateDraft();
   const toggleTodo = InboxAPI.ToggleInboxTodo();
 
   return (
     <OptionBtn confirm
       disabled={toggleTodo.isLoading}
-      onClick={() => toggleTodo({ draft_id: currentDraft._id, state: true })}
+      onClick={() => {
+        updateDraft({
+          action: 'none',
+          draft_id: currentDraft._id,
+          content: inboxFilterTextarea
+        })
+        toggleTodo({ draft_id: currentDraft._id, state: true })
+      }}
     >
       <BsFillCheckSquareFill />
     </OptionBtn>

@@ -1,16 +1,18 @@
 import { InboxRepository } from "@/repository/inbox-repository";
-import { IInbox } from "@/types/Inbox";
+import { DelayAmount, IInbox } from "@/types/Inbox";
 import { ObjectId, WithId } from "mongodb";
 
 interface IInboxDTO {
   _id: string
   content: string
-  amount: 'next'|'day'|'week'|'month'
+  amount: DelayAmount
   quantity?: 1|2|3
 }
 
 const DELAY_AMOUNT = {
   'next': (1000),
+  'later': (60*60*1000),
+  'dawn': (18*60*60*1000),
   'day': (24*60*60*1000),
   'week': ((24*60*60*1000)*7),
   'month': (((24*60*60*1000)*7)*4),
@@ -68,6 +70,14 @@ export class Inbox {
     
     if (amount === 'next')
       allowed_after = new Date();
+    else if (amount === 'later')
+      allowed_after = new Date(Date.now() + DELAY_AMOUNT[amount]);
+    else if (amount === 'dawn') {
+      if (new Date().getHours() > 17)
+        return;
+
+      allowed_after = new Date(new Date().setHours(0,0,0,0) + DELAY_AMOUNT[amount]);
+    }
     else
       allowed_after = new Date(new Date().setHours(4,0,0,0) + (quantity * DELAY_AMOUNT[amount]));
 

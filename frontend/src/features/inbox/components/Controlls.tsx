@@ -35,13 +35,27 @@ function DelayDraftButtons() {
       quantity
     });
   }
-
+  
   return (
     <>
-      <BtnPrimary
-        onClick={updateDraftEvent('next')}
-        disabled={updateDraft.isLoading}
-      >Next</BtnPrimary>
+      <DropDownOnHoldButton 
+        buttons={[
+          {
+            children: 'Next',
+            onClick: updateDraftEvent('next'),
+            disabled: updateDraft.isLoading
+          },
+          {
+            children: `Later`,
+            onClick: updateDraftEvent('later'),
+          },
+          {
+            children: `Dawn`,
+            onClick: updateDraftEvent('dawn'),
+            disabled: new Date().getHours() > 17
+          }
+        ]}
+      />
       {
         ['Day', 'Week', 'Month'].map(amount => (
           <DropDownOnHoldButton 

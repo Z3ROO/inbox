@@ -56,7 +56,6 @@ export function InputDataList(props: InputDataListAttributes) {
       setValue({label: textContent, value: ''});
       toggleDataList(true);
     }
-    console.log(textContent)
   }
 
   function openDataList() {
@@ -78,11 +77,13 @@ export function InputDataList(props: InputDataListAttributes) {
   }
 
   useEffect(() => {
-    console.log(options)
+    setInputText(value.label)
+  },[value])
+
+  useEffect(() => {
     const regex = new RegExp(inputText);
     const refiltered = options.filter(option => option.label.match(regex));
     setFilteredOptions(refiltered);
-    console.log(inputText)
   }, [inputText, options]);
 
   const contextValue = {

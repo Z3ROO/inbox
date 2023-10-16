@@ -10,6 +10,7 @@ import { BsFillPinAngleFill } from "react-icons/bs";
 import { IoAlertCircle } from "react-icons/io5";
 import { AiFillAlert } from "react-icons/ai";
 import { IDraftCategory } from "../types";
+import { IconType } from "react-icons/lib";
 
 export function InboxInsertPanel() {
   const [insertFieldText, setInsertFieldText] = useState('');
@@ -72,47 +73,57 @@ function SelectCategory({category, setCategory, categories}:
 function SelectPriority({priority, setPriority}: {priority: number , setPriority: React.Dispatch<React.SetStateAction<number>>}) {
   return (
     <div className="flex flex-col py-16 p-2 gap-2">
-      <div style={{
-        opacity: priority === 3 ? '1' : undefined
-      }} className="group relative opacity-40 hover:opacity-100">
-        <button onClick={() => setPriority(3)} className="text-base p-2 relative group-hover:z-20 text-tanj-green group-hover:text-tanj-brown">
-          <AiFillAlert />
-        </button>
-        <div className="group-hover:visible invisible absolute top-0 left-0 p-1 pl-8 pr-2 bg-gray-300 z-10">
-          <span className="text-sm">Urgent</span>
-        </div>
-      </div>
-      <div style={{
-        opacity: priority === 2 ? '1' : undefined
-      }} className="group relative opacity-40 hover:opacity-100">
-        <button onClick={() => setPriority(2)} className="text-base p-2 relative group-hover:z-20 text-tanj-green group-hover:text-tanj-brown">
-          <IoAlertCircle />
-        </button>
-        <div className="group-hover:visible invisible absolute top-0 left-0 p-1 pl-8 pr-2 bg-gray-300 z-10">
-          <span className="text-sm">Important</span>
-        </div>
-      </div>
-      <div style={{
-        opacity: priority === 1 ? '1' : undefined
-      }} className="group relative opacity-40 hover:opacity-100">
-        <button onClick={() => setPriority(1)} className="text-base p-2 relative group-hover:z-20 text-tanj-green group-hover:text-tanj-brown">
-          <BsFillPinAngleFill />
-        </button>
-        <div className="group-hover:visible invisible absolute top-0 left-0 p-1 pl-8 pr-2 bg-gray-300 z-10">
-          <span className="text-sm">Necessary</span>
-        </div>
-      </div>
-      <div style={{
-        opacity: priority === 0 ? '1' : undefined
-      }}  className="group relative opacity-40 hover:opacity-100">
-        <button onClick={() => setPriority(0)} className="text-base p-2 relative group-hover:z-20 text-tanj-green group-hover:text-tanj-brown">
-          <TfiLayoutSidebarNone />
-        </button>
-        <div className="group-hover:visible invisible absolute top-0 left-0 p-1 pl-8 pr-2 bg-gray-300 z-10">
-          <span className="text-sm">None</span>
-        </div>
-      </div>
+      <SelectPriorityOption
+        priority={3}
+        selectedPriority={priority}
+        Icon={AiFillAlert}
+        onClick={() => setPriority(3)}
+      >
+        {`Urgent`}
+      </SelectPriorityOption>
+      <SelectPriorityOption
+        priority={2}
+        selectedPriority={priority}
+        Icon={IoAlertCircle}
+        onClick={() => setPriority(2)}
+      >
+        {`Important`}
+      </SelectPriorityOption>
+      <SelectPriorityOption
+        priority={1}
+        selectedPriority={priority}
+        Icon={BsFillPinAngleFill}
+        onClick={() => setPriority(1)}
+      >
+        {`Necessary`}
+      </SelectPriorityOption>
+      <SelectPriorityOption
+        priority={0}
+        selectedPriority={priority}
+        Icon={TfiLayoutSidebarNone}
+        onClick={() => setPriority(0)}
+      >
+        {`None`}
+      </SelectPriorityOption>
     </div>
+  )
+}
+
+function SelectPriorityOption(
+    { priority, selectedPriority, onClick, Icon, children }: 
+    React.HTMLProps<HTMLButtonElement> & { priority: number, selectedPriority: number, Icon: IconType }
+  ) {
+  return (
+    <button {...{onClick}} style={{
+      opacity: priority === selectedPriority ? '1' : undefined
+    }} className="group relative opacity-40 hover:opacity-100">
+      <div className="text-base p-2 relative group-hover:z-20 text-tanj-green group-hover:text-tanj-brown">
+        <Icon />
+      </div>
+      <div className="group-hover:visible invisible absolute top-0 left-0 p-1 pl-8 pr-2 bg-gray-300 z-10">
+        <span className="text-sm">{children}</span>
+      </div>
+    </button>
   )
 }
 

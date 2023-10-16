@@ -2,7 +2,9 @@
 export interface DraftDTO {
   content?: string,
   draft_id: string,
-  action: DraftDelayAmounts|"remove"|"undo";
+  action: DraftDelayAmounts|"remove"|"undo"|"organization";
+  priority?: number
+  category?: string
   quantity?: 1|2|3
 }
 
@@ -27,7 +29,17 @@ export interface IDraft {
     delayed_at: Date, 
     quantity: 1|2|3
   },
+  priority: number
+  category: IDraftCategory
   allowed_after: Date
+  created_at: Date
+}
+
+export interface IDraftCategory {
+  _id: string
+  name: string
+  color: string
+  icon: string
 }
 
 export type DraftDelayAmounts = 'none'|'next'|'later'|'dawn'|'day'|'week'|'month';

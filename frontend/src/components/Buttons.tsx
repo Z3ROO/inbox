@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, HTMLAttributes, ReactEventHandler, useEffect, useRef, useState } from "react";
+import { ButtonHTMLAttributes, HTMLAttributes, ReactEventHandler, ReactNode, useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
 interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -39,6 +39,7 @@ export function BtnSecondary (props: BtnProps) {
 
 type DropDownOnHoldButtonProps = {
   buttons: BtnProps[]
+  BtnComponent?: (props: BtnProps) => JSX.Element
 }
 
 export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
@@ -116,6 +117,83 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
                           button.onClick(e);
                       }
                     }
+                  />
+                );
+              })
+            }
+          </div>
+      }
+    </div>
+  );
+}
+
+type DropDownOnClickButtonProps = {
+  main: ReactNode
+  BtnComponent?: (props: BtnProps) => JSX.Element
+  children: ReactNode|ReactNode[]
+  className?: string
+  position?: 'top'|'bottom'|'left'|'right'
+  align?: 'start'|'center'|'end'
+}
+
+export function DropDownOnClickButton({main, BtnComponent, children, className, position, align}: DropDownOnClickButtonProps) {
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  
+  if (!Array.isArray(children))
+    children = [children];
+
+  if (!position)
+    position = 'bottom';
+
+  if (!align)
+    align = 'center';
+
+  const ItemComponent = BtnComponent ?? ((props:React.HTMLProps<HTMLDivElement>) => <div {...props} />);
+
+  useEffect(() => {
+    const handler = () => {
+      setIsDropDownOpen(false);
+    }
+
+    if (isDropDownOpen)
+      window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  }, [isDropDownOpen])
+
+  return (
+    <div className="relative z-10" onClick={e => e.stopPropagation()}>
+      <ItemComponent
+        onClick={e => {
+          setIsDropDownOpen(prev => !prev);
+        }}
+        className={className??''}
+      >{main}</ItemComponent>
+
+      {
+        isDropDownOpen && 
+          <div 
+            className={`
+              absolute bg-tanj-gray rounded flex flex-col gap-2 p-2
+              ${position === 'top' && ' bottom-full mb-1'}
+              ${position === 'bottom' && ' top-full mt-1'}
+              ${position === 'left' && ' right-full mr-1'}
+              ${position === 'right' && ' left-full ml-1'}
+              ${((position === 'top' || position === 'bottom') && align === 'start') && ' left-0'}
+              ${((position === 'top' || position === 'bottom') && align === 'center') && ' left-1/2 -translate-x-1/2'}
+              ${((position === 'top' || position === 'bottom') && align === 'end') && ' right-0'}
+              ${((position === 'left' || position === 'right') && align === 'start') && ' top-0'}
+              ${((position === 'left' || position === 'right') && align === 'center') && ' top-1/2 -translate-y-1/2'}
+              ${((position === 'left' || position === 'right') && align === 'end') && ' bottom-0'}
+            `}
+          >
+            {
+              (children as ReactNode[]).map((menuItem, index) => {
+                return (
+                  <ItemComponent
+                    children={menuItem}
+                    className={`whitespace-nowrap `}
+                    onClick={() => setIsDropDownOpen(false)}
                   />
                 );
               })

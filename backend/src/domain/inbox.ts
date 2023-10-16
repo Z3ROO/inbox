@@ -1,4 +1,4 @@
-import { InboxRepository } from "@/repository/inbox-repository";
+import { DraftCategoryRepo, InboxRepository } from "@/repository/inbox-repository";
 import { DelayAmount, IInbox } from "@/types/Inbox";
 import { ObjectId, WithId } from "mongodb";
 
@@ -41,6 +41,7 @@ const undoCache = new UndoCache<WithId<IInbox>>();
 
 export class Inbox {
   repository = new InboxRepository();
+  categoryRepo = new DraftCategoryRepo();
 
   public async getInbox() {
     return await this.repository.findAll();
@@ -50,16 +51,57 @@ export class Inbox {
     return await this.repository.findAllTodos();
   }
 
-  public async insertDraft(content: string, todo?: boolean) {
+  public async getCategories() {
+    return await this.categoryRepo.findAll();
+  }
+
+  public async insertDraft(content: string, priority: number, category: string, todo?: boolean) {
     if (todo === undefined)
       todo = false;
+    
+    if (priority == null || priority > 3)
+      priority = 0;
+
+    if (category == null || category === '')
+      category = 'none';
+
+    let categoryId: ObjectId;
+    let categoryObject = await this.categoryRepo.findByName(category);
+
+    if (categoryObject)
+      categoryId = categoryObject._id
+    else
+      categoryId = await this.categoryRepo.create({name: category})
 
     await this.repository.insertOne({
       content,
+      priority,
+      category: categoryId,
       todo,
       last_delay: null,
       allowed_after: new Date(),
+      created_at: new Date()
     })
+  }
+
+  public async updateDraftOrganization({ priority, category, _id }: { _id: string, priority: number, category: string }) {
+
+    if (priority != null) {
+      await this.repository.updateDraft(_id, {priority});
+    }
+
+    if (category != null && category !== '') {
+      let categoryId: ObjectId;
+      let categoryObject = await this.categoryRepo.findByName(category);
+
+      if (categoryObject)
+        categoryId = categoryObject._id
+      else
+        categoryId = await this.categoryRepo.create({name: category})
+
+      await this.repository.updateDraft(_id, {category: categoryId});
+    }
+
   }
 
   public async delayDraft(draft: IInboxDTO) {

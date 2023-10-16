@@ -5,11 +5,11 @@ import { DraftDTO } from "../types";
 
 
 async function updateDraft(args: DraftDTO): Promise<{}> {
-  const { content, draft_id, action, quantity } = args;
+  const { content, draft_id, action, quantity, priority, category } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
     method: 'put',
-    body: JSON.stringify({content, action, quantity, draft_id: draft_id}),
+    body: JSON.stringify({content, action, quantity, draft_id: draft_id, priority, category}),
     headers: {
       'Content-Type':'application/json'
     }

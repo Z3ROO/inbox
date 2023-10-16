@@ -14,20 +14,27 @@ router.get('/todos', async (request, response) => {
   response.json(inboxTodos);
 });
 
+router.get('/categories', async (request, response) => {
+  const inboxCategories = await inbox.getCategories();
+  response.json(inboxCategories);
+});
+
 router.post('/', async (request, response) => {
-  const { content, todo } = request.body;
-  await inbox.insertDraft(content, todo);
+  const { content, priority, category, todo } = request.body;
+  await inbox.insertDraft(content, priority, category, todo);
   
   response.status(200).json([])
 })
 
 router.put('/', async (request, response) => {
-  const { action, draft_id, content, quantity } = request.body;
+  const { action, draft_id, content, quantity, priority, category } = request.body;
   try {
     if (action === 'undo')
       await inbox.undoChange();
     else if (action === 'remove')
       await inbox.removeDraft(draft_id);
+    else if (action === 'organization')
+      await inbox.updateDraftOrganization({_id: draft_id, priority, category});
     else
       await inbox.delayDraft({_id: draft_id, content, amount: action, quantity});
 

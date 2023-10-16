@@ -49,13 +49,14 @@ export function InputDataList(props: InputDataListAttributes) {
   function autoSelectOptionIfMatch(textContent: string) {
     const option = options.find(opt => textContent === opt.label);
     if (option) {
-      setValue({label: option.value, value: option.value});
+      setValue({label: option.label, value: option.value});
       toggleDataList(false);
     }
     else {
       setValue({label: textContent, value: ''});
       toggleDataList(true);
     }
+    console.log(textContent)
   }
 
   function openDataList() {
@@ -77,9 +78,11 @@ export function InputDataList(props: InputDataListAttributes) {
   }
 
   useEffect(() => {
+    console.log(options)
     const regex = new RegExp(inputText);
     const refiltered = options.filter(option => option.label.match(regex));
     setFilteredOptions(refiltered);
+    console.log(inputText)
   }, [inputText, options]);
 
   const contextValue = {
@@ -111,9 +114,11 @@ function InputContainer() {
         className={' ' + (className || 'w-64')}
         value={inputText}
         onChange={(e) => {
+          e.stopPropagation();
           const textContent = e.target.value;
           setInputText(textContent);
           autoSelectOptionIfMatch(textContent);
+          console.log('aasdasd: ', textContent);
         }}
         onFocus={openDataList}
         onBlur={closeDataList}

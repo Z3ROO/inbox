@@ -3,16 +3,23 @@ import { API_URL } from "@/config/API";
 import { useMutation, MutationOptions } from "@/lib/query";
 
 type InsertDraftArguments = {
-  content: string
+  content: string,
+  priority?: number,
+  category?: string|null,
   todo?: boolean
 }
 
 async function insertDraft(args: InsertDraftArguments) {
-  const { content, todo } = args;
+  const { content, priority, category, todo } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
     method: 'post',
-    body: JSON.stringify({ content, todo }),
+    body: JSON.stringify({ 
+      content,
+      priority: priority ?? 0,
+      category: category ?? null,
+      todo
+    }),
     headers: {
       'Content-Type':'application/json'
     }

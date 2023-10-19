@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { InboxContextProvider } from "./store/InboxContext";
 import { InboxInsertPanel } from './components/InsertDraft/InsertPanel';
-import { InboxFilterPanelModal } from './components/InboxManager/FilterPanel';
+import { InboxManagerModal } from './components/InboxManager';
 
 export default function Inbox() {
   return (
@@ -9,7 +9,7 @@ export default function Inbox() {
       <InboxContextProvider>
         <h4 className="text-tanj-green">Inbox</h4>
         <InboxInsertPanel />
-        <InboxFilterPanelModal />
+        <InboxManagerModal />
       </InboxContextProvider>
     </div>
   )

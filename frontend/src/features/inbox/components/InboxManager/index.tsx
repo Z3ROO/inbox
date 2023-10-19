@@ -14,17 +14,17 @@ import { AiFillAlert, AiOutlineFieldTime } from "react-icons/ai";
 import { BtnPrimary, BtnSecondary, DropDownOnClickButton } from "@/components/Buttons";
 import { InputDataList } from "@/components/form/InputDataList";
 
-export function InboxFilterPanelModal() {
+export function InboxManagerModal() {
   const { isInboxManagerOpen, toggleInboxManager } = useInboxContext()!;
 
   return (
     <Modal isModalOpen={isInboxManagerOpen} closeFn={toggleInboxManager}>
-      <FilterPanel />
+      <Manager />
     </Modal>
   )
 }
 
-function FilterPanel() {
+function Manager() {
   const inboxQuery = InboxAPI.QueryInbox();
   
 /*

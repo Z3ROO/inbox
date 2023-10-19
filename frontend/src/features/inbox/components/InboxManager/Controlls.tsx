@@ -1,6 +1,6 @@
 import { BtnPrimary, BtnSecondary, DropDownOnHoldButton } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
-import { useFilterPanelContext } from "../../store/FilterPanelContext";
+import { useInboxContext } from "../../store/InboxContext";
 import { DraftDelayAmounts } from "../../types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
@@ -21,7 +21,7 @@ export function Controlls() {
 }
 
 function DelayDraftButtons() {
-  const { inboxFilterTextarea } = useFilterPanelContext()!
+  const { inboxManagerTextarea } = useInboxContext()!
   const inbox = InboxAPI.QueryInbox().data;
   const currentDraft = inbox![0];
 
@@ -29,7 +29,7 @@ function DelayDraftButtons() {
 
   const updateDraftEvent = (delay: DraftDelayAmounts, quantity?: 1|2|3) => () => { 
     updateDraft({ 
-      content: inboxFilterTextarea, 
+      content: inboxManagerTextarea, 
       draft_id: currentDraft._id, 
       action: delay,
       quantity
@@ -83,7 +83,7 @@ function DelayDraftButtons() {
 }
 
 function TodoButton() {
-  const { inboxFilterTextarea } = useFilterPanelContext()!;
+  const { inboxManagerTextarea } = useInboxContext()!;
   const inbox = InboxAPI.QueryInbox().data;
   const currentDraft = inbox![0];
 
@@ -97,7 +97,7 @@ function TodoButton() {
         updateDraft({
           action: 'none',
           draft_id: currentDraft._id,
-          content: inboxFilterTextarea
+          content: inboxManagerTextarea
         })
         toggleTodo({ draft_id: currentDraft._id, state: true })
       }}

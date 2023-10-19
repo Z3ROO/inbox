@@ -1,6 +1,6 @@
 import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
 import { useState, useEffect, useMemo } from "react";
-import { useFilterPanelContext } from "../../store/FilterPanelContext";
+import { useInboxContext } from "../../store/InboxContext";
 import { cacheInsertInputField, getCachedInsertInputField } from "../../util/cacheInsertField";
 import * as InboxAPI from '@/features/inbox/api'
 import { Input, Textarea } from "@/components/form/Input";
@@ -150,7 +150,7 @@ function InsertPanelInputField(props: {
 }
 
 function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
-  const { toggleFilterPanel } = useFilterPanelContext()!;
+  const { toggleInboxManager } = useInboxContext()!;
   const { insertInbox } = props;
   const inbox = InboxAPI.QueryInbox().data;
   
@@ -160,7 +160,7 @@ function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
         onClick={insertInbox}
       >Add</BtnPrimary>
       <BtnPrimary
-        onClick={toggleFilterPanel}
+        onClick={toggleInboxManager}
         disabled={!(inbox?.length)}
       >Free</BtnPrimary>
     </div>

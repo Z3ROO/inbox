@@ -13,11 +13,11 @@ export interface ToggleTodoDTO {
   state: boolean
 }
 
-export interface IFilterPanelContext {
-  inboxFilterTextarea: string
-  setInboxFilterTextarea: React.Dispatch<React.SetStateAction<string>>
-  isFilterPanelOpen: boolean
-  toggleFilterPanel: () => void
+export interface IInboxContext {
+  inboxManagerTextarea: string
+  setInboxManagerTextarea: React.Dispatch<React.SetStateAction<string>>
+  isInboxManagerOpen: boolean
+  toggleInboxManager: () => void
 }
 
 

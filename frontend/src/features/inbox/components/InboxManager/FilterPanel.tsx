@@ -1,5 +1,5 @@
 import { Modal } from "@/components/Modal";
-import { useFilterPanelContext } from "@/features/inbox/store/FilterPanelContext";
+import { useInboxContext } from "@/features/inbox/store/InboxContext";
 import { StatusLog } from "./StatusLog";
 import { InputField } from "./InputField";
 import { Controlls } from "./Controlls";
@@ -15,10 +15,10 @@ import { BtnPrimary, BtnSecondary, DropDownOnClickButton } from "@/components/Bu
 import { InputDataList } from "@/components/form/InputDataList";
 
 export function InboxFilterPanelModal() {
-  const { isFilterPanelOpen, toggleFilterPanel } = useFilterPanelContext()!;
+  const { isInboxManagerOpen, toggleInboxManager } = useInboxContext()!;
 
   return (
-    <Modal isModalOpen={isFilterPanelOpen} closeFn={toggleFilterPanel}>
+    <Modal isModalOpen={isInboxManagerOpen} closeFn={toggleInboxManager}>
       <FilterPanel />
     </Modal>
   )

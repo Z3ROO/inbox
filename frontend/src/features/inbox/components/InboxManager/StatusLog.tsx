@@ -9,10 +9,11 @@ export function StatusLog() {
 
 export function LastDelayLog() {
   const inboxQuery = InboxAPI.QueryInbox();
-  const inbox = inboxQuery.data; 
+  const inbox = inboxQuery.data!; 
 
-  const currentDraft = inbox![0];
+  const currentDraft = inbox[0];
 
+  // If never delayed, no log.
   if (currentDraft.last_delay == null)
     return null;
 

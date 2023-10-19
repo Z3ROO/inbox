@@ -1,7 +1,7 @@
 import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
 import { useState, useEffect, useMemo } from "react";
-import { useFilterPanelContext } from "../store/FilterPanelContext";
-import { cacheInsertInputField, getCachedInsertInputField } from "../util/cacheInsertField";
+import { useFilterPanelContext } from "../../store/FilterPanelContext";
+import { cacheInsertInputField, getCachedInsertInputField } from "../../util/cacheInsertField";
 import * as InboxAPI from '@/features/inbox/api'
 import { Input, Textarea } from "@/components/form/Input";
 import { TfiLayoutSidebarNone } from 'react-icons/tfi';
@@ -9,7 +9,7 @@ import { InputDataList } from "@/components/form/InputDataList";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { IoAlertCircle } from "react-icons/io5";
 import { AiFillAlert } from "react-icons/ai";
-import { IDraftCategory } from "../types";
+import { IDraftCategory } from "../../types";
 import { IconType } from "react-icons/lib";
 
 export function InboxInsertPanel() {

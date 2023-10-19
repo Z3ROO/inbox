@@ -1,7 +1,7 @@
 import { BtnPrimary, BtnSecondary, DropDownOnHoldButton } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
-import { useFilterPanelContext } from "../store/FilterPanelContext";
-import { DraftDelayAmounts } from "../types";
+import { useFilterPanelContext } from "../../store/FilterPanelContext";
+import { DraftDelayAmounts } from "../../types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa";

@@ -1,7 +1,7 @@
 import { Textarea } from '@/components/form/Input';
 import { useEffect } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
-import { useFilterPanelContext } from '../store/FilterPanelContext';
+import { useFilterPanelContext } from '../../store/FilterPanelContext';
 import * as InboxAPI from '@/features/inbox/api';
 
 export function InputField(props: React.HTMLAttributes<HTMLDivElement>){

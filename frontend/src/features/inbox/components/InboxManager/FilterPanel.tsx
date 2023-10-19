@@ -5,7 +5,7 @@ import { InputField } from "./InputField";
 import { Controlls } from "./Controlls";
 import * as InboxAPI from '@/features/inbox/api';
 import { TfiLayoutSidebarNone } from "react-icons/tfi";
-import timePassedSince from "../util/timePassedSince";
+import timePassedSince from "../../util/timePassedSince";
 import { ReactNode, useState } from "react";
 import { IconType } from "react-icons/lib";
 import { IoAlertCircle } from "react-icons/io5";

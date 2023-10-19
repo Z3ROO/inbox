@@ -34,7 +34,7 @@ router.put('/', async (request, response) => {
     else if (action === 'remove')
       await inbox.removeDraft(draft_id);
     else if (action === 'organization')
-      await inbox.updateDraftOrganization({_id: draft_id, priority, category});
+      await inbox.updateDraftOrganization({_id: draft_id, priority, category, content});
     else
       await inbox.delayDraft({_id: draft_id, content, amount: action, quantity});
 

@@ -62,6 +62,7 @@ function Category() {
   const draft = inboxQuery.data![0];
   const [category, setCategory] = useState({label: '', value: ''});
   const [showCategoryPicker, setShowCategoryPicker] = useState(false);
+  const { inboxManagerTextarea } = useInboxContext()!;
   
   const queryCategory = InboxAPI.QueryCategories();  
   const updateDraft = InboxAPI.UpdateDraft();
@@ -84,7 +85,8 @@ function Category() {
               updateDraft({
                 draft_id: draft._id,
                 action: 'organization',
-                category: category.label
+                category: category.label,
+                content: inboxManagerTextarea
               })
             }} icon>+</BtnSecondary>
           </div>
@@ -96,6 +98,7 @@ function Category() {
 }
 
 function Priority() {
+  const { inboxManagerTextarea } = useInboxContext()!;
   const inboxQuery = InboxAPI.QueryInbox();
   const draft = inboxQuery.data![0];
 
@@ -107,16 +110,16 @@ function Priority() {
         <InfoTag {...getPriorityProps(draft.priority)} />
       </button>
     }>
-      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 3})}>
+      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 3, content: inboxManagerTextarea})}>
         <InfoTag {...getPriorityProps(3)} />
       </button>
-      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 2})}>
+      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 2, content: inboxManagerTextarea})}>
         <InfoTag {...getPriorityProps(2)} />
       </button>
-      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 1})}>
+      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 1, content: inboxManagerTextarea})}>
         <InfoTag {...getPriorityProps(1)} />
       </button>
-      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 0})}>
+      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 0, content: inboxManagerTextarea})}>
         <InfoTag {...getPriorityProps(0)} />
       </button>
     </DropDownOnClickButton>

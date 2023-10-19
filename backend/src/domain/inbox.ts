@@ -84,10 +84,12 @@ export class Inbox {
     })
   }
 
-  public async updateDraftOrganization({ priority, category, _id }: { _id: string, priority: number, category: string }) {
-
+  public async updateDraftOrganization({ _id, priority, category, content }: { _id: string, priority: number, category: string, content: string }) {
+    // =============================================================================
+    //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.
+    // =============================================================================
     if (priority != null) {
-      await this.repository.updateDraft(_id, {priority});
+      await this.repository.updateDraft(_id, {priority, content});
     }
 
     if (category != null && category !== '') {
@@ -99,7 +101,7 @@ export class Inbox {
       else
         categoryId = await this.categoryRepo.create({name: category})
 
-      await this.repository.updateDraft(_id, {category: categoryId});
+      await this.repository.updateDraft(_id, {category: categoryId, content});
     }
 
   }

@@ -1,7 +1,7 @@
 import { Modal } from "@/components/Modal";
 import { useInboxContext } from "@/features/inbox/store/InboxContext";
 import { StatusLog } from "./StatusLog";
-import { InputField } from "./InputField";
+import { DraftEditor } from "./DraftEditor";
 import { Controlls } from "./Controlls";
 import * as InboxAPI from '@/features/inbox/api';
 import { InfoTags } from "./InfoTags";
@@ -36,7 +36,7 @@ function Manager() {
     <div className="w-[36rem] m-2">
       <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
       <InfoTags />
-      <InputField />
+      <DraftEditor />
       <StatusLog />
       <Controlls />
     </div>

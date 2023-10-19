@@ -4,7 +4,7 @@ import { BiLoaderAlt } from 'react-icons/bi';
 import { useInboxContext } from '../../store/InboxContext';
 import * as InboxAPI from '@/features/inbox/api';
 
-export function InputField(props: React.HTMLAttributes<HTMLDivElement>){
+export function DraftEditor(props: React.HTMLAttributes<HTMLDivElement>){
   const { inboxManagerTextarea, setInboxManagerTextarea } = useInboxContext()!;
   const inboxQuery = InboxAPI.QueryInbox();
   const inbox = inboxQuery.data; 

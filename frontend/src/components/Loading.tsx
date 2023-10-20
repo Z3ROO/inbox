@@ -10,7 +10,10 @@ import { BiLoaderAlt } from 'react-icons/bi';
 
 export function LoadingSpinner({isLoading, className}: {isLoading: boolean, className?: string}) {
   return (
-    <div className={`absolute `+className}>
+    <div 
+      style={{display: !isLoading ? 'none' : undefined}}
+      className={`absolute `+className}
+      >
       <BiLoaderAlt className="animate-spin" />
     </div>
   )

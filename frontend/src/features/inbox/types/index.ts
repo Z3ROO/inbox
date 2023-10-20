@@ -1,5 +1,5 @@
 
-export interface DraftDTO {
+export interface DraftUpdateDTO {
   content?: string,
   draft_id: string,
   action: DraftDelayAmounts|"remove"|"undo"|"organization";

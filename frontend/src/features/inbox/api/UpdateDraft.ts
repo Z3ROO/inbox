@@ -1,10 +1,10 @@
 import { queryClient } from "@/App";
 import { API_URL } from "@/config/API";
 import { useMutation, MutationOptions } from "@/lib/query";
-import { DraftDTO } from "../types";
+import { DraftUpdateDTO } from "../types";
 
 
-async function updateDraft(args: DraftDTO): Promise<{}> {
+async function updateDraft(args: DraftUpdateDTO): Promise<{}> {
   const { content, draft_id, action, quantity, priority, category } = args;
   
   const request = await fetch(`${API_URL}/inbox`, {
@@ -19,7 +19,7 @@ async function updateDraft(args: DraftDTO): Promise<{}> {
   return response;
 }
 
-export function UpdateDraft(options?: MutationOptions<{}, DraftDTO>) {
+export function UpdateDraft(options?: MutationOptions<{}, DraftUpdateDTO>) {
 
   return useMutation(updateDraft, {
     ...options,

@@ -1,3 +1,5 @@
 .database
 db.log
 start.sh
+
+node_modules

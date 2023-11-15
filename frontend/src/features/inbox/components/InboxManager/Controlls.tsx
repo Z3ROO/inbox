@@ -3,8 +3,6 @@ import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useInboxContext } from "../../store/InboxContext";
 import { DraftDelayAmounts } from "../../types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
-
-
 import * as InboxAPI from '@/features/inbox/api';
 
 export function Controlls() {

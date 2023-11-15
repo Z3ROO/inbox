@@ -9,6 +9,6 @@ export PGUSER="sara"
 export PGPORT=3003
 export PGHOST="localhost"
 export PGPASSWORD="1937"
-export PGDATABASE="sara"
+export PGDATABASE="main"
 
 nodemon src/index.ts

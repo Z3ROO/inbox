@@ -1,6 +1,8 @@
-import { database } from '@/infra/database';
+import { mongodb } from '@/infra/database';
 import { IDraftCategory, IInbox } from '@/types/Inbox';
 import { Collection, Db, ObjectId } from 'mongodb';
+
+const database = mongodb;
 
 export class Repository<DocumentType> {
   protected db: () => Db

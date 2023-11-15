@@ -9,7 +9,7 @@ const status: { database: null| MongoClient } = {
 
 const client = new MongoClient(`${DB_URL}:${DB_PORT}`);
 
-export async function connectDB() {
+export async function connectMongoDB() {
   const connection = await client.connect();
   status.database = connection;
 

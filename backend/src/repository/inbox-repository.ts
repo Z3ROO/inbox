@@ -127,20 +127,17 @@ export class DraftCategoryRepo extends Repository<IDraftCategory> {
 
 export class DraftCategoryRepoSQL extends PostgresRepository {
 
-  // public async findAll() {
-  //   return await this.collection().find({}).toArray();
-  // }
+  public async findAll() {
+    return await this.query(`SELECT * FROM DraftCategories;`);
+  }
 
-  // public async findById(_id: string|ObjectId) {
-  //   if (typeof _id === 'string')
-  //     _id = new ObjectId(_id);
+  public async findById(_id: string|ObjectId) {
+    return await this.query(`SELECT * FROM DraftCategories WHERE DraftCategories._id = $1;`, [_id]);
+  }
 
-  //   return await this.collection().findOne({_id});
-  // }
-
-  // public async findByName(name: string) {
-  //   return await this.collection().findOne({name});
-  // }
+  public async findByName(name: string) {
+    return await this.query(`SELECT * FROM DraftCategories WHERE DraftCategories.name = $1;`, [name]);
+  }
 
   public async create({_id, name}: {_id: string, name:string}) {
     const res = await this.query(`
@@ -155,6 +152,17 @@ export class DraftCategoryRepoSQL extends PostgresRepository {
 }
 
 export class InboxRepositorySQL extends PostgresRepository {
+  public async findById(draft_id: string) {
+    const res = this.query(`
+      SELECT 
+      Drafts._id, content, priority, created_at, delay, 
+      delay_quantity, delayed_at, allowed_after, todo, 
+      jsonb_build_object('_id', DraftCategories._id, 'name', DraftCategories.name, 'color', DraftCategories.color, 'icon', DraftCategories.icon) as category 
+      FROM Drafts 
+      LEFT JOIN DraftCategories ON Drafts.category = DraftCategories._id 
+      WHERE Drafts._id <= $1;
+    `, [draft_id]);
+  }
 
   async findAllowedTasks() {
     const res = await this.query(`
@@ -224,19 +232,37 @@ export class InboxRepositorySQL extends PostgresRepository {
     return res;
   }
 
-  // async updateDraft(draft_id: string, properties: Partial<IDraft>) {
-  //   const _id = new ObjectId(draft_id);
-  //   const mutation = await this.collection().findOneAndUpdate({_id}, {$set: {...properties}}, { returnDocument: 'before' });
-  //   return {
-  //     originalValue: mutation.value
-  //   }
-  // }
+  async updateDraft(draft_id: string, properties: Partial<IDraft>) {
+    const originalDraft = this.findById(draft_id);
+
+    const res = await this.query(`
+      UPDATE Drafts 
+      SET ${mapHandlers(properties, 1)}
+      WHERE Draft._id = $1;
+    `,[draft_id, ...Object.values(properties)]);
+
+    return {
+      originalValue: originalDraft,
+      ...res
+    };
+  }
  
-  // async deleteOne(draft_id: string) {
-  //   const _id = new ObjectId(draft_id);
-  //   const mutation = await this.collection().findOneAndDelete({_id});
-  //   return {
-  //     originalValue: mutation.value
-  //   }
-  // }
+  async deleteOne(draft_id: string) {
+    const res = await this.query(`
+      DELETE FROM Drafts WHERE Drafts._id = $1;
+    `,[draft_id]);
+
+    return res;
+  }
+}
+
+
+function mapHandlers(properties: {}, startAfter: number = 0) {
+  return Object.keys(properties).reduce(
+      (acc, key, i) => {
+        const comma = i === 0 ? '' : ',';
+
+        return acc + `${comma} ${key} = $${i+1+startAfter}`;
+      }
+    , '');
 }

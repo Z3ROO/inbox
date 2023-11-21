@@ -1,8 +1,8 @@
 import { DraftCategoryRepo, InboxRepository } from "@/repository/inbox-repository";
-import { DelayAmount, IInbox } from "@/types/Inbox";
+import { DelayAmount, IDraft } from "@/types/Inbox";
 import { ObjectId, WithId } from "mongodb";
 
-interface IInboxDTO {
+interface IDraftDTO {
   _id: string
   content: string
   amount: DelayAmount
@@ -37,7 +37,7 @@ class UndoCache<T>{
   }
 }
 
-const undoCache = new UndoCache<WithId<IInbox>>();
+const undoCache = new UndoCache<WithId<IDraft>>();
 
 export class Inbox {
   repository = new InboxRepository();
@@ -106,7 +106,7 @@ export class Inbox {
 
   }
 
-  public async delayDraft(draft: IInboxDTO) {
+  public async delayDraft(draft: IDraftDTO) {
     let { _id, content, amount, quantity } = draft;
     
     if (amount === 'none') {

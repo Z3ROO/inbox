@@ -2,6 +2,7 @@ import { connectMongoDB, connectPostgresDB } from "./database";
 import { connectHTTPServer } from "./http-server";
 
 export async function initInfrastructure() {
+  //THIS VERIFY SEEMS USELESS
   verifyEnviromentalVariables();
   await connectMongoDB();
   await connectPostgresDB();

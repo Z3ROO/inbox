@@ -2,17 +2,17 @@ import { postgres } from "@/infra/database";
 
 interface PostgresRepositoryResponse<DataT> {
   status: 'OK'|'ERROR'|'NOT_QUERIED'
-  data: null|DataT[]
+  data: DataT[]
   resultCount: number
   error: string
 }
 
 export class PostgresRepository {
   
-  protected async query(rawQuery: string, placeHolders: string[]) {
+  protected async query(rawQuery: string, placeHolders?: any[]) {
     const res:PostgresRepositoryResponse<any> = {
       status: 'NOT_QUERIED',
-      data: null,
+      data: [],
       resultCount: 0,
       error: ''
     };

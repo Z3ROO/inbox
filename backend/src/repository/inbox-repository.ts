@@ -36,7 +36,26 @@ export class InboxRepository extends Repository<IDraft> {
   }
 
   async findEverything() {
-    return await this.collection().find().toArray();
+    const result = await this.collection().aggregate([
+      {
+        $lookup: {
+          from: 'draft_category',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'category'
+        }
+      },
+      {
+        $addFields: {
+          category: {
+            $arrayElemAt: ['$category', 0]
+          }
+        }
+      }
+    ])
+      .toArray();
+
+   return result;
   }
 
   async findAll() {

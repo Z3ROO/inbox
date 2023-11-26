@@ -1,5 +1,8 @@
+#!/usr/bin/env ts-node
+
 import {config} from 'dotenv'
-config({path: '.env.dev'});
+config({path: '../../../../.env.dev'});
+import {v4 as uuid } from 'uuid';
 
 import { connectMongoDB, connectPostgresDB, postgres } from "@/infra/database";
 import { InboxRepository, InboxRepositorySQL, DraftCategoryRepo, DraftCategoryRepoSQL } from "@/repository/inbox-repository";
@@ -20,12 +23,23 @@ async function migrate() {
   const categories = await categoriesRepo.findAll();
   const drafts = await inboxMongo.findEverything();
 
-  drafts.forEach(draft => {
+
+  categories.forEach((category) => {
+    categoriesRepoSQL.create({
+      _id: uuid(),
+      name: category.name
+    });
+  });
+
+
+  drafts.forEach(async draft => {
+    const category_id = (await categoriesRepoSQL.findByName(draft.category.name)).data[0]._id;
+
     inboxPG.insertDraft({
-      _id: draft._id.toString(),
+      _id: uuid(),
       content: draft.content,
       priority: draft.priority,
-      category_id: draft.category.toString(),
+      category_id,
       created_at: draft.created_at,
       delay: draft.last_delay?.amount,
       delayed_at: draft.last_delay?.delayed_at,
@@ -33,10 +47,6 @@ async function migrate() {
       allowed_after: draft.allowed_after,
       todo: draft.todo
     })
-  })
-
-  categories.forEach((category) => {
-    categoriesRepoSQL.create({_id: category._id.toString(), name: category.name});
   })
 
   console.log('tey')
@@ -59,5 +69,5 @@ async function ViewData() {
   console.log(res.data);
 }
 
-//migrate();
+migrate();
 //ViewData();

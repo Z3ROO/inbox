@@ -2,6 +2,7 @@ import { mongodb } from '@/infra/database';
 import { IDraftCategory, IDraft, IDraftPG } from '@/types/Inbox';
 import { Collection, Db, ObjectId } from 'mongodb';
 import { PostgresRepository } from './default/PostgresRepository';
+import { v4 } from 'uuid';
 
 const database = mongodb;
 
@@ -128,18 +129,26 @@ export class DraftCategoryRepo extends Repository<IDraftCategory> {
 export class DraftCategoryRepoSQL extends PostgresRepository {
 
   public async findAll() {
-    return await this.query(`SELECT * FROM DraftCategories;`);
+    const res = await this.query(`SELECT * FROM DraftCategories;`);
+    return res;
   }
 
-  public async findById(_id: string|ObjectId) {
-    return await this.query(`SELECT * FROM DraftCategories WHERE DraftCategories._id = $1;`, [_id]);
+  public async findById(_id: string|ObjectId): Promise<any> {
+    const res = await this.query(`SELECT * FROM DraftCategories WHERE DraftCategories._id = $1;`, [_id]) as any;
+    
+    return res;
   }
 
   public async findByName(name: string) {
-    return await this.query(`SELECT * FROM DraftCategories WHERE DraftCategories.name = $1;`, [name]);
+    const res = await this.query(`SELECT * FROM DraftCategories WHERE DraftCategories.name = $1;`, [name]) as any;
+    
+    return res;
   }
 
-  public async create({_id, name}: {_id: string, name:string}) {
+  public async create({_id, name}: {_id?: string, name:string}) {
+    if (!_id)
+      _id = v4();
+
     const res = await this.query(`
       INSERT INTO DraftCategories (
         _id, name, color, icon
@@ -147,13 +156,16 @@ export class DraftCategoryRepoSQL extends PostgresRepository {
       VALUES ($1, $2, $3, $4);
     `, [_id, name, '#ccc', 'none']);
 
-    return res;
+    return {
+      ...res,
+      insertedId: _id
+    };
   }
 }
 
 export class InboxRepositorySQL extends PostgresRepository {
   public async findById(draft_id: string) {
-    const res = this.query(`
+    const res = await this.query(`
       SELECT 
       Drafts._id, content, priority, created_at, delay, 
       delay_quantity, delayed_at, allowed_after, todo, 
@@ -161,7 +173,18 @@ export class InboxRepositorySQL extends PostgresRepository {
       FROM Drafts 
       LEFT JOIN DraftCategories ON Drafts.category = DraftCategories._id 
       WHERE Drafts._id <= $1;
-    `, [draft_id]);
+    `, [draft_id]) as any;
+
+    if (!res.data)
+      return res;
+
+    res.data.last_delay = {
+      amount: res.data.delay,
+      quantity: res.data.delay_quantity,
+      delayed_at: res.data.delayed_at
+    }
+    
+    return res;
   }
 
   async findAllowedTasks() {
@@ -171,8 +194,8 @@ export class InboxRepositorySQL extends PostgresRepository {
       delay_quantity, delayed_at, allowed_after, todo,
       jsonb_build_object('_id', DraftCategories._id, 'name', DraftCategories.name, 'color', DraftCategories.color, 'icon', DraftCategories.icon) as category
       FROM Drafts 
-      LEFT JOIN DraftCategories ON Drafts.category = DraftCategories._id
-      WHERE Drafts.allowed_after <= CURRENT_DATE 
+      LEFT JOIN DraftCategories ON Drafts.category_id = DraftCategories._id
+      WHERE Drafts.allowed_after <= CURRENT_TIMESTAMP AND Drafts.todo = FALSE 
       ORDER BY Drafts.priority DESC, Drafts.allowed_after ASC
     `);
     
@@ -205,7 +228,7 @@ export class InboxRepositorySQL extends PostgresRepository {
       draft.allowed_after,
       draft.todo
     ]);
-
+    
     return res;
   }
 
@@ -214,10 +237,15 @@ export class InboxRepositorySQL extends PostgresRepository {
       SELECT 
       Drafts._id, content, priority, created_at, delay, 
       delay_quantity, delayed_at, allowed_after, todo,
-      jsonb_build_object('_id', DraftCategories._id, 'name', DraftCategories.name, 'color', DraftCategories.color, 'icon', DraftCategories.icon) as category
+      jsonb_build_object(
+        '_id', DraftCategories._id, 
+        'name', DraftCategories.name, 
+        'color', DraftCategories.color, 
+        'icon', DraftCategories.icon
+        ) as category
       FROM Drafts 
-      LEFT JOIN DraftCategories ON Drafts.category = DraftCategories._id
-      WHERE Drafts.allowed_after <= CURRENT_DATE AND Drafts.todo = TRUE 
+      LEFT JOIN DraftCategories ON Drafts.category_id = DraftCategories._id
+      WHERE Drafts.todo = TRUE 
       ORDER BY Drafts.priority DESC, Drafts.allowed_after ASC
     `);
     
@@ -232,15 +260,15 @@ export class InboxRepositorySQL extends PostgresRepository {
     return res;
   }
 
-  async updateDraft(draft_id: string, properties: Partial<IDraft>) {
-    const originalDraft = this.findById(draft_id);
+  async updateDraft(draft_id: string, properties: Partial<IDraftPG>) {
+    const originalDraft = await this.findById(draft_id);
 
     const res = await this.query(`
       UPDATE Drafts 
       SET ${mapHandlers(properties, 1)}
-      WHERE Draft._id = $1;
+      WHERE Drafts._id = $1;
     `,[draft_id, ...Object.values(properties)]);
-
+    
     return {
       originalValue: originalDraft,
       ...res

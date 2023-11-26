@@ -1,3 +1,6 @@
+import {config} from 'dotenv'
+config({path: '.env.dev'});
+
 import { connectMongoDB, connectPostgresDB, postgres } from "@/infra/database";
 import { InboxRepository, InboxRepositorySQL, DraftCategoryRepo, DraftCategoryRepoSQL } from "@/repository/inbox-repository";
 
@@ -56,4 +59,5 @@ async function ViewData() {
   console.log(res.data);
 }
 
-ViewData();
+//migrate();
+//ViewData();

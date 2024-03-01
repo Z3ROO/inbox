@@ -1,5 +1,5 @@
 #!/bin/bash
 
-export NODE_ENV=dev
+export NODE_ENV=development
 
 nodemon src/index.ts

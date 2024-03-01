@@ -3,10 +3,11 @@
 import {config} from 'dotenv'
 config({path: '../../../../.env.dev'});
 import {v4 as uuid } from 'uuid';
-
 import { connectMongoDB, connectPostgresDB, postgres } from "@/infra/database";
 import { InboxRepository, InboxRepositorySQL, DraftCategoryRepo, DraftCategoryRepoSQL } from "@/repository/inbox-repository";
 
+
+console.log('qweqweqweqweqwe: ', process.env.PGPASSWORD)
 
 async function connectDBs() {
   await connectMongoDB();
@@ -24,15 +25,14 @@ async function migrate() {
   const drafts = await inboxMongo.findEverything();
 
 
-  categories.forEach((category) => {
-    categoriesRepoSQL.create({
+  for await(const category of categories) {
+    await categoriesRepoSQL.create({
       _id: uuid(),
       name: category.name
     });
-  });
+  }
 
-
-  drafts.forEach(async draft => {
+  for await(const draft of drafts) {
     const category_id = (await categoriesRepoSQL.findByName(draft.category.name)).data[0]._id;
 
     inboxPG.insertDraft({
@@ -47,7 +47,7 @@ async function migrate() {
       allowed_after: draft.allowed_after,
       todo: draft.todo
     })
-  })
+  }
 
   console.log('tey')
 }

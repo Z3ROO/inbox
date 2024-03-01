@@ -8,7 +8,7 @@ const config: { [key: string]: Knex.Config } = {
       database: process.env.PGDATABASE,
       user: process.env.PGUSER,
       password: process.env.PGPASSWORD,
-      port: 3003,
+      port: Number(process.env.PGPORT),
       host: process.env.PGHOST
     },
     pool: {
@@ -16,7 +16,7 @@ const config: { [key: string]: Knex.Config } = {
       max: 10
     },
     migrations: {
-      tableName: "knex_migrations",
+      tableName: "knex_migrations_dev",
       directory: './src/infra/database/migrations'
     }
   },
@@ -24,18 +24,18 @@ const config: { [key: string]: Knex.Config } = {
   production: {
     client: "pg",
     connection: {
-      database: 'process.env.PGDATABASE',
-      user: 'process.env.PGUSER',
-      password: 'process.env.PGPASSWORD',
-      //port: Number(process.env.PGPORT),
-      host: 'process.env.PGHOST'
+      database: process.env.PGDATABASE,
+      user: process.env.PGUSER,
+      password: process.env.PGPASSWORD,
+      port: Number(process.env.PGPORT),
+      host: process.env.PGHOST
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      tableName: "knex_migrations",
+      tableName: "knex_migrations_prod",
       directory: './src/infra/database/migrations'
     }
   }

@@ -1,10 +1,8 @@
-import { DropDownOnHoldButton, OptionBtn } from "@/components/Buttons";
+import { BtnSecondary, DropDownOnHoldButton, OptionBtn } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useInboxContext } from "../../store/InboxContext";
 import { DraftDelayAmounts } from "../../types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
-
-
 import * as InboxAPI from '@/features/inbox/api';
 
 export function Controlls() {
@@ -20,8 +18,8 @@ export function Controlls() {
 
 function DelayDraftButtons() {
   const { inboxManagerTextarea } = useInboxContext()!
-  const inbox = InboxAPI.QueryInbox().data;
-  const currentDraft = inbox![0];
+  const inbox = InboxAPI.QueryInbox().data!;
+  const currentDraft = inbox[0];
 
   const updateDraft = InboxAPI.UpdateDraft();
 
@@ -82,33 +80,36 @@ function DelayDraftButtons() {
 
 function TodoButton() {
   const { inboxManagerTextarea } = useInboxContext()!;
-  const inbox = InboxAPI.QueryInbox().data;
-  const currentDraft = inbox![0];
+  const inbox = InboxAPI.QueryInbox().data!;
+  const currentDraft = inbox[0];
 
   const updateDraft = InboxAPI.UpdateDraft();
   const toggleTodo = InboxAPI.ToggleInboxTodo();
 
   return (
-    <OptionBtn confirm
-      disabled={toggleTodo.isLoading}
-      onClick={() => {
-        updateDraft({
-          action: 'none',
-          draft_id: currentDraft._id,
-          content: inboxManagerTextarea
-        });
-        toggleTodo({ draft_id: currentDraft._id, state: true });
-      }}
-    >
-      <BsFillCheckSquareFill />
-    </OptionBtn>
+    <div>
+      <BtnSecondary icon
+        className=""
+        disabled={toggleTodo.isLoading}
+        onClick={() => {
+          updateDraft({
+            action: 'none',
+            draft_id: currentDraft._id,
+            content: inboxManagerTextarea
+          });
+          toggleTodo({ draft_id: currentDraft._id, state: true });
+        }}
+      >
+        <BsFillCheckSquareFill />
+      </BtnSecondary>
+    </div>
   );
 }
 
 
 function RemoveButton() {
-  const inbox = InboxAPI.QueryInbox().data;
-  const currentDraft = inbox![0];
+  const inbox = InboxAPI.QueryInbox().data!;
+  const currentDraft = inbox[0];
 
   const updateDraft = InboxAPI.UpdateDraft();
 
@@ -123,8 +124,8 @@ function RemoveButton() {
 }
 
 function UndoButton() {
-  const inbox = InboxAPI.QueryInbox().data;
-  const currentDraft = inbox![0];
+  const inbox = InboxAPI.QueryInbox().data!;
+  const currentDraft = inbox[0];
 
   const updateDraft = InboxAPI.UpdateDraft();
 
@@ -137,5 +138,3 @@ function UndoButton() {
     </OptionBtn>
   );
 }
-
-

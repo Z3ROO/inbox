@@ -1,4 +1,3 @@
-import { Widget } from './features/goals';
 import Inbox from './features/inbox';
 import { TodoList } from './features/todo-list';
 
@@ -7,7 +6,6 @@ export function HomePage() {
     <div className='flex h-screen' >
       <TodoList />
       <Inbox />
-      <Widget />
     </div>
   );
 }

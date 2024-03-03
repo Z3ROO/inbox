@@ -1,4 +1,3 @@
-export * from './mongodb';
 export * from './postgres';
 
 import knex from 'knex';

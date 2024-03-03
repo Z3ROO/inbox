@@ -1,6 +1,7 @@
-import { DraftCategoryRepo, InboxRepository } from "@/repository/inbox-repository";
+import { DraftCategoryRepoSQL, InboxRepositorySQL } from "@/repository/inbox-repository";
 import { DelayAmount, IDraft } from "@/types/Inbox";
 import { ObjectId, WithId } from "mongodb";
+import { v4 as UUID } from 'uuid';
 
 interface IDraftDTO {
   _id: string
@@ -26,7 +27,7 @@ class UndoCache<T>{
 
   get get() {
     const bit = this.#cache.pop();
-    console.log('ttt',this.#cache);
+    console.log('Cache get:',this.#cache);
     return bit;
   }
 
@@ -40,24 +41,25 @@ class UndoCache<T>{
 const undoCache = new UndoCache<WithId<IDraft>>();
 
 export class Inbox {
-  repository = new InboxRepository();
-  categoryRepo = new DraftCategoryRepo();
+  repository = new InboxRepositorySQL();
+  categoryRepo = new DraftCategoryRepoSQL();
 
   public async getInbox() {
-    return await this.repository.findAll();
+    const {data, status} = await this.repository.findAllowedTasks();
+    return data;
   }
 
   public async getTodos() {
-    return await this.repository.findAllTodos();
+    const {data, status} = await this.repository.findAllTodos();
+    return data;
   }
 
   public async getCategories() {
-    return await this.categoryRepo.findAll();
+    const {data, status} =  await this.categoryRepo.findAll();
+    return data;
   }
 
-  public async insertDraft(content: string, priority: number, category: string, todo?: boolean) {
-    if (todo === undefined)
-      todo = false;
+  public async insertDraft(content: string, priority: number, category: string, todo: boolean = false) {
     
     if (priority == null || priority > 3)
       priority = 0;
@@ -65,20 +67,24 @@ export class Inbox {
     if (category == null || category === '')
       category = 'none';
 
-    let categoryId: ObjectId;
+    let category_id: string;
     let categoryObject = await this.categoryRepo.findByName(category);
 
     if (categoryObject)
-      categoryId = categoryObject._id
+      category_id = categoryObject.data[0]._id
     else
-      categoryId = await this.categoryRepo.create({name: category})
+      category_id = (await this.categoryRepo.create({name: category})).insertedId
 
-    await this.repository.insertOne({
+    
+    await this.repository.insertDraft({
+      _id: UUID(),
       content,
       priority,
-      category: categoryId,
+      category_id,
       todo,
-      last_delay: null,
+      delay: null,
+      delay_quantity: null,
+      delayed_at: null,
       allowed_after: new Date(),
       created_at: new Date()
     })
@@ -93,22 +99,22 @@ export class Inbox {
     }
 
     if (category != null && category !== '') {
-      let categoryId: ObjectId;
-      let categoryObject = await this.categoryRepo.findByName(category);
+      let category_id: string;
+      let categoryObject = (await this.categoryRepo.findByName(category)).data[0];
 
       if (categoryObject)
-        categoryId = categoryObject._id
+        category_id = categoryObject._id
       else
-        categoryId = await this.categoryRepo.create({name: category})
+        category_id = (await this.categoryRepo.create({name: category})).insertedId
 
-      await this.repository.updateDraft(_id, {category: categoryId, content});
+      await this.repository.updateDraft(_id, {category_id, content});
     }
 
   }
 
   public async delayDraft(draft: IDraftDTO) {
     let { _id, content, amount, quantity } = draft;
-    
+
     if (amount === 'none') {
       const { originalValue } = await this.repository.updateDraft(_id, {
         content
@@ -116,13 +122,13 @@ export class Inbox {
       return;
     }
       
-
     if (!quantity)
       quantity = 1;
+
     let allowed_after: Date;
     
     if (amount === 'next')
-      allowed_after = new Date();
+      allowed_after = new Date(Date.now() + (DELAY_AMOUNT['later']/60));
     else if (amount === 'later')
       allowed_after = new Date(Date.now() + DELAY_AMOUNT[amount]);
     else if (amount === 'dawn') {
@@ -136,12 +142,10 @@ export class Inbox {
 
     const { originalValue } = await this.repository.updateDraft(_id, {
       content,
-      allowed_after,
-      last_delay: {
-        delayed_at: new Date(),
-        amount,
-        quantity
-      }
+      allowed_after,      
+      delay: amount,
+      delayed_at: new Date(),
+      delay_quantity: quantity      
     });
 
     undoCache.set = originalValue;
@@ -160,7 +164,7 @@ export class Inbox {
     const { _id, content, last_delay, allowed_after, todo} = undoCache.get || {};
 
     if (_id !== undefined)
-      await this.repository.updateDraft(_id.toHexString(),  { last_delay, allowed_after, todo });
+      await this.repository.updateDraft(_id.toHexString(),  { delay: last_delay.amount, delay_quantity: last_delay.quantity, delayed_at: last_delay.delayed_at, allowed_after, todo });
   }
 }
 

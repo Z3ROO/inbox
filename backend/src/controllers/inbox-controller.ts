@@ -1,4 +1,4 @@
-import { Inbox } from "@/core/inboxSQL";
+import { Inbox } from "@/core/inbox";
 import { Router } from 'express'
   
 const router = Router();

@@ -1,4 +1,5 @@
 import { Inbox } from "@/core/inbox";
+import { IDraft, IDraft_Old } from "@/types/Inbox";
 import { Router } from 'express'
   
 const router = Router();
@@ -6,12 +7,14 @@ const inbox = new Inbox();
 
 router.get('/', async (request, response) => {
   const drafts = await inbox.getInbox();
-  response.json(drafts);
+  const tranformedDrafts: IDraft_Old[] = transformDraftsBodyStructure(drafts)
+  response.json(tranformedDrafts);
 });
 
 router.get('/todos', async (request, response) => {
   const inboxTodos = await inbox.getTodos();
-  response.json(inboxTodos);
+  const tranformedDrafts: IDraft_Old[] = transformDraftsBodyStructure(inboxTodos)
+  response.json(tranformedDrafts);
 });
 
 router.get('/categories', async (request, response) => {
@@ -61,3 +64,18 @@ router.put('/todos', async (request, response) => {
 });
 
 export default router
+
+function transformDraftsBodyStructure(drafts: IDraft[]): IDraft_Old[] {
+  const tranformedDrafts = drafts.map(draft => {
+      return {
+        ...draft,
+        last_delay: {
+          amount: draft.delay,
+          quantity: draft.delay_quantity,
+          delayed_at: draft.delayed_at
+        }
+      }
+    })
+
+  return tranformedDrafts;
+}

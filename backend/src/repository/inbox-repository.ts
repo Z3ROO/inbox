@@ -1,6 +1,6 @@
-import { IDraftCategory, IDraft, IDraftPG } from '@/types/Inbox';
+import { IDraftCategory, IDraft, IDraft_Schema, IDraft_Old } from '@/types/Inbox';
 import { ObjectId } from 'mongodb';
-import { PostgresRepository } from './default/PostgresRepository';
+import { PostgresRepository, PostgresRepositoryResponse } from './default/PostgresRepository';
 import { v4 } from 'uuid';
 
 
@@ -43,7 +43,7 @@ export class DraftCategoryRepoSQL extends PostgresRepository {
 
 export class InboxRepositorySQL extends PostgresRepository {
   public async findById(draft_id: string) {
-    const res = await this.query(`
+    const res = await this.query<IDraft>(`
       SELECT 
       drafts._id, content, priority, created_at, delay, 
       delay_quantity, delayed_at, allowed_after, todo, 
@@ -51,22 +51,13 @@ export class InboxRepositorySQL extends PostgresRepository {
       FROM drafts 
       LEFT JOIN draft_categories ON drafts.category = draft_categories._id 
       WHERE drafts._id <= $1;
-    `, [draft_id]) as any;
-
-    if (!res.data)
-      return res;
-
-    res.data.last_delay = {
-      amount: res.data.delay,
-      quantity: res.data.delay_quantity,
-      delayed_at: res.data.delayed_at
-    }
+    `, [draft_id]);
     
     return res;
   }
 
-  async findAllowedTasks() {
-    const res = await this.query(`
+  async findAllowedDrafts() {
+    const res = await this.query<IDraft>(`
       SELECT 
       drafts._id, content, priority, created_at, delay, 
       delay_quantity, delayed_at, allowed_after, todo,
@@ -76,19 +67,12 @@ export class InboxRepositorySQL extends PostgresRepository {
       WHERE drafts.allowed_after <= CURRENT_TIMESTAMP AND drafts.todo = FALSE 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
     `);
-    
-    for (const data of res.data) {
-      data.last_delay = {
-        amount: data.delay,
-        quantity: data.delay_quantity,
-        delayed_at: data.delayed_at
-      }
-    }
 
    return res;
   }
 
-  async insertDraft(draft: IDraftPG) {
+
+  async insertDraft(draft: IDraft_Schema) {
     const res = await this.query(`
       INSERT INTO drafts (
           _id, content, priority, category_id, created_at, delay, delay_quantity, delayed_at, allowed_after, todo
@@ -111,7 +95,7 @@ export class InboxRepositorySQL extends PostgresRepository {
   }
 
   async findAllTodos() {
-     const res = await this.query(`
+     const res = await this.query<IDraft>(`
       SELECT 
       drafts._id, content, priority, created_at, delay, 
       delay_quantity, delayed_at, allowed_after, todo,
@@ -126,19 +110,11 @@ export class InboxRepositorySQL extends PostgresRepository {
       WHERE drafts.todo = TRUE 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
     `);
-    
-    for (const data of res.data) {
-      data.last_delay = {
-        amount: data.delay,
-        quantity: data.delay_quantity,
-        delayed_at: data.delayed_at
-      }
-    }
 
     return res;
   }
 
-  async updateDraft(draft_id: string, properties: Partial<IDraftPG>) {
+  async updateDraft(draft_id: string, properties: Partial<IDraft_Schema>) {
     const originalDraft = await this.findById(draft_id);
 
     const res = await this.query(`

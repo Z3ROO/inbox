@@ -1,4 +1,4 @@
-import './src/env-variables';
+import './src/util/env-variables';
 import type { Knex } from "knex";
 
 const config: { [key: string]: Knex.Config } = {

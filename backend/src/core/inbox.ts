@@ -1,6 +1,5 @@
 import { DraftCategoryRepoSQL, InboxRepositorySQL } from "@/repository/inbox-repository";
 import { DelayAmount, IDraft } from "@/types/Inbox";
-import { ObjectId, WithId } from "mongodb";
 import { v4 as UUID } from 'uuid';
 
 interface IDraftDTO {
@@ -38,14 +37,14 @@ class UndoCache<T>{
   }
 }
 
-const undoCache = new UndoCache<WithId<IDraft>>();
+const undoCache = new UndoCache<IDraft>();
 
 export class Inbox {
   repository = new InboxRepositorySQL();
   categoryRepo = new DraftCategoryRepoSQL();
 
   public async getInbox() {
-    const {data, status} = await this.repository.findAllowedTasks();
+    const {data, status} = await this.repository.findAllowedDrafts();
     return data;
   }
 
@@ -148,12 +147,12 @@ export class Inbox {
       delay_quantity: quantity      
     });
 
-    undoCache.set = originalValue;
+    //undoCache.set = originalValue;
   }
 
   public async toggleTodo(draft_id: string, state: boolean) {
     const {originalValue} = await this.repository.updateDraft(draft_id, {todo: state});
-    undoCache.set = originalValue;
+    //undoCache.set = originalValue;
   }
 
   public async removeDraft(draft_id: string) {
@@ -161,10 +160,11 @@ export class Inbox {
   }
 
   public async undoChange() {
-    const { _id, content, last_delay, allowed_after, todo} = undoCache.get || {};
+    return
+    // const { _id, content, last_delay, allowed_after, todo} = undoCache.get || {};
 
-    if (_id !== undefined)
-      await this.repository.updateDraft(_id.toHexString(),  { delay: last_delay.amount, delay_quantity: last_delay.quantity, delayed_at: last_delay.delayed_at, allowed_after, todo });
+    // if (_id !== undefined)
+    //   await this.repository.updateDraft(_id,  { delay: last_delay.amount, delay_quantity: last_delay.quantity, delayed_at: last_delay.delayed_at, allowed_after, todo });
   }
 }
 

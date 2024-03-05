@@ -5,14 +5,11 @@ import toDealRouter from '@/core/features/ToDeal/controller';
 import draftsRouter from '@/core/entities/Drafts/controller';
 import draftCategoriesRouter from '@/core/entities/DraftCategories/controller';
 
-import _inboxRouter from '@/controllers/inbox-controller';
-
 export const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/_inbox', _inboxRouter);
 app.use('/inbox', inboxRouter);
 app.use('/to_deal', toDealRouter);
 app.use('/drafts', draftsRouter);

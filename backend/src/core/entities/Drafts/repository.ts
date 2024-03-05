@@ -1,6 +1,6 @@
 import { IDraftCategory, IDraft, IDraft_Schema, IDraft_Old } from '@/types/Inbox';
 import { ObjectId } from 'mongodb';
-import { PostgresRepository, PostgresRepositoryResponse } from '@/repository/default/PostgresRepository';
+import { PostgresRepository, PostgresRepositoryResponse } from '@/infra/database/PostgresRepository';
 import { v4 } from 'uuid';
 
 

@@ -1,4 +1,4 @@
-import { PostgresRepository } from "@/repository/default/PostgresRepository";
+import { PostgresRepository } from "@/infra/database/PostgresRepository";
 import { v4 as UUID } from "uuid";
 
 export class DraftCategoriesRepository extends PostgresRepository {

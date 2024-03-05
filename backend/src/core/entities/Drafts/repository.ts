@@ -9,7 +9,7 @@ export class DraftsRepository extends PostgresRepository {
     const res = await this.query<IDraft>(`
       SELECT 
       drafts._id, content, priority, created_at, delay, 
-      delay_quantity, delayed_at, allowed_after, todo, 
+      delay_quantity, delayed_at, allowed_after, to_deal, 
       jsonb_build_object('_id', draft_categories._id, 'name', draft_categories.name, 'color', draft_categories.color, 'icon', draft_categories.icon) as category 
       FROM drafts 
       LEFT JOIN draft_categories ON drafts.category = draft_categories._id 
@@ -24,11 +24,11 @@ export class DraftsRepository extends PostgresRepository {
     const res = await this.query<IDraft>(`
       SELECT 
       drafts._id, content, priority, created_at, delay, 
-      delay_quantity, delayed_at, allowed_after, todo,
+      delay_quantity, delayed_at, allowed_after, to_deal,
       jsonb_build_object('_id', draft_categories._id, 'name', draft_categories.name, 'color', draft_categories.color, 'icon', draft_categories.icon) as category
       FROM drafts 
       LEFT JOIN draft_categories ON drafts.category_id = draft_categories._id
-      WHERE drafts.allowed_after <= CURRENT_TIMESTAMP AND drafts.todo = FALSE 
+      WHERE drafts.allowed_after <= CURRENT_TIMESTAMP AND drafts.to_deal = FALSE 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
     `);
 
@@ -39,7 +39,7 @@ export class DraftsRepository extends PostgresRepository {
   async insert(draft: IDraft_Schema) {
     const res = await this.query(`
       INSERT INTO drafts (
-          _id, content, priority, category_id, created_at, delay, delay_quantity, delayed_at, allowed_after, todo
+          _id, content, priority, category_id, created_at, delay, delay_quantity, delayed_at, allowed_after, to_deal
         ) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
     `, [
@@ -52,19 +52,19 @@ export class DraftsRepository extends PostgresRepository {
       draft.delay_quantity,
       draft.delayed_at,
       draft.allowed_after,
-      draft.todo
+      draft.to_deal
     ]);
     
     return res;
   }
 
-  async findByBooleanProp(properties: {todo:boolean}) {
+  async findByBooleanProp(properties: {to_deal:boolean}) {
     console.log(`implement bool props conditionals`)
 
     const res = await this.query<IDraft>(`
       SELECT 
       drafts._id, content, priority, created_at, delay, 
-      delay_quantity, delayed_at, allowed_after, todo,
+      delay_quantity, delayed_at, allowed_after, to_deal,
       jsonb_build_object(
         '_id', draft_categories._id, 
         'name', draft_categories.name, 
@@ -73,7 +73,7 @@ export class DraftsRepository extends PostgresRepository {
         ) as category
       FROM drafts 
       LEFT JOIN draft_categories ON drafts.category_id = draft_categories._id
-      WHERE drafts.todo = TRUE 
+      WHERE drafts.to_deal = TRUE 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
     `);
 

@@ -1,4 +1,4 @@
-import { IDraftCategory, IDraft, IDraft_Schema, IDraft_Old } from '@/types/Inbox';
+import { IDraftCategory, IDraft, IDraft_Schema, IDraft_Old, IDraft_Schema_Old } from '@/types/Inbox';
 import { ObjectId } from 'mongodb';
 import { PostgresRepository, PostgresRepositoryResponse } from './default/PostgresRepository';
 import { v4 } from 'uuid';
@@ -72,7 +72,7 @@ export class InboxRepositorySQL extends PostgresRepository {
   }
 
 
-  async insertDraft(draft: IDraft_Schema) {
+  async insertDraft(draft: IDraft_Schema_Old) {
     const res = await this.query(`
       INSERT INTO drafts (
           _id, content, priority, category_id, created_at, delay, delay_quantity, delayed_at, allowed_after, todo
@@ -114,7 +114,7 @@ export class InboxRepositorySQL extends PostgresRepository {
     return res;
   }
 
-  async updateDraft(draft_id: string, properties: Partial<IDraft_Schema>) {
+  async updateDraft(draft_id: string, properties: Partial<IDraft_Schema_Old>) {
     const originalDraft = await this.findById(draft_id);
 
     const res = await this.query(`

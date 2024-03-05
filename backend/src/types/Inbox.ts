@@ -8,12 +8,25 @@ export interface IDraft {
   delay: null | DelayAmount
   delayed_at: Date
   delay_quantity: 1|2|3
-  todo: boolean
+  to_deal: boolean
   allowed_after: Date
   created_at: Date
 }
 
 export interface IDraft_Schema {
+  _id: string
+  content: string
+  priority: number
+  category_id: string
+  delay: null | DelayAmount
+  delayed_at: Date
+  delay_quantity: 1|2|3
+  to_deal: boolean
+  allowed_after: Date
+  created_at: Date
+}
+
+export interface IDraft_Schema_Old {
   _id: string
   content: string
   priority: number

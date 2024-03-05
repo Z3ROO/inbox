@@ -1,20 +1,18 @@
-import { InboxRepositorySQL } from "@/repository/inbox-repository";
 import { Drafts } from "../entities/Drafts";
 import { DraftCategories } from "../entities/DraftCategories";
+import { IDraft } from "@/types/Inbox";
 
 export class ToDeal {
   drafts = new Drafts();
   draftCategories = new DraftCategories();
-  /*
-    Migrate schema from todo to to_deal
-  */
-  public async getDrafts() {
-    const {data, status} = await this.drafts.byBooleanProp({todo: true});
+
+  public async getDrafts(): Promise<IDraft[]> {
+    const data = await this.drafts.byBooleanProp({to_deal: true});
     return data;
   }
 
   public async toggle(draft_id: string, state: boolean) {
-    const {originalValue} = await this.drafts.updateOne(draft_id, {todo: state});
+    const {originalValue} = await this.drafts.updateOne(draft_id, {to_deal: state});
     //undoCache.set = originalValue;
   }
 
@@ -22,8 +20,8 @@ export class ToDeal {
     return this.draftCategories.getAll();
   }
 
-  public async insertDraft(content: string, priority: number, category: string, todo: boolean = false) {
-    return this.drafts.insertOne(content, priority, category, todo);
+  public async insertDraft(content: string, priority: number, category: string, to_deal: boolean = false) {
+    return this.drafts.insertOne(content, priority, category, to_deal);
   }
 
   public async removeDraft(draft_id:string) {

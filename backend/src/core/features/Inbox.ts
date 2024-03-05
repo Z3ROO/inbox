@@ -21,10 +21,10 @@ const DELAY_AMOUNT = {
 export class Inbox {
   drafts = new Drafts();
   draftCategories = new DraftCategories();
-  
-  public async getDrafts() {
+
+  public async getDrafts(): Promise<IDraft[]> {
     const now = new Date();
-    const {data, status} = await this.drafts.allowedAfter(now);
+    const data = await this.drafts.allowedAfter(now);
     return data;
   }
 
@@ -67,14 +67,14 @@ export class Inbox {
     //undoCache.set = originalValue;
   }
 
-  public async insertDraft(content: string, priority: number, category: string, todo: boolean = false) {
-    return this.drafts.insertOne(content, priority, category, todo);
+  public async insertDraft(content: string, priority: number, category: string, to_deal: boolean = false) {
+    return this.drafts.insertOne(content, priority, category, to_deal);
   }
 
   public async getDraftCategories() {
     return this.draftCategories.getAll();
   }
-  
+
   public async updateDraftOrganization({ _id, priority, category, content }: { _id: string, priority: number, category: string, content: string }) {
     // =============================================================================
     //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.

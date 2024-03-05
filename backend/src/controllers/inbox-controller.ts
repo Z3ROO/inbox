@@ -69,6 +69,7 @@ function transformDraftsBodyStructure(drafts: IDraft[]): IDraft_Old[] {
   const tranformedDrafts = drafts.map(draft => {
       return {
         ...draft,
+        todo: draft.to_deal,
         last_delay: {
           amount: draft.delay,
           quantity: draft.delay_quantity,

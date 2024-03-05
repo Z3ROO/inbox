@@ -1,4 +1,3 @@
-import { InboxRepositorySQL } from "@/repository/inbox-repository";
 import { DelayAmount, IDraft, IDraft_Schema } from "@/types/Inbox";
 import { v4 as UUID } from 'uuid';
 import { DraftCategories } from "../DraftCategories";
@@ -14,17 +13,18 @@ interface IDraftDTO {
 export class Drafts {
   draftCategories = new DraftCategories();
   draftsRepo = new DraftsRepository();
-  //inboxRepo = new InboxRepositorySQL();
 
-  public async allowedAfter(date: Date) {
-    return this.draftsRepo.findAllowedAfter(date);
+  public async allowedAfter(date: Date): Promise<IDraft[]> {
+    const { data } = await this.draftsRepo.findAllowedAfter(date);
+    return data;
   }
 
-  public async byBooleanProp(properties: {todo: boolean}) {
-    return this.draftsRepo.findByBooleanProp(properties);
+  public async byBooleanProp(properties: {to_deal: boolean}): Promise<IDraft[]> {
+    const { data } = await  this.draftsRepo.findByBooleanProp(properties);
+    return data;
   }
 
-  public async insertOne(content: string, priority: number, category: string, todo: boolean = false) {
+  public async insertOne(content: string, priority: number, category: string, to_deal: boolean = false) {
     
     if (priority == null || priority > 3)
       priority = 0;
@@ -46,7 +46,7 @@ export class Drafts {
       content,
       priority,
       category_id,
-      todo,
+      to_deal,
       delay: null,
       delay_quantity: null,
       delayed_at: null,

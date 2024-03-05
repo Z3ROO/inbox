@@ -5,9 +5,9 @@ import { IDraftCategory } from "../types";
 
 
 async function getCategories(): Promise<IDraftCategory[]> {
-  const request = await fetch(`${API_URL}/inbox/categories`);
+  const request = await fetch(`${API_URL}/draft_categories`);
   const response = await request.json();
-
+  
   return response;
 }
 

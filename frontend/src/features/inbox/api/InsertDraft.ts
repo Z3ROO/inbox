@@ -12,7 +12,7 @@ type InsertDraftArguments = {
 async function insertDraft(args: InsertDraftArguments) {
   const { content, priority, category, todo } = args;
   
-  const request = await fetch(`${API_URL}/inbox`, {
+  const request = await fetch(`${API_URL}/drafts/insert`, {
     method: 'post',
     body: JSON.stringify({ 
       content,

@@ -7,7 +7,7 @@ import { ToggleTodoDTO } from "../types";
 async function toggleInboxTodo(args: ToggleTodoDTO): Promise<{}> {
   const { draft_id, state } = args;
   
-  const request = await fetch(`${API_URL}/inbox/todos`, {
+  const request = await fetch(`${API_URL}/to_deal/toggle`, {
     method: 'put',
     body: JSON.stringify({ draft_id, state }),
     headers: {

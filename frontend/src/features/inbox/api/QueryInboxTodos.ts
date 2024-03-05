@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { IDraft } from "../types";
 
 async function getInboxTodos(): Promise<IDraft[]> {
-  const request = await fetch(`${API_URL}/inbox/todos`);
+  const request = await fetch(`${API_URL}/to_deal`);
   const response = await request.json();
 
   return response;

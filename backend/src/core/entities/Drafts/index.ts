@@ -1,14 +1,7 @@
-import { DelayAmount, IDraft, IDraft_Schema } from "@/types/Inbox";
+import { IDraft, IDraft_Schema } from "@/types/Inbox";
 import { v4 as UUID } from 'uuid';
 import { DraftCategories } from "../DraftCategories";
 import { DraftsRepository } from "./repository";
-
-interface IDraftDTO {
-  _id: string
-  content: string
-  amount: DelayAmount
-  quantity?: 1|2|3
-}
 
 export class Drafts {
   draftCategories = new DraftCategories();

@@ -1,5 +1,4 @@
 import { ToDeal } from "@/core/features/ToDeal";
-import { IDraft, IDraft_Old } from "@/types/Inbox";
 import { Router } from 'express'
   
 const router = Router();
@@ -11,11 +10,6 @@ router.get('/', async (request, response) => {
 
   response.json(draftsToDeal);
 });
-
-// router.get('/categories', async (request, response) => {
-//   const categories = await toDeal.getAllDraftCategories();
-//   response.json(categories);
-// });
 
 router.put('/toggle', async (request, response) => {
   const { draft_id, state } = request.body;

@@ -1,0 +1,65 @@
+import { InboxRepositorySQL } from "@/repository/inbox-repository";
+import { DelayAmount, IDraft, IDraft_Schema } from "@/types/Inbox";
+import { v4 as UUID } from 'uuid';
+import { DraftCategories } from "../DraftCategories";
+import { DraftsRepository } from "./repository";
+
+interface IDraftDTO {
+  _id: string
+  content: string
+  amount: DelayAmount
+  quantity?: 1|2|3
+}
+
+export class Drafts {
+  draftCategories = new DraftCategories();
+  draftsRepo = new DraftsRepository();
+  //inboxRepo = new InboxRepositorySQL();
+
+  public async allowedAfter(date: Date) {
+    return this.draftsRepo.findAllowedAfter(date);
+  }
+
+  public async byBooleanProp(properties: {todo: boolean}) {
+    return this.draftsRepo.findByBooleanProp(properties);
+  }
+
+  public async insertOne(content: string, priority: number, category: string, todo: boolean = false) {
+    
+    if (priority == null || priority > 3)
+      priority = 0;
+
+    if (category == null || category === '')
+      category = 'none';
+
+    let category_id: string;
+    let categoryObject = await this.draftCategories.getByName(category);
+
+    if (categoryObject)
+      category_id = categoryObject.data[0]._id;
+    else
+      category_id = (await this.draftCategories.insertOne({name: category})).insertedId;
+
+    
+    await this.draftsRepo.insert({
+      _id: UUID(),
+      content,
+      priority,
+      category_id,
+      todo,
+      delay: null,
+      delay_quantity: null,
+      delayed_at: null,
+      allowed_after: new Date(),
+      created_at: new Date()
+    })
+  }
+
+  public async updateOne(draft_id: string, properties: Partial<IDraft_Schema>) {
+    return this.draftsRepo.updateOne(draft_id, properties);
+  }
+
+  public async deleteOne(draft_id: string) {
+    await this.draftsRepo.deleteOne(draft_id);
+  }
+}

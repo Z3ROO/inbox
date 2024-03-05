@@ -2,14 +2,14 @@ import { DraftCategoryRepoSQL, InboxRepositorySQL } from "@/repository/inbox-rep
 import { DelayAmount, IDraft } from "@/types/Inbox";
 import { v4 as UUID } from 'uuid';
 
-interface IDraftDTO {
+/**/interface IDraftDTO {
   _id: string
   content: string
   amount: DelayAmount
   quantity?: 1|2|3
 }
 
-const DELAY_AMOUNT = {
+/**/const DELAY_AMOUNT = {
   'next': (1000),
   'later': (60*60*1000),
   'dawn': (18*60*60*1000),
@@ -40,25 +40,25 @@ class UndoCache<T>{
 const undoCache = new UndoCache<IDraft>();
 
 export class Inbox {
-  repository = new InboxRepositorySQL();
-  categoryRepo = new DraftCategoryRepoSQL();
+  /**/repository = new InboxRepositorySQL();
+  /**/categoryRepo = new DraftCategoryRepoSQL();
 
-  public async getInbox() {
+  /*ok*/public async getInbox() {
     const {data, status} = await this.repository.findAllowedDrafts();
     return data;
   }
 
-  public async getTodos() {
+  /*ok*/public async getTodos() {
     const {data, status} = await this.repository.findAllTodos();
     return data;
   }
 
-  public async getCategories() {
+  /*ok*/public async getCategories() {
     const {data, status} =  await this.categoryRepo.findAll();
     return data;
   }
 
-  public async insertDraft(content: string, priority: number, category: string, todo: boolean = false) {
+  /*ok*/public async insertDraft(content: string, priority: number, category: string, todo: boolean = false) {
     
     if (priority == null || priority > 3)
       priority = 0;
@@ -89,7 +89,7 @@ export class Inbox {
     })
   }
 
-  public async updateDraftOrganization({ _id, priority, category, content }: { _id: string, priority: number, category: string, content: string }) {
+  /*ok*/public async updateDraftOrganization({ _id, priority, category, content }: { _id: string, priority: number, category: string, content: string }) {
     // =============================================================================
     //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.
     // =============================================================================
@@ -111,7 +111,7 @@ export class Inbox {
 
   }
 
-  public async delayDraft(draft: IDraftDTO) {
+  /*ok*/public async delayDraft(draft: IDraftDTO) {
     let { _id, content, amount, quantity } = draft;
 
     if (amount === 'none') {
@@ -150,12 +150,12 @@ export class Inbox {
     //undoCache.set = originalValue;
   }
 
-  public async toggleTodo(draft_id: string, state: boolean) {
+  /*ok*/public async toggleTodo(draft_id: string, state: boolean) {
     const {originalValue} = await this.repository.updateDraft(draft_id, {todo: state});
     //undoCache.set = originalValue;
   }
 
-  public async removeDraft(draft_id: string) {
+  /*ok*/public async removeDraft(draft_id: string) {
     await this.repository.deleteOne(draft_id);
   }
 

@@ -6,11 +6,11 @@ type InsertDraftArguments = {
   content: string,
   priority?: number,
   category?: string|null,
-  todo?: boolean
+  to_deal?: boolean
 }
 
 async function insertDraft(args: InsertDraftArguments) {
-  const { content, priority, category, todo } = args;
+  const { content, priority, category, to_deal } = args;
   
   const request = await fetch(`${API_URL}/drafts/insert`, {
     method: 'post',
@@ -18,7 +18,7 @@ async function insertDraft(args: InsertDraftArguments) {
       content,
       priority: priority ?? 0,
       category: category ?? null,
-      todo
+      to_deal
     }),
     headers: {
       'Content-Type':'application/json'
@@ -34,8 +34,8 @@ export function InsertDraft(options?: MutationOptions<{}, InsertDraftArguments>)
     ...options,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries('inbox');
-      if (variables.todo)
-        queryClient.invalidateQueries('inbox-todos');
+      if (variables.to_deal)
+        queryClient.invalidateQueries('inbox-toDeals');
     }
   });
 }

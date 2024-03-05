@@ -27,7 +27,7 @@ export function ToggleInboxTodo(options?: MutationOptions<{}, ToggleTodoDTO>) {
       // MUST CONFIGURE A MORE PRECISE UPDATE OF THE WHOLE ITEMS LIST
       //queryClient.setQueryData<IInboxItem[]>('inbox-items', (data) => (data||[]).slice(1));
       queryClient.invalidateQueries('inbox');
-      queryClient.invalidateQueries('inbox-todos');
+      queryClient.invalidateQueries('inbox-toDeals');
     }
   });
 }

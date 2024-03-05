@@ -8,8 +8,8 @@ const toDeal = new ToDeal();
 
 router.get('/', async (request, response) => {
   const draftsToDeal = await toDeal.getDrafts();
-  const tranformedDrafts: IDraft_Old[] = transformDraftsBodyStructure(draftsToDeal)
-  response.json(tranformedDrafts);
+
+  response.json(draftsToDeal);
 });
 
 // router.get('/categories', async (request, response) => {
@@ -34,19 +34,3 @@ router.put('/toggle', async (request, response) => {
 });
 
 export default router
-
-function transformDraftsBodyStructure(drafts: IDraft[]): IDraft_Old[] {
-  const tranformedDrafts = drafts.map(draft => {
-      return {
-        ...draft,
-        todo: draft.to_deal,
-        last_delay: {
-          amount: draft.delay,
-          quantity: draft.delay_quantity,
-          delayed_at: draft.delayed_at
-        }
-      }
-    })
-
-  return tranformedDrafts;
-}

@@ -6,18 +6,18 @@ import { useState } from 'react';
 import { Textarea } from "@/components/form/Input";
 import * as InboxAPI from '@/features/inbox/api';
 
-export function TodoList() {
+export function ToDealList() {
   const [isTodoInputOpen, setIsTodoInputOpen] = useState(false);
-  const [todoInput, setTodoInput] = useState('');
+  const [toDealInput, setTodoInput] = useState('');
 
 
   return (
     <div className="w-[26rem] h-full p-8 mx-10 flex flex-col rounded-sm">
       <div className="flex items-center">
         <h4 className="p-0 mb-1 inline text-tanj-green mr-4 align-middle">Todo list</h4>
-        <AddTodoButtons {...{isTodoInputOpen, setIsTodoInputOpen ,todoInput, setTodoInput}} />
+        <AddTodoButtons {...{isTodoInputOpen, setIsTodoInputOpen ,toDealInput, setTodoInput}} />
       </div>
-      <TodoInput {...{isTodoInputOpen, todoInput, setTodoInput}} />
+      <TodoInput {...{isTodoInputOpen, toDealInput, setTodoInput}} />
       <List/>
     </div>
   )
@@ -26,10 +26,10 @@ export function TodoList() {
 function AddTodoButtons(props: {
   isTodoInputOpen: boolean, 
   setIsTodoInputOpen: (value: React.SetStateAction<boolean>) => void
-  todoInput: string, 
+  toDealInput: string, 
   setTodoInput: (value: React.SetStateAction<string>) => void
 }) {
-  const {isTodoInputOpen, setIsTodoInputOpen, todoInput, setTodoInput} = props;
+  const {isTodoInputOpen, setIsTodoInputOpen, toDealInput, setTodoInput} = props;
   const insertDraft = InboxAPI.InsertDraft();
 
   return (
@@ -48,7 +48,7 @@ function AddTodoButtons(props: {
         isTodoInputOpen && <button
           className="border border-tanj-green border-opacity-30 opacity-50 hover:opacity-100 p-1 mr-2 rounded-sm transition-all"
           onClick={() => {
-            insertDraft({ content: todoInput, todo: true });
+            insertDraft({ content: toDealInput, to_deal: true });
             setIsTodoInputOpen(false);
             setTodoInput('');
           }}
@@ -63,16 +63,16 @@ function AddTodoButtons(props: {
 
 function TodoInput(props: {
   isTodoInputOpen: boolean, 
-  todoInput: string, 
+  toDealInput: string, 
   setTodoInput: (value: React.SetStateAction<string>) => void
 }) {
-  const {isTodoInputOpen, todoInput, setTodoInput} = props;
+  const {isTodoInputOpen, toDealInput, setTodoInput} = props;
   if (isTodoInputOpen)
     return (
       <div className="pt-2 pr-6">
         <Textarea
           className="resize-none w-full"
-          value={todoInput}
+          value={toDealInput}
           onChange={e => setTodoInput(e.target.value)}
         />
       </div>

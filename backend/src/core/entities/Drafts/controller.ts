@@ -7,8 +7,8 @@ const router = Router();
 const drafts = new Drafts();
 
 router.post('/insert', async (request, response) => {
-  const { content, priority, category, todo } = request.body;
-  await drafts.insertOne(content, priority, category, todo);
+  const { content, priority, category, to_deal } = request.body;
+  await drafts.insertOne(content, priority, category, to_deal);
   
   response.status(200).json([])
 })

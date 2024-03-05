@@ -35,7 +35,7 @@ export function UpdateDraft(options?: MutationOptions<{}, DraftUpdateDTO>) {
   return useMutation(updateDraft, {
     ...options,
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries('inbox-todos');
+      queryClient.invalidateQueries('inbox-toDeals');
       queryClient.invalidateQueries('inbox');
     }
   });

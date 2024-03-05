@@ -2,21 +2,21 @@ import * as InboxAPI from '@/features/inbox/api';
 import { Item } from './ListItem';
 
 export function List() {
-  const queryTodos = InboxAPI.QueryInboxTodos();
+  const queryToDeals = InboxAPI.QueryInboxToDeals();
 
-  if (queryTodos.isError)
+  if (queryToDeals.isError)
     return <>Something went wrong</>;
-  else if (queryTodos.isLoading)
+  else if (queryToDeals.isLoading)
     return <>Loading...</>
-  else if (queryTodos.isIdle)
+  else if (queryToDeals.isIdle)
     return <>Idle...</>
 
-  const todos = queryTodos.data;
+  const toDeals = queryToDeals.data;
 
   return (
     <div className="w-full h-full overflow-auto custom-scrollbar pr-6">
       {
-        todos.map(todo => <Item todo={todo} />)
+        toDeals.map(toDeal => <Item toDeal={toDeal} />)
       }
     </div>
   )

@@ -14,12 +14,13 @@ export function LastDelayLog() {
   const currentDraft = inbox[0];
 
   // If never delayed, no log.
-  if (currentDraft.last_delay == null)
+  if (currentDraft.delay == null)
     return null;
 
-  const { delayed_at, amount, quantity } = currentDraft.last_delay;
+  //const { delayed_at, amount, quantity } = currentDraft.last_delay;
+  const { delay, delay_quantity, delayed_at } = currentDraft;
 
-  let amountDelayed = quantity ? ` ${quantity} ${amount}` : `a ${amount}`
+  let amountDelayed = delay_quantity ? ` ${delay_quantity} ${delay}` : `a ${delay}`
 
   const dateDelayed = new Date(delayed_at).toLocaleDateString(['pt-BR']);
 

@@ -3,15 +3,15 @@ import { QueryOptions } from "@/lib/query";
 import { useQuery } from "react-query";
 import { IDraft } from "../types";
 
-async function getInboxTodos(): Promise<IDraft[]> {
+async function getInboxToDeals(): Promise<IDraft[]> {
   const request = await fetch(`${API_URL}/to_deal`);
   const response = await request.json();
 
   return response;
 }
 
-export function QueryInboxTodos(config?: {
-  options?: QueryOptions<IDraft[], 'inbox-todos'>
+export function QueryInboxToDeals(config?: {
+  options?: QueryOptions<IDraft[], 'inbox-toDeals'>
 }) {
-  return useQuery('inbox-todos', getInboxTodos, {...config?.options });
+  return useQuery('inbox-toDeals', getInboxToDeals, {...config?.options });
 }

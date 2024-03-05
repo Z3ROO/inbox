@@ -1,5 +1,5 @@
-import { Drafts } from "../entities/Drafts";
-import { DraftCategories } from "../entities/DraftCategories";
+import { Drafts } from "../../entities/Drafts";
+import { DraftCategories } from "../../entities/DraftCategories";
 import { IDraft } from "@/types/Inbox";
 
 export class ToDeal {
@@ -16,7 +16,7 @@ export class ToDeal {
     //undoCache.set = originalValue;
   }
 
-  public async getDraftCategories() {
+  public async getAllDraftCategories() {
     return this.draftCategories.getAll();
   }
 

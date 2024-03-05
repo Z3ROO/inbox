@@ -1,6 +1,6 @@
 import { DelayAmount, IDraft } from "@/types/Inbox";
-import { Drafts } from "../entities/Drafts";
-import { DraftCategories } from "../entities/DraftCategories";
+import { Drafts } from "../../entities/Drafts";
+import { DraftCategories } from "../../entities/DraftCategories";
 
 interface IDraftDTO {
   _id: string
@@ -71,7 +71,7 @@ export class Inbox {
     return this.drafts.insertOne(content, priority, category, to_deal);
   }
 
-  public async getDraftCategories() {
+  public async getAllDraftCategories() {
     return this.draftCategories.getAll();
   }
 

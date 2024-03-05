@@ -16,13 +16,13 @@ export class ToDeal {
     //undoCache.set = originalValue;
   }
 
-  public async getAllDraftCategories() {
-    return this.draftCategories.getAll();
-  }
+  // public async getAllDraftCategories() {
+  //   return this.draftCategories.getAll();
+  // }
 
-  public async insertDraft(content: string, priority: number, category: string, to_deal: boolean = false) {
-    return this.drafts.insertOne(content, priority, category, to_deal);
-  }
+  // public async insertDraft(content: string, priority: number, category: string, to_deal: boolean = false) {
+  //   return this.drafts.insertOne(content, priority, category, to_deal);
+  // }
 
   public async removeDraft(draft_id:string) {
     await this.drafts.deleteOne(draft_id);

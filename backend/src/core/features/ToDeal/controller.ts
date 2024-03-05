@@ -12,10 +12,10 @@ router.get('/', async (request, response) => {
   response.json(tranformedDrafts);
 });
 
-router.get('/categories', async (request, response) => {
-  const categories = await toDeal.getAllDraftCategories();
-  response.json(categories);
-});
+// router.get('/categories', async (request, response) => {
+//   const categories = await toDeal.getAllDraftCategories();
+//   response.json(categories);
+// });
 
 router.put('/toggle', async (request, response) => {
   const { draft_id, state } = request.body;

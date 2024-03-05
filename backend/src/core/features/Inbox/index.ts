@@ -67,13 +67,13 @@ export class Inbox {
     //undoCache.set = originalValue;
   }
 
-  public async insertDraft(content: string, priority: number, category: string, to_deal: boolean = false) {
-    return this.drafts.insertOne(content, priority, category, to_deal);
-  }
+  // public async insertDraft(content: string, priority: number, category: string, to_deal: boolean = false) {
+  //   return this.drafts.insertOne(content, priority, category, to_deal);
+  // }
 
-  public async getAllDraftCategories() {
-    return this.draftCategories.getAll();
-  }
+  // public async getAllDraftCategories() {
+  //   return this.draftCategories.getAll();
+  // }
 
   public async updateDraftOrganization({ _id, priority, category, content }: { _id: string, priority: number, category: string, content: string }) {
     // =============================================================================

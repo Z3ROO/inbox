@@ -11,17 +11,17 @@ router.get('/', async (request, response) => {
   response.json(tranformedDrafts);
 });
 
-router.get('/categories', async (request, response) => {
-  const categories = await inbox.getAllDraftCategories();
-  response.json(categories);
-});
+// router.get('/categories', async (request, response) => {
+//   const categories = await inbox.getAllDraftCategories();
+//   response.json(categories);
+// });
 
-router.post('/', async (request, response) => {
-  const { content, priority, category, todo } = request.body;
-  await inbox.insertDraft(content, priority, category, todo);
+// router.post('/', async (request, response) => {
+//   const { content, priority, category, todo } = request.body;
+//   await inbox.insertDraft(content, priority, category, todo);
   
-  response.status(200).json([])
-})
+//   response.status(200).json([])
+// })
 
 router.put('/', async (request, response) => {
   const { action, draft_id, content, quantity, priority, category } = request.body;

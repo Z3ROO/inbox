@@ -8,7 +8,7 @@ const draftCategories = new DraftCategories();
 
 router.get(``, async (req, res) => {
   const categories = await draftCategories.getAll();
-  res.json({categories});
+  res.json(categories);
 })
 
 router.post(`insert`, async (req, res) => {

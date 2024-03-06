@@ -1,22 +1,28 @@
 import { PostgresRepository } from "@/infra/database/PostgresRepository";
+import { IDraftCategory } from "@/types/Inbox";
 import { v4 as UUID } from "uuid";
 
 export class DraftCategoriesRepository extends PostgresRepository {
 
   public async findAll() {
-    const res = await this.query(`SELECT * FROM draft_categories;`);
+    const res = await this.query<IDraftCategory>(`
+      SELECT * FROM draft_categories;
+    `);
     return res;
   }
 
-  public async findById(_id: string): Promise<any> {
-    const res = await this.query(`SELECT * FROM draft_categories WHERE draft_categories._id = $1;`, [_id]) as any;
+  public async findById(_id: string) {
+    const res = await this.query<IDraftCategory>(`
+      SELECT * FROM draft_categories WHERE draft_categories._id = $1;
+    `, [_id]);
     
     return res;
   }
 
   public async findByName(name: string) {
-    const res = await this.query(`SELECT * FROM draft_categories WHERE draft_categories.name = $1;`, [name]) as any;
-    
+    const res = await this.query<IDraftCategory>(`
+      SELECT * FROM draft_categories WHERE draft_categories.name = $1;
+    `, [name]);
     return res;
   }
 
@@ -30,10 +36,8 @@ export class DraftCategoriesRepository extends PostgresRepository {
       )
       VALUES ($1, $2, $3, $4);
     `, [_id, name, '#ccc', 'none']);
-
-    return {
-      ...res,
-      insertedId: _id
-    };
+    
+    res.insertedId = _id;
+    return res;    
   }
 }

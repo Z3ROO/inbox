@@ -33,7 +33,14 @@ export interface IDraftCategory {
   icon: string
 }
 
-interface IDraftDTO {
+export interface InsertDraftDTO {
+  content: string
+  priority: number
+  category: string
+  to_deal: boolean
+}
+
+interface DelayDraftDTO {
   _id: string
   content: string
   amount: DelayAmount

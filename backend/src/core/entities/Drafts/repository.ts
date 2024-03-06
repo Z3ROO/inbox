@@ -1,8 +1,5 @@
-import { IDraftCategory, IDraft, IDraft_Schema, IDraft_Old } from '@/types/Inbox';
-import { ObjectId } from 'mongodb';
+import { IDraft, IDraft_Schema } from '@/types/Inbox';
 import { PostgresRepository, PostgresRepositoryResponse } from '@/infra/database/PostgresRepository';
-import { v4 } from 'uuid';
-
 
 export class DraftsRepository extends PostgresRepository {
   public async findById(draft_id: string) {
@@ -20,7 +17,7 @@ export class DraftsRepository extends PostgresRepository {
   }
 
   async findAllowedAfter(date: Date) {
-    console.log(`implement date conditional`)
+    
     const res = await this.query<IDraft>(`
       SELECT 
       drafts._id, content, priority, created_at, delay, 
@@ -28,15 +25,15 @@ export class DraftsRepository extends PostgresRepository {
       jsonb_build_object('_id', draft_categories._id, 'name', draft_categories.name, 'color', draft_categories.color, 'icon', draft_categories.icon) as category
       FROM drafts 
       LEFT JOIN draft_categories ON drafts.category_id = draft_categories._id
-      WHERE drafts.allowed_after <= CURRENT_TIMESTAMP AND drafts.to_deal = FALSE 
+      WHERE drafts.allowed_after <= $1 AND drafts.to_deal = FALSE 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
-    `);
+    `,[date]);
 
    return res;
   }
 
 
-  async insert(draft: IDraft_Schema) {
+  async insertOne(draft: IDraft_Schema) {
     const res = await this.query(`
       INSERT INTO drafts (
           _id, content, priority, category_id, created_at, delay, delay_quantity, delayed_at, allowed_after, to_deal
@@ -58,8 +55,8 @@ export class DraftsRepository extends PostgresRepository {
     return res;
   }
 
-  async findByBooleanProp(properties: {to_deal:boolean}) {
-    console.log(`implement bool props conditionals`)
+  async findByBooleanProp({to_deal}: {to_deal:boolean}) {
+    //Not completelly implemented, since there's only one boolean property
 
     const res = await this.query<IDraft>(`
       SELECT 
@@ -73,26 +70,23 @@ export class DraftsRepository extends PostgresRepository {
         ) as category
       FROM drafts 
       LEFT JOIN draft_categories ON drafts.category_id = draft_categories._id
-      WHERE drafts.to_deal = TRUE 
+      WHERE drafts.to_deal = $1 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
-    `);
+    `,[to_deal]);
 
     return res;
   }
 
   async updateOne(draft_id: string, properties: Partial<IDraft_Schema>) {
-    const originalDraft = await this.findById(draft_id);
+    //const originalDraft = await this.findById(draft_id);
 
     const res = await this.query(`
       UPDATE drafts 
       SET ${mapHandlers(properties, 1)}
       WHERE drafts._id = $1;
-    `,[draft_id, ...Object.values(properties)]);
+    `, [draft_id, ...Object.values(properties)]);
     
-    return {
-      originalValue: originalDraft,
-      ...res
-    };
+    return res;
   }
  
   async deleteOne(draft_id: string) {

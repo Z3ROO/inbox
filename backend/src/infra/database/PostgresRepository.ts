@@ -5,6 +5,7 @@ export interface PostgresRepositoryResponse<DataT> {
   data: DataT[]
   resultCount: number
   error: string
+  insertedId?: string
 }
 
 export class PostgresRepository {

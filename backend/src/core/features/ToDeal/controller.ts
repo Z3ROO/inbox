@@ -1,11 +1,12 @@
 import { ToDeal } from "@/core/features/ToDeal";
-import { Router } from 'express'
+import { IDraft } from "@/types/Inbox";
+import { Response, Router } from 'express'
   
 const router = Router();
 const toDeal = new ToDeal();
 
 
-router.get('/', async (request, response) => {
+router.get('/', async (request, response: Response<IDraft[]>) => {
   const draftsToDeal = await toDeal.getDrafts();
 
   response.json(draftsToDeal);

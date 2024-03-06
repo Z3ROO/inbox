@@ -11,12 +11,14 @@ export class ToDeal {
     return data;
   }
 
-  public async toggle(draft_id: string, state: boolean) {
-    const {originalValue} = await this.drafts.updateOne(draft_id, {to_deal: state});
+  public async toggle(draft_id: string, state: boolean): Promise<void> {
+    /*const { originalValue } =*/ await this.drafts.updateOne(draft_id, {to_deal: state});
     //undoCache.set = originalValue;
+    return;
   }
 
-  public async removeDraft(draft_id:string) {
+  public async removeDraft(draft_id:string): Promise<void> {
     await this.drafts.deleteOne(draft_id);
+    return;
   }
 }

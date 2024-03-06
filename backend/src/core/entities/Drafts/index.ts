@@ -1,4 +1,4 @@
-import { IDraft, IDraft_Schema } from "@/types/Inbox";
+import { IDraft, IDraft_Schema, InsertDraftDTO } from "@/types/Inbox";
 import { v4 as UUID } from 'uuid';
 import { DraftCategories } from "../DraftCategories";
 import { DraftsRepository } from "./repository";
@@ -17,8 +17,11 @@ export class Drafts {
     return data;
   }
 
-  public async insertOne(content: string, priority: number, category: string, to_deal: boolean = false) {
+  public async insertOne({ content, priority, category, to_deal }: InsertDraftDTO) {
     
+    if (to_deal == null)
+      to_deal = false;
+
     if (priority == null || priority > 3)
       priority = 0;
 
@@ -29,12 +32,12 @@ export class Drafts {
     let categoryObject = await this.draftCategories.getByName(category);
 
     if (categoryObject)
-      category_id = categoryObject.data[0]._id;
+      category_id = categoryObject._id;
     else
       category_id = (await this.draftCategories.insertOne({name: category})).insertedId;
 
     
-    await this.draftsRepo.insert({
+    await this.draftsRepo.insertOne({
       _id: UUID(),
       content,
       priority,
@@ -53,6 +56,6 @@ export class Drafts {
   }
 
   public async deleteOne(draft_id: string) {
-    await this.draftsRepo.deleteOne(draft_id);
+    return this.draftsRepo.deleteOne(draft_id);
   }
 }

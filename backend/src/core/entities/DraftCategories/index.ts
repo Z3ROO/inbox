@@ -1,15 +1,17 @@
+import { IDraftCategory } from "@/types/Inbox";
 import { DraftCategoriesRepository } from "./repository";
 
 export class DraftCategories {
   categoryRepo = new DraftCategoriesRepository();
   
-  public async getAll() {
-    const {data, status} =  await this.categoryRepo.findAll();
+  public async getAll(): Promise<IDraftCategory[]> {
+    const { data, status } =  await this.categoryRepo.findAll();
     return data;
   }
 
-  async getByName(categoryName: string) {
-    return await this.categoryRepo.findByName(categoryName);
+  async getByName(categoryName: string): Promise<IDraftCategory> {
+    const { data, status } = await this.categoryRepo.findByName(categoryName);
+    return data[0];
   }
 
   async insertOne({name}: {name: string}) {

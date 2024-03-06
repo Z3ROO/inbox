@@ -28,11 +28,11 @@ export class Inbox {
     return data;
   }
 
-  public async delayDraft(draft: IDraftDTO) {
+  public async delayDraft(draft: IDraftDTO): Promise<void> {
     let { _id, content, amount, quantity } = draft;
 
     if (amount === 'none') {
-      const { originalValue } = await this.drafts.updateOne(_id, {
+      /*const { originalValue } =*/ await this.drafts.updateOne(_id, {
         content
       });
       return;
@@ -56,7 +56,7 @@ export class Inbox {
     else
       allowed_after = new Date(new Date().setHours(4,0,0,0) + (quantity * DELAY_AMOUNT[amount]));
 
-    const { originalValue } = await this.drafts.updateOne(_id, {
+    /*const { originalValue } =*/ await this.drafts.updateOne(_id, {
       content,
       allowed_after,      
       delay: amount,
@@ -65,17 +65,10 @@ export class Inbox {
     });
 
     //undoCache.set = originalValue;
+    return;
   }
 
-  // public async insertDraft(content: string, priority: number, category: string, to_deal: boolean = false) {
-  //   return this.drafts.insertOne(content, priority, category, to_deal);
-  // }
-
-  // public async getAllDraftCategories() {
-  //   return this.draftCategories.getAll();
-  // }
-
-  public async updateDraftOrganization({ _id, priority, category, content }: { _id: string, priority: number, category: string, content: string }) {
+  public async updateDraftOrganization({ _id, priority, category, content }: { _id: string, priority: number, category: string, content: string }): Promise<void> {
     // =============================================================================
     //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.
     // =============================================================================
@@ -85,7 +78,7 @@ export class Inbox {
 
     if (category != null && category !== '') {
       let category_id: string;
-      let categoryObject = (await this.draftCategories.getByName(category)).data[0];
+      let categoryObject = await this.draftCategories.getByName(category);
 
       if (categoryObject)
         category_id = categoryObject._id;
@@ -94,10 +87,13 @@ export class Inbox {
 
       await this.drafts.updateOne(_id, {category_id, content});
     }
+
+    return;
   }
 
-  public async removeDraft(draft_id:string) {
+  public async removeDraft(draft_id:string): Promise<void> {
     await this.drafts.deleteOne(draft_id);
+    return;
   }
 
 }

@@ -9,10 +9,9 @@ export async function initInfrastructure() {
 }
 
 function verifyEnviromentalVariables() {
-  const { NODE_ENV, SERVER_PORT, DB_URL, DB_PORT } = process.env;
-
-  if (!(NODE_ENV && SERVER_PORT && DB_URL && DB_PORT)) {
-    console.error('Enviromental variables incorrectely set');
-    process.exit(1);
+  const { NODE_ENV, SERVER_PORT, PGUSER, PGPORT, PGHOST, PGPASSWORD, PGDATABASE } = process.env; 
+  if (!(NODE_ENV && SERVER_PORT && PGUSER && PGPORT && PGHOST && PGPASSWORD && PGDATABASE)) {
+    throw new Error('Enviromental variables incorrectely set');
+    
   }
 }

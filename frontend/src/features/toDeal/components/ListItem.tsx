@@ -1,6 +1,6 @@
 import { FaCheck, FaTrashAlt } from "react-icons/fa";
 import * as InboxAPI from '@/features/inbox/api';
-import { IDraft } from "@/features/inbox/types";
+import { IDraft } from "shared-types";
 import { Container } from "@/components/structure/container";
 
 export function Item({toDeal}: {toDeal: IDraft}) {

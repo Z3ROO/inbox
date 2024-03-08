@@ -1,7 +1,7 @@
 import { queryClient } from "@/App";
-import { API_URL } from "@/config/API";
 import { useMutation, MutationOptions } from "@/lib/query";
-import { DraftUpdateDTO } from "../types";
+import { DraftUpdateDTO } from "shared-types";
+import APIRequest from "../../../lib/ApiRequest";
 
 /**
  * #### Updates draft properties based on an specified action.
@@ -15,22 +15,25 @@ import { DraftUpdateDTO } from "../types";
  * @returns - !!! TO BE STANDARDIZED !!!
  */
 
-async function updateDraft(args: DraftUpdateDTO): Promise<{}> {
+async function updateDraft(args: DraftUpdateDTO) {
   const { content, draft_id, action, quantity, priority, category } = args;
-  
-  const request = await fetch(`${API_URL}/inbox`, {
-    method: 'put',
-    body: JSON.stringify({content, action, quantity, draft_id: draft_id, priority, category}),
-    headers: {
-      'Content-Type':'application/json'
-    }
-  });
-  const response = await request.json();
 
-  return response;
+  const response = await APIRequest<null, DraftUpdateDTO>(`/inbox`, {
+    method: 'put',
+    body: {
+      content,
+      draft_id,
+      action,
+      quantity,
+      priority,
+      category
+    }
+  })
+
+  return response.data;
 }
 
-export function UpdateDraft(options?: MutationOptions<{}, DraftUpdateDTO>) {
+export function UpdateDraft(options?: MutationOptions<null, DraftUpdateDTO>) {
 
   return useMutation(updateDraft, {
     ...options,

@@ -1,7 +1,7 @@
 import { BtnSecondary, DropDownOnHoldButton, OptionBtn } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useInboxContext } from "../../store/InboxContext";
-import { DraftDelayAmounts } from "../../types";
+import { DraftDelayAmount } from "shared-types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
 import * as InboxAPI from '@/features/inbox/api';
 
@@ -23,7 +23,7 @@ function DelayDraftButtons() {
 
   const updateDraft = InboxAPI.UpdateDraft();
 
-  const updateDraftEvent = (delay: DraftDelayAmounts, quantity?: 1|2|3) => () => { 
+  const updateDraftEvent = (delay: DraftDelayAmount, quantity?: 1|2|3) => () => { 
     updateDraft({ 
       content: inboxManagerTextarea, 
       draft_id: currentDraft._id, 
@@ -58,16 +58,16 @@ function DelayDraftButtons() {
             buttons={[
               { 
                 children: amount, 
-                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmounts),
+                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmount),
                 disabled: updateDraft.isLoading
               },
               {
                 children: `2 ${amount}s`,
-                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmounts, 2),
+                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmount, 2),
               },
               {
                 children: `3 ${amount}s`,
-                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmounts, 3),
+                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmount, 3),
 
               }
             ]}

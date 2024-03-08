@@ -9,7 +9,7 @@ import { InputDataList } from "@/components/form/InputDataList";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { IoAlertCircle } from "react-icons/io5";
 import { AiFillAlert } from "react-icons/ai";
-import { IDraftCategory } from "../../types";
+import { IDraftCategory } from "shared-types";
 import { IconType } from "react-icons/lib";
 
 export function InboxInsertPanel() {

@@ -1,14 +1,13 @@
-import { API_URL } from "@/config/API";
 import { QueryOptions } from "@/lib/query/query";
 import { useQuery } from "react-query";
-import { IDraft } from "../types";
+import { IDraft } from "shared-types";
+import APIRequest from "../../../lib/ApiRequest";
 
 
-async function getInbox(): Promise<IDraft[]> {
-  const request = await fetch(`${API_URL}/inbox`);
-  const response = await request.json();
+async function getInbox() {
+  const response = await APIRequest<IDraft[]>(`/inbox`);
 
-  return response;
+  return response.data;
 }
 
 export function QueryInbox(config?: {

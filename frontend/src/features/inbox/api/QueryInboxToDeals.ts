@@ -1,13 +1,12 @@
-import { API_URL } from "@/config/API";
 import { QueryOptions } from "@/lib/query";
 import { useQuery } from "react-query";
-import { IDraft } from "../types";
+import { IDraft } from "shared-types";
+import APIRequest from "../../../lib/ApiRequest";
 
 async function getInboxToDeals(): Promise<IDraft[]> {
-  const request = await fetch(`${API_URL}/to_deal`);
-  const response = await request.json();
+  const response = await APIRequest<IDraft[]>(`/to_deal`)
 
-  return response;
+  return response.data;
 }
 
 export function QueryInboxToDeals(config?: {

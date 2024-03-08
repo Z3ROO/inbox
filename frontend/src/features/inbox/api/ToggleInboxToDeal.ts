@@ -1,25 +1,26 @@
 import { queryClient } from "@/App";
-import { API_URL } from "@/config/API";
 import { useMutation, MutationOptions } from "@/lib/query";
-import { ToggleTodoDTO } from "../types";
+import { ToggleToDealDTO } from "shared-types";
+import APIRequest from "../../../lib/ApiRequest";
 
 
-async function toggleInboxTodo(args: ToggleTodoDTO): Promise<{}> {
+async function toggleInboxTodo(args: ToggleToDealDTO) {
   const { draft_id, state } = args;
-  
-  const request = await fetch(`${API_URL}/to_deal/toggle`, {
-    method: 'put',
-    body: JSON.stringify({ draft_id, state }),
-    headers: {
-      'Content-Type':'application/json'
-    }
-  });
-  const response = await request.json();
 
-  return response;
+  const response = await APIRequest<null, ToggleToDealDTO>(
+    `/to_deal/toggle`, {
+      method: 'put',
+      body: {
+        draft_id,
+        state
+      }
+    }
+  );
+
+  return response.data;
 }
 
-export function ToggleInboxTodo(options?: MutationOptions<{}, ToggleTodoDTO>) {
+export function ToggleInboxTodo(options?: MutationOptions<null, ToggleToDealDTO>) {
 
   return useMutation(toggleInboxTodo, {
     ...options,

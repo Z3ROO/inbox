@@ -1,14 +1,13 @@
-import { API_URL } from "@/config/API";
 import { QueryOptions } from "@/lib/query/query";
 import { useQuery } from "react-query";
-import { IDraftCategory } from "../types";
+import { IDraftCategory } from "shared-types";
+import APIRequest from "../../../lib/ApiRequest";
 
 
-async function getCategories(): Promise<IDraftCategory[]> {
-  const request = await fetch(`${API_URL}/draft_categories`);
-  const response = await request.json();
-  
-  return response;
+async function getCategories() {
+  const response = await APIRequest<IDraftCategory[]>(`/draft_categories`);
+
+  return response.data;
 }
 
 export function QueryCategories(config?: {

@@ -1,35 +1,30 @@
 import { queryClient } from "@/App";
-import { API_URL } from "@/config/API";
 import { useMutation, MutationOptions } from "@/lib/query";
+import { InsertDraftDTO } from "shared-types";
+import APIRequest from "../../../lib/ApiRequest";
 
-type InsertDraftArguments = {
-  content: string,
-  priority?: number,
-  category?: string|null,
-  to_deal?: boolean
-}
 
-async function insertDraft(args: InsertDraftArguments) {
+async function insertDraft(args: InsertDraftDTO) {
   const { content, priority, category, to_deal } = args;
-  
-  const request = await fetch(`${API_URL}/drafts/insert`, {
-    method: 'post',
-    body: JSON.stringify({ 
-      content,
-      priority: priority ?? 0,
-      category: category ?? null,
-      to_deal
-    }),
-    headers: {
-      'Content-Type':'application/json'
-    }
-  });
-  const response = await request.json();
 
-  return response;
+  const requestBody = { 
+    content,
+    priority: priority ?? 0,
+    category,
+    to_deal
+  }
+
+  const response = await APIRequest<null, InsertDraftDTO>(
+    `/drafts/insert`, {
+      method: 'post',
+      body: requestBody
+    }
+  );
+
+  return response.data;
 }
 
-export function InsertDraft(options?: MutationOptions<{}, InsertDraftArguments>) {
+export function InsertDraft(options?: MutationOptions<null, InsertDraftDTO>) {
   return useMutation(insertDraft, {
     ...options,
     onSuccess: (data, variables) => {

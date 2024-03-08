@@ -1,16 +1,12 @@
 {
-  "name": "Kagura no Kokyu",
+  "name": "shared-types",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "workspaces":["./packages/*"],
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/pg": "^8.10.9"
-  }
+  "license": "ISC"
 }

@@ -1,4 +1,5 @@
-import { IDraft, IDraft_Schema } from '@/types/Inbox';
+import { IDraft_Schema } from '@/types/Inbox';
+import { IDraft } from 'shared-types';
 import { PostgresRepository, PostgresRepositoryResponse } from '@/infra/database/PostgresRepository';
 
 export class DraftsRepository extends PostgresRepository {

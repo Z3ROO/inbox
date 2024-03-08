@@ -1,11 +1,11 @@
-import { DelayAmount, IDraft } from "@/types/Inbox";
+import { DelayDraftDTO, DraftDelayAmount, IDraft } from "shared-types";
 import { Drafts } from "../../entities/Drafts";
 import { DraftCategories } from "../../entities/DraftCategories";
 
 interface IDraftDTO {
   _id: string
   content: string
-  amount: DelayAmount
+  amount: DraftDelayAmount
   quantity?: 1|2|3
 }
 
@@ -28,8 +28,8 @@ export class Inbox {
     return data;
   }
 
-  public async delayDraft(draft: IDraftDTO): Promise<void> {
-    let { _id, content, amount, quantity } = draft;
+  public async delayDraft(DTO: DelayDraftDTO): Promise<void> {
+    let { _id, content, amount, quantity } = DTO;
 
     if (amount === 'none') {
       /*const { originalValue } =*/ await this.drafts.updateOne(_id, {

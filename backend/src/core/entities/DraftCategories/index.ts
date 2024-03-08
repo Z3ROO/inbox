@@ -1,4 +1,4 @@
-import { IDraftCategory } from "@/types/Inbox";
+import { IDraftCategory } from "shared-types";
 import { DraftCategoriesRepository } from "./repository";
 
 export class DraftCategories {

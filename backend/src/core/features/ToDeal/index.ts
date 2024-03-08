@@ -1,6 +1,6 @@
 import { Drafts } from "../../entities/Drafts";
 import { DraftCategories } from "../../entities/DraftCategories";
-import { IDraft } from "@/types/Inbox";
+import { IDraft } from "shared-types";
 
 export class ToDeal {
   drafts = new Drafts();

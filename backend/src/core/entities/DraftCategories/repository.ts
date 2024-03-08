@@ -1,5 +1,5 @@
 import { PostgresRepository } from "@/infra/database/PostgresRepository";
-import { IDraftCategory } from "@/types/Inbox";
+import { IDraftCategory } from "shared-types";
 import { v4 as UUID } from "uuid";
 
 export class DraftCategoriesRepository extends PostgresRepository {

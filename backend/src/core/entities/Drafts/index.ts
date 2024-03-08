@@ -1,4 +1,5 @@
-import { IDraft, IDraft_Schema, InsertDraftDTO } from "@/types/Inbox";
+import { IDraft_Schema } from "@/types/Inbox";
+import { IDraft, InsertDraftDTO } from "shared-types";
 import { v4 as UUID } from 'uuid';
 import { DraftCategories } from "../DraftCategories";
 import { DraftsRepository } from "./repository";

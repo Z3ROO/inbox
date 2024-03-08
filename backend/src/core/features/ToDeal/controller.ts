@@ -1,18 +1,25 @@
 import { ToDeal } from "@/core/features/ToDeal";
-import { IDraft } from "@/types/Inbox";
-import { Response, Router } from 'express'
+import { APIResponse, IDraft, ToggleToDealDTO } from "shared-types";
+import { Request, Response, Router } from 'express'
   
 const router = Router();
 const toDeal = new ToDeal();
 
 
-router.get('/', async (request, response: Response<IDraft[]>) => {
+router.get('/', async (request, response: Response<APIResponse<IDraft[]>>) => {
   const draftsToDeal = await toDeal.getDrafts();
 
-  response.json(draftsToDeal);
+  response.json({
+    success: true,
+    statusCode: 200,
+    data: draftsToDeal,
+    message: ''
+  });
 });
 
-router.put('/toggle', async (request, response) => {
+type PutToggleToDealRequest = Request<{}, APIResponse, ToggleToDealDTO, {}>
+
+router.put('/toggle', async (request: PutToggleToDealRequest, response) => {
   const { draft_id, state } = request.body;
   
   try {
@@ -21,10 +28,20 @@ router.put('/toggle', async (request, response) => {
     else
       await toDeal.toggle(draft_id, false);
 
-    response.status(200).json([]);
+    response.status(200).json({
+      success: true,
+      data: null,
+      statusCode: 200,
+      message: ''
+    });
   }
   catch(err) {
-    response.status(500).json([]);
+    response.status(500).json({
+      success: false,
+      data: null,
+      statusCode: 500,
+      message: ''
+    });
   }
 });
 

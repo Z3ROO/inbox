@@ -1,6 +1,6 @@
 import { ToDeal } from "@/core/features/ToDeal";
 import { APIResponse, IDraft, ToggleToDealDTO } from "shared-types";
-import { Request, Response, Router } from 'express'
+import { Request, Response } from 'express'
 import CustomRouter from "@/lib/CustomRouter";
   
 //const router = Router();

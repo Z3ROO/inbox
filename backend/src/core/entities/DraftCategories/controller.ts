@@ -1,4 +1,4 @@
-import { Request, Router } from 'express';
+import { Request } from 'express';
 import { DraftCategories } from '.';
 import { APIResponse, IDraftCategory, DraftCategoryDTO } from 'shared-types';
 import CustomRouter from '@/lib/CustomRouter';

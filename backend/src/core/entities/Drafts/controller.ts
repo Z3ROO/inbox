@@ -1,4 +1,4 @@
-import { Request, Router } from 'express';
+import { Request } from 'express';
 import { Drafts } from '.';
 import { APIResponse, InsertDraftDTO } from 'shared-types';
 import CustomRouter from '@/lib/CustomRouter';

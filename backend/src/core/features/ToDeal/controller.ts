@@ -1,8 +1,10 @@
 import { ToDeal } from "@/core/features/ToDeal";
 import { APIResponse, IDraft, ToggleToDealDTO } from "shared-types";
 import { Request, Response, Router } from 'express'
+import CustomRouter from "@/lib/CustomRouter";
   
-const router = Router();
+//const router = Router();
+const router = new CustomRouter();
 const toDeal = new ToDeal();
 
 
@@ -45,4 +47,4 @@ router.put('/toggle', async (request: PutToggleToDealRequest, response) => {
   }
 });
 
-export default router
+export default router.router

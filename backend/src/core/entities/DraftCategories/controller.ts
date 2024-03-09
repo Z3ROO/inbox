@@ -1,8 +1,9 @@
 import { Request, Router } from 'express';
 import { DraftCategories } from '.';
 import { APIResponse, IDraftCategory, DraftCategoryDTO } from 'shared-types';
+import CustomRouter from '@/lib/CustomRouter';
 
-const router = Router();
+const router = new CustomRouter();
 //Route:draft_categories
 
 const draftCategories = new DraftCategories();
@@ -32,4 +33,4 @@ router.post(`insert`, async (req: PostInsertDraftCategoriesRequest, res) => {
   });
 });
 
-export default router
+export default router.router

@@ -1,8 +1,9 @@
 import { Request, Router } from 'express';
 import { Drafts } from '.';
 import { APIResponse, InsertDraftDTO } from 'shared-types';
+import CustomRouter from '@/lib/CustomRouter';
 
-const router = Router();
+const router = new CustomRouter();
 //Route:drafts
 
 const drafts = new Drafts();
@@ -21,4 +22,4 @@ router.post('/insert', async (request: InsertDraftRequest, response) => {
   });
 })
 
-export default router;
+export default router.router;

@@ -6,9 +6,8 @@ type DefaultErrorHandlerRequest = Request<{}, APIResponse, {}, {}>
 
 export function defaultErrorHandler(err: ServerError, req: DefaultErrorHandlerRequest, res: Response<APIResponse>, next: NextFunction) {
   const { errorType, message, status } = err;
-
+  
   if (!errorType || !status) {
-    console.error(err);
     res.status(500).json({ 
       success: false,
       statusCode: 500,
@@ -17,14 +16,12 @@ export function defaultErrorHandler(err: ServerError, req: DefaultErrorHandlerRe
     });
     return
   }
-
-  if (typeof status === 'number')
-    res.status(status);
-
-  res.json({
+  
+  res.status(status).json({
     success: false,
     statusCode: status,
     data: null,
     message,
   });
+  return;
 }

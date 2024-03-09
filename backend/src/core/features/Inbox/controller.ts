@@ -1,15 +1,18 @@
 import { Inbox } from "@/core/features/Inbox";
-import { Request, Router } from 'express';
+import CustomRouter from "@/lib/CustomRouter";
+import { Request } from 'express';
 import { APIResponse, DraftUpdateDTO, IDraft } from 'shared-types';
   
-const router = Router();
+// const router = Router();
+const router = new CustomRouter();
 const inbox = new Inbox();
 
-type GetInboxDraftsRequest = Request<{}, APIResponse<IDraft[]>, {}, {}>
 
-router.get('/', async (request: GetInboxDraftsRequest, response) => {
+type GetInboxDraftsRequest = Request<{}, APIResponse<IDraft[]>, {}, {}>;
+
+router.get('/', async (request: GetInboxDraftsRequest, response, next) => {
   const drafts = await inbox.getDrafts();
-
+  
   response.json({
     success: true,
     statusCode: 200,
@@ -50,4 +53,4 @@ router.put('/', async (request: PutUpdateDraftRequest, response) => {
   }  
 });
 
-export default router
+export default router.router

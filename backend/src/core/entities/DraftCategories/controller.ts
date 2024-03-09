@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { DraftCategories } from '.';
 import { APIResponse, IDraftCategory, DraftCategoryDTO } from 'shared-types';
-import CustomRouter from '@/lib/CustomRouter';
+import CustomRouter from '@/lib/expressjs/CustomRouter';
 
 const router = new CustomRouter();
 //Route:draft_categories

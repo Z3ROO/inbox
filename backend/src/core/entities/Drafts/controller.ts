@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { Drafts } from '.';
 import { APIResponse, InsertDraftDTO } from 'shared-types';
-import CustomRouter from '@/lib/CustomRouter';
+import CustomRouter from '@/lib/expressjs/CustomRouter';
 
 const router = new CustomRouter();
 //Route:drafts

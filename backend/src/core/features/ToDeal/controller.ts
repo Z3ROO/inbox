@@ -1,7 +1,7 @@
 import { ToDeal } from "@/core/features/ToDeal";
 import { APIResponse, IDraft, ToggleToDealDTO } from "shared-types";
 import { Request, Response } from 'express'
-import CustomRouter from "@/lib/CustomRouter";
+import CustomRouter from "@/lib/expressjs/CustomRouter";
   
 //const router = Router();
 const router = new CustomRouter();

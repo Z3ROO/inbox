@@ -1,5 +1,5 @@
 import { Inbox } from "@/core/features/Inbox";
-import CustomRouter from "@/lib/CustomRouter";
+import CustomRouter from "@/lib/expressjs/CustomRouter";
 import { Request } from 'express';
 import { APIResponse, DraftUpdateDTO, IDraft } from 'shared-types';
   

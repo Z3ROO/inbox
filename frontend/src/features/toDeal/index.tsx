@@ -7,50 +7,50 @@ import { Textarea } from "@/components/form/Input";
 import * as InboxAPI from '@/features/inbox/api';
 
 export function ToDealList() {
-  const [isTodoInputOpen, setIsTodoInputOpen] = useState(false);
-  const [toDealInput, setTodoInput] = useState('');
+  const [isToDealInputOpen, setIsToDealInputOpen] = useState(false);
+  const [toDealInput, setToDealInput] = useState('');
 
 
   return (
     <div className="w-[26rem] h-full p-8 mx-10 flex flex-col rounded-sm">
       <div className="flex items-center">
-        <h4 className="p-0 mb-1 inline text-tanj-green mr-4 align-middle">Todo list</h4>
-        <AddTodoButtons {...{isTodoInputOpen, setIsTodoInputOpen ,toDealInput, setTodoInput}} />
+        <h4 className="p-0 mb-1 inline text-tanj-green mr-4 align-middle">To deal:</h4>
+        <AddToDealButtons {...{isToDealInputOpen, setIsToDealInputOpen ,toDealInput, setToDealInput}} />
       </div>
-      <TodoInput {...{isTodoInputOpen, toDealInput, setTodoInput}} />
+      <ToDealInput {...{isToDealInputOpen, toDealInput, setToDealInput}} />
       <List/>
     </div>
   )
 }
 
-function AddTodoButtons(props: {
-  isTodoInputOpen: boolean, 
-  setIsTodoInputOpen: (value: React.SetStateAction<boolean>) => void
+function AddToDealButtons(props: {
+  isToDealInputOpen: boolean, 
+  setIsToDealInputOpen: (value: React.SetStateAction<boolean>) => void
   toDealInput: string, 
-  setTodoInput: (value: React.SetStateAction<string>) => void
+  setToDealInput: (value: React.SetStateAction<string>) => void
 }) {
-  const {isTodoInputOpen, setIsTodoInputOpen, toDealInput, setTodoInput} = props;
+  const {isToDealInputOpen, setIsToDealInputOpen, toDealInput, setToDealInput} = props;
   const insertDraft = InboxAPI.InsertDraft();
 
   return (
     <>
       <button
         className="border border-tanj-green border-opacity-30 opacity-50 hover:opacity-100 p-1 mr-2 rounded-sm transition-all"
-        onClick={() => setIsTodoInputOpen(prev => !prev)}
+        onClick={() => setIsToDealInputOpen(prev => !prev)}
       >
         {
-          isTodoInputOpen ?
+          isToDealInputOpen ?
             <RxCross2 className="w-3 h-3 text-tanj-green" /> :
             <FaPlus className="w-3 h-3 fill-tanj-green" />
         }
       </button>
       {
-        isTodoInputOpen && <button
+        isToDealInputOpen && <button
           className="border border-tanj-green border-opacity-30 opacity-50 hover:opacity-100 p-1 mr-2 rounded-sm transition-all"
           onClick={() => {
             insertDraft({ content: toDealInput, to_deal: true });
-            setIsTodoInputOpen(false);
-            setTodoInput('');
+            setIsToDealInputOpen(false);
+            setToDealInput('');
           }}
         >
           <BiCheck className="w-3 h-3 fill-tanj-green" />
@@ -61,19 +61,19 @@ function AddTodoButtons(props: {
 }
 
 
-function TodoInput(props: {
-  isTodoInputOpen: boolean, 
+function ToDealInput(props: {
+  isToDealInputOpen: boolean, 
   toDealInput: string, 
-  setTodoInput: (value: React.SetStateAction<string>) => void
+  setToDealInput: (value: React.SetStateAction<string>) => void
 }) {
-  const {isTodoInputOpen, toDealInput, setTodoInput} = props;
-  if (isTodoInputOpen)
+  const {isToDealInputOpen, toDealInput, setToDealInput} = props;
+  if (isToDealInputOpen)
     return (
       <div className="pt-2 pr-6">
         <Textarea
           className="resize-none w-full"
           value={toDealInput}
-          onChange={e => setTodoInput(e.target.value)}
+          onChange={e => setToDealInput(e.target.value)}
         />
       </div>
     )

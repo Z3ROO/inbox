@@ -1,12 +1,13 @@
 import { FaCheck, FaTrashAlt } from "react-icons/fa";
 import * as InboxAPI from '@/features/inbox/api';
+import * as ToDealAPI from '@/features/toDeal/api';
 import { IDraft } from "shared-types";
 import { Container } from "@/components/structure/container";
 
 export function Item({toDeal}: {toDeal: IDraft}) {
   const draft_id = toDeal._id;
   const updateDraft = InboxAPI.UpdateDraft();
-  const toggleTodo = InboxAPI.ToggleInboxTodo();
+  const toggleToDeal = ToDealAPI.ToggleToDeal();
 
   return (
     <Container className="relative my-4 w-full group">
@@ -24,7 +25,7 @@ export function Item({toDeal}: {toDeal: IDraft}) {
         <FaTrashAlt 
           className="m-1 cursor-pointer text-tanj-pink opacity-40 hover:opacity-100" 
           onClick={() => {
-            toggleTodo({
+            toggleToDeal({
               draft_id,
               state: false
             })

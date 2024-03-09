@@ -4,7 +4,7 @@ import { ToggleToDealDTO } from "shared-types";
 import APIRequest from "../../../lib/ApiRequest";
 
 
-async function toggleInboxTodo(args: ToggleToDealDTO) {
+async function toggleToDeal(args: ToggleToDealDTO) {
   const { draft_id, state } = args;
 
   const response = await APIRequest<null, ToggleToDealDTO>(
@@ -20,9 +20,9 @@ async function toggleInboxTodo(args: ToggleToDealDTO) {
   return response.data;
 }
 
-export function ToggleInboxTodo(options?: MutationOptions<null, ToggleToDealDTO>) {
+export function ToggleToDeal(options?: MutationOptions<null, ToggleToDealDTO>) {
 
-  return useMutation(toggleInboxTodo, {
+  return useMutation(toggleToDeal, {
     ...options,
     onSuccess: (_, variables) => {
       // MUST CONFIGURE A MORE PRECISE UPDATE OF THE WHOLE ITEMS LIST

@@ -4,12 +4,13 @@ import { useInboxContext } from "../../store/InboxContext";
 import { DraftDelayAmount } from "shared-types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
 import * as InboxAPI from '@/features/inbox/api';
+import * as ToDealAPI from '@/features/toDeal/api';
 
 export function Controlls() {
   return (
     <div className="flex justify-between mt-2 text-sm">
       <DelayDraftButtons />
-      <TodoButton />
+      <ToDealButton />
       <RemoveButton />
       <UndoButton />
     </div>
@@ -78,26 +79,26 @@ function DelayDraftButtons() {
   );
 }
 
-function TodoButton() {
+function ToDealButton() {
   const { inboxManagerTextarea } = useInboxContext()!;
   const inbox = InboxAPI.QueryInbox().data!;
   const currentDraft = inbox[0];
 
   const updateDraft = InboxAPI.UpdateDraft();
-  const toggleTodo = InboxAPI.ToggleInboxTodo();
+  const toggleToDeal = ToDealAPI.ToggleToDeal();
 
   return (
     <div>
       <BtnSecondary icon
         className=""
-        disabled={toggleTodo.isLoading}
+        disabled={toggleToDeal.isLoading}
         onClick={() => {
           updateDraft({
             action: 'none',
             draft_id: currentDraft._id,
             content: inboxManagerTextarea
           });
-          toggleTodo({ draft_id: currentDraft._id, state: true });
+          toggleToDeal({ draft_id: currentDraft._id, state: true });
         }}
       >
         <BsFillCheckSquareFill />

@@ -1,8 +1,8 @@
-import * as InboxAPI from '@/features/inbox/api';
+import * as ToDealAPI from '@/features/toDeal/api';
 import { Item } from './ListItem';
 
 export function List() {
-  const queryToDeals = InboxAPI.QueryInboxToDeals();
+  const queryToDeals = ToDealAPI.QueryToDeals();
 
   if (queryToDeals.isError)
     return <>Something went wrong</>;

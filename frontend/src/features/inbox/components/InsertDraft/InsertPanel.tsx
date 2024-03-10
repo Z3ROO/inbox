@@ -13,7 +13,8 @@ import { ISubject } from "shared-types";
 import { IconType } from "react-icons/lib";
 
 export function InboxInsertPanel() {
-  const [insertFieldText, setInsertFieldText] = useState('');
+  const [titleInputText, setTitleInputText] = useState('');
+  const [contentInputText, setContentInputText] = useState('');
   const [subject, setSubject] = useState({label: '', value: ''});
   const [priority, setPriority] = useState(0);
 
@@ -22,14 +23,16 @@ export function InboxInsertPanel() {
   const insertDraft = InboxAPI.InsertDraft();
 
   async function insertInbox() {
-    if (insertFieldText.trim() === '')
+    if (contentInputText.trim() === '')
       return;
     insertDraft({
-      content: insertFieldText,
+      title: titleInputText,
+      content: contentInputText,
       subject: subject.label,
       priority
     });
-    setInsertFieldText('');
+    setTitleInputText('');
+    setContentInputText('');
     setSubject({label: '', value: ''});
     setPriority(0);
     cacheInsertInputField('');
@@ -39,7 +42,7 @@ export function InboxInsertPanel() {
     <div className="flex">
       <div className="grow">
         <SelectSubject {...{subject, setSubject, subjects: subjects.data??[]}} />
-        <InsertPanelInputField {...{insertFieldText, setInsertFieldText}} />
+        <InsertPanelInputField {...{titleInputText, setTitleInputText, contentInputText, setContentInputText}} />
         <InsertPanelControlls {...{insertInbox}} />
       </div>
       <SelectPriority {...{priority, setPriority}} />
@@ -128,24 +131,38 @@ function SelectPriorityOption(
 }
 
 function InsertPanelInputField(props: { 
-  insertFieldText: string , setInsertFieldText: React.Dispatch<React.SetStateAction<string>>
+  titleInputText: string , setTitleInputText: React.Dispatch<React.SetStateAction<string>>
+  contentInputText: string , setContentInputText: React.Dispatch<React.SetStateAction<string>>
 }) {
-  const {insertFieldText, setInsertFieldText} = props;
+  const {
+    titleInputText, setTitleInputText,
+    contentInputText, setContentInputText
+  } = props;
 
   useEffect(() => {
     const cachedInsertText = getCachedInsertInputField();
-    setInsertFieldText(cachedInsertText);
+    setContentInputText(cachedInsertText);
   },[]);
 
   return (
-    <Textarea 
-      className={`resize-none w-96 h-56`} 
-      value={insertFieldText} 
-      onChange={e => { 
-        setInsertFieldText(e.target.value); 
-        cacheInsertInputField(e.target.value);
-      }}
-    />
+    <div className="flex flex-col w-full">
+      <Textarea 
+        className={`resize-none w-96 h-10 font-bold`} 
+        value={titleInputText} 
+        onChange={e => { 
+          setTitleInputText(e.target.value); 
+          cacheInsertInputField(e.target.value);
+        }}
+      />
+      <Textarea 
+        className={`resize-none w-96 h-56`} 
+        value={contentInputText} 
+        onChange={e => { 
+          setContentInputText(e.target.value); 
+          cacheInsertInputField(e.target.value);
+        }}
+      />
+    </div>
   )
 }
 

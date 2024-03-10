@@ -61,7 +61,7 @@ export class Inbox {
     return;
   }
 
-  public async updateDraftOrganization({ _id, priority, subject, content }: { _id: string, priority: number, subject: string, content: string }): Promise<void> {
+  public async updateDraftOrganization({ _id, title, priority, subject, content }: { _id: string, title: string,  priority: number, subject: string, content: string }): Promise<void> {
     // =============================================================================
     //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.
     // =============================================================================
@@ -78,7 +78,7 @@ export class Inbox {
       else
         subject_id = (await this.subjects.insertOne({name: subject})).insertedId;
 
-      await this.drafts.updateOne(_id, {subject_id, content});
+      await this.drafts.updateOne(_id, {subject_id, title, content});
     }
 
     return;

@@ -18,7 +18,12 @@ export class Drafts {
     return data;
   }
 
-  public async insertOne({ content, priority, subject, to_deal }: InsertDraftDTO) {
+  public async insertOne({ title, content, priority, subject, to_deal }: InsertDraftDTO) {
+    
+    if (title == null)
+      title = '';
+
+    title = title.trim();
     
     if (to_deal == null)
       to_deal = false;
@@ -40,6 +45,7 @@ export class Drafts {
     
     await this.draftsRepo.insertOne({
       _id: UUID(),
+      title,
       content,
       priority,
       subject_id,

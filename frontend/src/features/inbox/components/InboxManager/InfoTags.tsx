@@ -29,7 +29,7 @@ function Subject() {
   const draft = inboxQuery.data![0];
   const [subject, setSubject] = useState({label: '', value: ''});
   const [showSubjectPicker, setShowSubjectPicker] = useState(false);
-  const { inboxManagerTextarea } = useInboxContext()!;
+  const { inboxManagerTextarea, inboxManagerTitle } = useInboxContext()!;
   
   const querySubject = InboxAPI.QuerySubjects();  
   const updateDraft = InboxAPI.UpdateDraft();
@@ -53,6 +53,7 @@ function Subject() {
                 draft_id: draft._id,
                 action: 'organization',
                 subject: subject.label,
+                title: inboxManagerTitle,
                 content: inboxManagerTextarea
               })
             }} icon>+</BtnSecondary>

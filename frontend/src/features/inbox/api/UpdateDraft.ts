@@ -16,11 +16,12 @@ import APIRequest from "../../../lib/ApiRequest";
  */
 
 async function updateDraft(args: DraftUpdateDTO) {
-  const { content, draft_id, action, quantity, priority, subject } = args;
+  const { title, content, draft_id, action, quantity, priority, subject } = args;
 
   const response = await APIRequest<null, DraftUpdateDTO>(`/inbox`, {
     method: 'put',
     body: {
+      title,
       content,
       draft_id,
       action,

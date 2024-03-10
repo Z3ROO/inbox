@@ -2,6 +2,7 @@ import { ISubject } from "./Subjects"
 
 export interface IDraft {
   _id: string
+  title: string
   content: string
   priority: number
   subject: ISubject
@@ -18,6 +19,7 @@ export type DraftDelayAmount = 'none'|'next'|'later'|'dawn'|'day'|'week'|'month'
 
 
 export interface InsertDraftDTO {
+  title?: string
   content: string
   priority?: number
   subject?: string
@@ -25,9 +27,10 @@ export interface InsertDraftDTO {
 }
 
 export interface DraftUpdateDTO {
-  content?: string,
-  draft_id: string,
-  action: DraftDelayAmount|"remove"|"undo"|"organization";
+  title?: string
+  content?: string
+  draft_id: string
+  action: DraftDelayAmount|"remove"|"undo"|"organization"
   priority?: number
   subject?: string
   quantity?: 1|2|3
@@ -35,7 +38,8 @@ export interface DraftUpdateDTO {
 
 export interface DelayDraftDTO {
   _id: string
+  title?: string
   content: string
-  amount: DraftDelayAmount|"remove"|"undo"|"organization";
+  amount: DraftDelayAmount|"remove"|"undo"|"organization"
   quantity?: 1|2|3
 }

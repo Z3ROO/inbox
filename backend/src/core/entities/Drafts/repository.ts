@@ -3,12 +3,11 @@ import { IDraft } from 'shared-types';
 import { PostgresRepository, PostgresRepositoryResponse } from '@/infra/database/PostgresRepository';
 
 export class DraftsRepository extends PostgresRepository {
+
+
   public async findById(draft_id: string) {
     const res = await this.query<IDraft>(`
-      SELECT 
-      drafts._id, content, priority, created_at, delay, 
-      delay_quantity, delayed_at, allowed_after, to_deal, 
-      jsonb_build_object('_id', subjects._id, 'name', subjects.name, 'color', subjects.color, 'icon', subjects.icon) as subject 
+      SELECT ${DRAFT_PROP_FIELDS}
       FROM drafts 
       LEFT JOIN subjects ON drafts.subject = subjects._id 
       WHERE drafts._id <= $1;
@@ -20,10 +19,7 @@ export class DraftsRepository extends PostgresRepository {
   async findAllowedAfter(date: Date) {
     
     const res = await this.query<IDraft>(`
-      SELECT 
-      drafts._id, content, priority, created_at, delay, 
-      delay_quantity, delayed_at, allowed_after, to_deal,
-      jsonb_build_object('_id', subjects._id, 'name', subjects.name, 'color', subjects.color, 'icon', subjects.icon) as subject
+      SELECT ${DRAFT_PROP_FIELDS}
       FROM drafts 
       LEFT JOIN subjects ON drafts.subject_id = subjects._id
       WHERE drafts.allowed_after <= $1 AND drafts.to_deal = FALSE 
@@ -37,11 +33,12 @@ export class DraftsRepository extends PostgresRepository {
   async insertOne(draft: IDraft_Schema) {
     const res = await this.query(`
       INSERT INTO drafts (
-          _id, content, priority, subject_id, created_at, delay, delay_quantity, delayed_at, allowed_after, to_deal
+          _id, title, content, priority, subject_id, created_at, delay, delay_quantity, delayed_at, allowed_after, to_deal
         ) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
     `, [
       draft._id,
+      draft.title,
       draft.content,
       draft.priority,
       draft.subject_id,
@@ -60,15 +57,7 @@ export class DraftsRepository extends PostgresRepository {
     //Not completelly implemented, since there's only one boolean property
 
     const res = await this.query<IDraft>(`
-      SELECT 
-      drafts._id, content, priority, created_at, delay, 
-      delay_quantity, delayed_at, allowed_after, to_deal,
-      jsonb_build_object(
-        '_id', subjects._id, 
-        'name', subjects.name, 
-        'color', subjects.color, 
-        'icon', subjects.icon
-        ) as subject
+      SELECT ${DRAFT_PROP_FIELDS}
       FROM drafts 
       LEFT JOIN subjects ON drafts.subject_id = subjects._id
       WHERE drafts.to_deal = $1 
@@ -108,3 +97,16 @@ function mapHandlers(properties: {}, startAfter: number = 0) {
       }
     , '');
 }
+
+const SUBJECT_PROP_AS_JSON = `
+  jsonb_build_object(
+    '_id', subjects._id, 
+    'name', subjects.name, 
+    'color', subjects.color, 
+    'icon', subjects.icon
+    ) as subject `;
+
+const DRAFT_PROP_FIELDS = `
+  drafts._id, title, content, priority, created_at, delay, 
+  delay_quantity, delayed_at, allowed_after, to_deal, 
+  ${SUBJECT_PROP_AS_JSON}`;

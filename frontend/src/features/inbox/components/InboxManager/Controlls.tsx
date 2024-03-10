@@ -18,7 +18,7 @@ export function Controlls() {
 }
 
 function DelayDraftButtons() {
-  const { inboxManagerTextarea } = useInboxContext()!
+  const { inboxManagerTextarea, inboxManagerTitle } = useInboxContext()!
   const inbox = InboxAPI.QueryInbox().data!;
   const currentDraft = inbox[0];
 
@@ -26,7 +26,8 @@ function DelayDraftButtons() {
 
   const updateDraftEvent = (delay: DraftDelayAmount, quantity?: 1|2|3) => () => { 
     updateDraft({ 
-      content: inboxManagerTextarea, 
+      title: inboxManagerTitle,
+      content: inboxManagerTextarea,
       draft_id: currentDraft._id, 
       action: delay,
       quantity
@@ -80,7 +81,7 @@ function DelayDraftButtons() {
 }
 
 function ToDealButton() {
-  const { inboxManagerTextarea } = useInboxContext()!;
+  const { inboxManagerTextarea, inboxManagerTitle } = useInboxContext()!;
   const inbox = InboxAPI.QueryInbox().data!;
   const currentDraft = inbox[0];
 
@@ -96,6 +97,7 @@ function ToDealButton() {
           updateDraft({
             action: 'none',
             draft_id: currentDraft._id,
+            title: inboxManagerTitle,
             content: inboxManagerTextarea
           });
           toggleToDeal({ draft_id: currentDraft._id, state: true });

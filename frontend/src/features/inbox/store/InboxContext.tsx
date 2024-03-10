@@ -9,10 +9,12 @@ export function InboxContextProvider(props: { children?: JSX.Element|null|false|
   const [isInboxManagerOpen, setIsInboxManagerOpen] = useState(false);
   const toggleInboxManager = () => setIsInboxManagerOpen(prev => !prev);
 
-  const [inboxManagerTextarea, setInboxManagerTextarea] = useState(''); 
+  const [inboxManagerTitle, setInboxManagerTitle] = useState('');
+  const [inboxManagerTextarea, setInboxManagerTextarea] = useState('');
 
   const contextValue: IInboxContext = {
     isInboxManagerOpen, toggleInboxManager,
+    inboxManagerTitle, setInboxManagerTitle,
     inboxManagerTextarea, setInboxManagerTextarea,
   }
 

@@ -9,15 +9,15 @@ import { InputDataList } from "@/components/form/InputDataList";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { IoAlertCircle } from "react-icons/io5";
 import { AiFillAlert } from "react-icons/ai";
-import { IDraftCategory } from "shared-types";
+import { ISubject } from "shared-types";
 import { IconType } from "react-icons/lib";
 
 export function InboxInsertPanel() {
   const [insertFieldText, setInsertFieldText] = useState('');
-  const [category, setCategory] = useState({label: '', value: ''});
+  const [subject, setSubject] = useState({label: '', value: ''});
   const [priority, setPriority] = useState(0);
 
-  const categories = InboxAPI.QueryCategories();
+  const subjects = InboxAPI.QuerySubjects();
 
   const insertDraft = InboxAPI.InsertDraft();
 
@@ -26,11 +26,11 @@ export function InboxInsertPanel() {
       return;
     insertDraft({
       content: insertFieldText,
-      category: category.label,
+      subject: subject.label,
       priority
     });
     setInsertFieldText('');
-    setCategory({label: '', value: ''});
+    setSubject({label: '', value: ''});
     setPriority(0);
     cacheInsertInputField('');
   }
@@ -38,7 +38,7 @@ export function InboxInsertPanel() {
   return (
     <div className="flex">
       <div className="grow">
-        <SelectCategory {...{category, setCategory, categories: categories.data??[]}} />
+        <SelectSubject {...{subject, setSubject, subjects: subjects.data??[]}} />
         <InsertPanelInputField {...{insertFieldText, setInsertFieldText}} />
         <InsertPanelControlls {...{insertInbox}} />
       </div>
@@ -47,24 +47,24 @@ export function InboxInsertPanel() {
   )
 }
 
-function SelectCategory({category, setCategory, categories}: 
+function SelectSubject({subject, setSubject, subjects}: 
     {
-      category:{ label: string, value: string }, 
-      setCategory: React.Dispatch<React.SetStateAction<{ label: string, value: string }>>,
-      categories: IDraftCategory[]
+      subject:{ label: string, value: string }, 
+      setSubject: React.Dispatch<React.SetStateAction<{ label: string, value: string }>>,
+      subjects: ISubject[]
     }
   ) {
 
-  const existingCategories = useMemo(() => {
-    return categories.map(({_id, name}) => ({ value: _id, label: name }));
-  }, [categories]);
+  const existingSubjects = useMemo(() => {
+    return subjects.map(({_id, name}) => ({ value: _id, label: name }));
+  }, [subjects]);
 
   return (
     <div className="py-2 w-full">
       <InputDataList 
         className="w-full" 
-        options={existingCategories} value={category} 
-        setValue={setCategory} 
+        options={existingSubjects} value={subject} 
+        setValue={setSubject} 
       />
     </div>
   )

@@ -1,4 +1,4 @@
 export * from './InsertDraft';
 export * from './QueryInbox';
-export * from './QueryCategories';
+export * from './QuerySubjects';
 export * from './UpdateDraft';

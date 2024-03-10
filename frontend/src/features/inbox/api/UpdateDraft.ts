@@ -11,12 +11,12 @@ import APIRequest from "../../../lib/ApiRequest";
  * @param args.action - Specific action to be taken in the server-side.
  * @param quantity - Used along with delay type actions, specifies a quantity of delay
  * @param priority - Updated draft's priority.
- * @param category - Updated draft's category.
+ * @param subject - Updated draft's subject.
  * @returns - !!! TO BE STANDARDIZED !!!
  */
 
 async function updateDraft(args: DraftUpdateDTO) {
-  const { content, draft_id, action, quantity, priority, category } = args;
+  const { content, draft_id, action, quantity, priority, subject } = args;
 
   const response = await APIRequest<null, DraftUpdateDTO>(`/inbox`, {
     method: 'put',
@@ -26,7 +26,7 @@ async function updateDraft(args: DraftUpdateDTO) {
       action,
       quantity,
       priority,
-      category
+      subject
     }
   })
 

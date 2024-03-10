@@ -1,10 +1,10 @@
-import { IDraftCategory } from "./DraftsCategory"
+import { ISubject } from "./Subjects"
 
 export interface IDraft {
   _id: string
   content: string
   priority: number
-  category: IDraftCategory
+  subject: ISubject
   delay: null | DraftDelayAmount
   delayed_at: Date
   delay_quantity: 1|2|3
@@ -20,7 +20,7 @@ export type DraftDelayAmount = 'none'|'next'|'later'|'dawn'|'day'|'week'|'month'
 export interface InsertDraftDTO {
   content: string
   priority?: number
-  category?: string
+  subject?: string
   to_deal?: boolean
 }
 
@@ -29,7 +29,7 @@ export interface DraftUpdateDTO {
   draft_id: string,
   action: DraftDelayAmount|"remove"|"undo"|"organization";
   priority?: number
-  category?: string
+  subject?: string
   quantity?: 1|2|3
 }
 

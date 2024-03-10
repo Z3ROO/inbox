@@ -1,10 +1,10 @@
-export interface IDraftCategory {
+export interface ISubject {
   _id: string
   name: string
   color: string
   icon: string
 }
 
-export interface DraftCategoryDTO {
+export interface SubjectDTO {
   name: string
 }

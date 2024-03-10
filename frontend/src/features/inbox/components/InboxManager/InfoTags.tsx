@@ -17,42 +17,42 @@ export function InfoTags() {
 
   return (
     <div className="flex py-2 gap-2">
-      <Category />
+      <Subject />
       <Priority />
       <TimePassed {...timePassed} />
     </div>
   )
 }
 
-function Category() {
+function Subject() {
   const inboxQuery = InboxAPI.QueryInbox();
   const draft = inboxQuery.data![0];
-  const [category, setCategory] = useState({label: '', value: ''});
-  const [showCategoryPicker, setShowCategoryPicker] = useState(false);
+  const [subject, setSubject] = useState({label: '', value: ''});
+  const [showSubjectPicker, setShowSubjectPicker] = useState(false);
   const { inboxManagerTextarea } = useInboxContext()!;
   
-  const queryCategory = InboxAPI.QueryCategories();  
+  const querySubject = InboxAPI.QuerySubjects();  
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
-    <button className="text-left" onClick={() => {setShowCategoryPicker(prev => !prev); setCategory({label:'', value:''})}}>
+    <button className="text-left" onClick={() => {setShowSubjectPicker(prev => !prev); setSubject({label:'', value:''})}}>
       <div className="group relative">
-        <InfoTag className="bg-blue-600" Icon={TfiLayoutSidebarNone}>{draft.category.name}</InfoTag>
+        <InfoTag className="bg-blue-600" Icon={TfiLayoutSidebarNone}>{draft.subject.name}</InfoTag>
         {
-          showCategoryPicker && (
+          showSubjectPicker && (
           <div onClick={e => e.stopPropagation()} className="absolute top-full left-0 bg-tanj-gray px-2 py-1 rounded-sm mt-1 flex items-center z-10 cursor-default">
             <InputDataList
-              options={(queryCategory.data??[]).map(({_id, name}) => ({value:_id, label:name}))}
-              value={category}
-              setValue={setCategory}
+              options={(querySubject.data??[]).map(({_id, name}) => ({value:_id, label:name}))}
+              value={subject}
+              setValue={setSubject}
             />
             <BtnSecondary onClick={e => {
-              setShowCategoryPicker(false)
-              console.log(category.label)
+              setShowSubjectPicker(false)
+              
               updateDraft({
                 draft_id: draft._id,
                 action: 'organization',
-                category: category.label,
+                subject: subject.label,
                 content: inboxManagerTextarea
               })
             }} icon>+</BtnSecondary>

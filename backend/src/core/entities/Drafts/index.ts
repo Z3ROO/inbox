@@ -1,11 +1,11 @@
 import { IDraft_Schema } from "@/core/entities/Drafts/types";
 import { IDraft, InsertDraftDTO } from "shared-types";
 import { v4 as UUID } from 'uuid';
-import { DraftCategories } from "../DraftCategories";
+import { Subjects } from "../Subjects";
 import { DraftsRepository } from "./repository";
 
 export class Drafts {
-  draftCategories = new DraftCategories();
+  subjects = new Subjects();
   draftsRepo = new DraftsRepository();
 
   public async allowedAfter(date: Date): Promise<IDraft[]> {
@@ -18,7 +18,7 @@ export class Drafts {
     return data;
   }
 
-  public async insertOne({ content, priority, category, to_deal }: InsertDraftDTO) {
+  public async insertOne({ content, priority, subject, to_deal }: InsertDraftDTO) {
     
     if (to_deal == null)
       to_deal = false;
@@ -26,23 +26,23 @@ export class Drafts {
     if (priority == null || priority > 3)
       priority = 0;
 
-    if (category == null || category === '')
-      category = 'none';
+    if (subject == null || subject === '')
+      subject = 'none';
 
-    let category_id: string;
-    let categoryObject = await this.draftCategories.getByName(category);
+    let subject_id: string;
+    let subjectObject = await this.subjects.getByName(subject);
 
-    if (categoryObject)
-      category_id = categoryObject._id;
+    if (subjectObject)
+      subject_id = subjectObject._id;
     else
-      category_id = (await this.draftCategories.insertOne({name: category})).insertedId;
+      subject_id = (await this.subjects.insertOne({name: subject})).insertedId;
 
     
     await this.draftsRepo.insertOne({
       _id: UUID(),
       content,
       priority,
-      category_id,
+      subject_id,
       to_deal,
       delay: null,
       delay_quantity: null,

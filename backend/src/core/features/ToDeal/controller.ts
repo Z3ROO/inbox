@@ -20,7 +20,7 @@ router.get('/', async (request, response: Response<APIResponse<IDraft[]>>) => {
 });
 
 type PutToggleToDealRequest = Request<{}, APIResponse, ToggleToDealDTO, {}>
-
+console.log('review all routes error handling')
 router.put('/toggle', async (request: PutToggleToDealRequest, response) => {
   const { draft_id, state } = request.body;
   

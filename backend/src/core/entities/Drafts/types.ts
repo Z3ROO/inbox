@@ -4,7 +4,7 @@ export interface IDraft_Schema {
   _id: string
   content: string
   priority: number
-  category_id: string
+  subject_id: string
   delay: null | DraftDelayAmount|"remove"|"undo"|"organization";
   delayed_at: Date
   delay_quantity: 1|2|3

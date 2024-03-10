@@ -11,8 +11,8 @@ const drafts = new Drafts();
 type InsertDraftRequest = Request<{}, APIResponse, InsertDraftDTO, {}>
 
 router.post('/insert', async (request: InsertDraftRequest, response) => {
-  const { content, priority, category, to_deal } = request.body;
-  await drafts.insertOne({content, priority, category, to_deal});
+  const { content, priority, subject, to_deal } = request.body;
+  await drafts.insertOne({content, priority, subject, to_deal});
   
   response.status(200).json({
     success: true,

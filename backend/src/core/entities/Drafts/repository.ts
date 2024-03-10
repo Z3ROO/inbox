@@ -8,9 +8,9 @@ export class DraftsRepository extends PostgresRepository {
       SELECT 
       drafts._id, content, priority, created_at, delay, 
       delay_quantity, delayed_at, allowed_after, to_deal, 
-      jsonb_build_object('_id', draft_categories._id, 'name', draft_categories.name, 'color', draft_categories.color, 'icon', draft_categories.icon) as category 
+      jsonb_build_object('_id', subjects._id, 'name', subjects.name, 'color', subjects.color, 'icon', subjects.icon) as subject 
       FROM drafts 
-      LEFT JOIN draft_categories ON drafts.category = draft_categories._id 
+      LEFT JOIN subjects ON drafts.subject = subjects._id 
       WHERE drafts._id <= $1;
     `, [draft_id]);
     
@@ -23,9 +23,9 @@ export class DraftsRepository extends PostgresRepository {
       SELECT 
       drafts._id, content, priority, created_at, delay, 
       delay_quantity, delayed_at, allowed_after, to_deal,
-      jsonb_build_object('_id', draft_categories._id, 'name', draft_categories.name, 'color', draft_categories.color, 'icon', draft_categories.icon) as category
+      jsonb_build_object('_id', subjects._id, 'name', subjects.name, 'color', subjects.color, 'icon', subjects.icon) as subject
       FROM drafts 
-      LEFT JOIN draft_categories ON drafts.category_id = draft_categories._id
+      LEFT JOIN subjects ON drafts.subject_id = subjects._id
       WHERE drafts.allowed_after <= $1 AND drafts.to_deal = FALSE 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
     `,[date]);
@@ -37,14 +37,14 @@ export class DraftsRepository extends PostgresRepository {
   async insertOne(draft: IDraft_Schema) {
     const res = await this.query(`
       INSERT INTO drafts (
-          _id, content, priority, category_id, created_at, delay, delay_quantity, delayed_at, allowed_after, to_deal
+          _id, content, priority, subject_id, created_at, delay, delay_quantity, delayed_at, allowed_after, to_deal
         ) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
     `, [
       draft._id,
       draft.content,
       draft.priority,
-      draft.category_id,
+      draft.subject_id,
       draft.created_at,
       draft.delay,
       draft.delay_quantity,
@@ -64,13 +64,13 @@ export class DraftsRepository extends PostgresRepository {
       drafts._id, content, priority, created_at, delay, 
       delay_quantity, delayed_at, allowed_after, to_deal,
       jsonb_build_object(
-        '_id', draft_categories._id, 
-        'name', draft_categories.name, 
-        'color', draft_categories.color, 
-        'icon', draft_categories.icon
-        ) as category
+        '_id', subjects._id, 
+        'name', subjects.name, 
+        'color', subjects.color, 
+        'icon', subjects.icon
+        ) as subject
       FROM drafts 
-      LEFT JOIN draft_categories ON drafts.category_id = draft_categories._id
+      LEFT JOIN subjects ON drafts.subject_id = subjects._id
       WHERE drafts.to_deal = $1 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
     `,[to_deal]);

@@ -1,10 +1,8 @@
 import { Drafts } from "../../entities/Drafts";
-import { DraftCategories } from "../../entities/DraftCategories";
 import { IDraft } from "shared-types";
 
 export class ToDeal {
   drafts = new Drafts();
-  draftCategories = new DraftCategories();
 
   public async getDrafts(): Promise<IDraft[]> {
     const data = await this.drafts.byBooleanProp({to_deal: true});

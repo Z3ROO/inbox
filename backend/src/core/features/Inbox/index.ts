@@ -1,13 +1,6 @@
 import { DelayDraftDTO, DraftDelayAmount, IDraft } from "shared-types";
 import { Drafts } from "../../entities/Drafts";
-import { DraftCategories } from "../../entities/DraftCategories";
-
-interface IDraftDTO {
-  _id: string
-  content: string
-  amount: DraftDelayAmount
-  quantity?: 1|2|3
-}
+import { Subjects } from "../../entities/Subjects";
 
 const DELAY_AMOUNT = {
   'next': (1000),
@@ -20,7 +13,7 @@ const DELAY_AMOUNT = {
 
 export class Inbox {
   drafts = new Drafts();
-  draftCategories = new DraftCategories();
+  subjects = new Subjects();
 
   public async getDrafts(): Promise<IDraft[]> {
     const now = new Date();
@@ -68,7 +61,7 @@ export class Inbox {
     return;
   }
 
-  public async updateDraftOrganization({ _id, priority, category, content }: { _id: string, priority: number, category: string, content: string }): Promise<void> {
+  public async updateDraftOrganization({ _id, priority, subject, content }: { _id: string, priority: number, subject: string, content: string }): Promise<void> {
     // =============================================================================
     //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.
     // =============================================================================
@@ -76,16 +69,16 @@ export class Inbox {
       await this.drafts.updateOne(_id, {priority, content});
     }
 
-    if (category != null && category !== '') {
-      let category_id: string;
-      let categoryObject = await this.draftCategories.getByName(category);
+    if (subject != null && subject !== '') {
+      let subject_id: string;
+      let subjectObject = await this.subjects.getByName(subject);
 
-      if (categoryObject)
-        category_id = categoryObject._id;
+      if (subjectObject)
+        subject_id = subjectObject._id;
       else
-        category_id = (await this.draftCategories.insertOne({name: category})).insertedId;
+        subject_id = (await this.subjects.insertOne({name: subject})).insertedId;
 
-      await this.drafts.updateOne(_id, {category_id, content});
+      await this.drafts.updateOne(_id, {subject_id, content});
     }
 
     return;

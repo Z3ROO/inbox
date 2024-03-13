@@ -1,6 +1,6 @@
 import { IDraft_Schema } from '@/core/entities/Drafts/types';
 import { IDraft } from 'shared-types';
-import { PostgresRepository, PostgresRepositoryResponse } from '@/infra/database/PostgresRepository';
+import { PostgresRepository } from '@/infra/database/PostgresRepository';
 
 export class DraftsRepository extends PostgresRepository {
 
@@ -9,7 +9,7 @@ export class DraftsRepository extends PostgresRepository {
     const res = await this.query<IDraft>(`
       SELECT ${DRAFT_PROP_FIELDS}
       FROM drafts 
-      LEFT JOIN subjects ON drafts.subject = subjects._id 
+      ${JOIN_SUBJECT} 
       WHERE drafts._id <= $1;
     `, [draft_id]);
     
@@ -21,7 +21,7 @@ export class DraftsRepository extends PostgresRepository {
     const res = await this.query<IDraft>(`
       SELECT ${DRAFT_PROP_FIELDS}
       FROM drafts 
-      LEFT JOIN subjects ON drafts.subject_id = subjects._id
+      ${JOIN_SUBJECT} 
       WHERE drafts.allowed_after <= $1 AND drafts.to_deal = FALSE 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
     `,[date]);
@@ -49,6 +49,8 @@ export class DraftsRepository extends PostgresRepository {
       draft.allowed_after,
       draft.to_deal
     ]);
+
+    res.insertedId = draft._id;
     
     return res;
   }
@@ -59,7 +61,7 @@ export class DraftsRepository extends PostgresRepository {
     const res = await this.query<IDraft>(`
       SELECT ${DRAFT_PROP_FIELDS}
       FROM drafts 
-      LEFT JOIN subjects ON drafts.subject_id = subjects._id
+      ${JOIN_SUBJECT} 
       WHERE drafts.to_deal = $1 
       ORDER BY drafts.priority DESC, drafts.allowed_after ASC
     `,[to_deal]);
@@ -86,6 +88,44 @@ export class DraftsRepository extends PostgresRepository {
 
     return res;
   }
+
+  async findDraftItems(parent_id: string) {
+    const res = await this.query<IDraft>(`
+      SELECT ${DRAFT_PROP_FIELDS}
+      FROM drafts 
+      ${JOIN_SUBJECT} 
+      JOIN draft_items ON drafts._id = draft_items.child_draft_id 
+      WHERE draft_items.parent_draft_id = $1;
+    `, [parent_id]);
+    
+    return res;
+  }
+
+  async searchDrafts(searchText: string) {
+    const res = await this.query<IDraft>(`
+      SELECT *
+      FROM drafts
+      WHERE content_search_tokens @@ plainto_tsquery('english', lower($1));
+    `, [searchText]);
+
+    return res;
+  }
+}
+
+export class DraftItemsRepository extends PostgresRepository {
+  async attachChild(parent_id: string, child_id: string) {
+    const res = await this.query(`
+      INSERT INTO draft_items (parent_draft_id, child_draft_id)
+      VALUES ($1, $2) ON CONFLICT DO NOTHING;
+    `, [parent_id, child_id]);
+
+    return res;
+
+  //   knex('draft_items')
+  // .insert({ parent_draft_id: value1, child_draft_id: value2 })
+  // .onConflict(['parent_draft_id', 'child_draft_id'])
+  // .ignore();
+  }
 }
 
 function mapHandlers(properties: {}, startAfter: number = 0) {
@@ -105,6 +145,10 @@ const SUBJECT_PROP_AS_JSON = `
     'color', subjects.color, 
     'icon', subjects.icon
     ) as subject `;
+
+const JOIN_SUBJECT = `
+  LEFT JOIN subjects ON drafts.subject_id = subjects._id 
+`
 
 const DRAFT_PROP_FIELDS = `
   drafts._id, title, content, priority, created_at, delay, 

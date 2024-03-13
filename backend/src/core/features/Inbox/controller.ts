@@ -24,7 +24,7 @@ router.get('/', async (request: GetInboxDraftsRequest, response, next) => {
 type PutUpdateDraftRequest = Request<{}, APIResponse, DraftUpdateDTO, {}>
 
 router.put('/', async (request: PutUpdateDraftRequest, response) => {
-  const { action, draft_id, title, content, quantity, priority, subject } = request.body;
+  const { action, draft_id, title, content, quantity, priority, subject, draft_items } = request.body;
 
   try {
     // if (action === 'undo')
@@ -33,9 +33,9 @@ router.put('/', async (request: PutUpdateDraftRequest, response) => {
     if (action === 'remove')
       await inbox.removeDraft(draft_id);
     else if (action === 'organization')
-      await inbox.updateDraftOrganization({title, _id: draft_id, priority, subject, content});
+      await inbox.updateDraftOrganization({title, _id: draft_id, priority, subject, content}, draft_items);
     else
-      await inbox.delayDraft({_id: draft_id, content, amount: action, quantity});
+      await inbox.delayDraft({_id: draft_id, content, amount: action, quantity}, draft_items);
 
     response.status(200).json({
       success: true,

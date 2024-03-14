@@ -33,9 +33,10 @@ export class DraftsRepository extends PostgresRepository {
   async insertOne(draft: IDraft_Schema) {
     const res = await this.query(`
       INSERT INTO drafts (
-          _id, title, content, priority, subject_id, created_at, delay, delay_quantity, delayed_at, allowed_after, to_deal
+          _id, title, content, priority, subject_id, created_at, delay, delay_quantity, 
+          delayed_at, allowed_after, to_deal, content_search_tokens
         ) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, to_tsvector('english', $12 || ' ' || $13) );
     `, [
       draft._id,
       draft.title,
@@ -47,9 +48,11 @@ export class DraftsRepository extends PostgresRepository {
       draft.delay_quantity,
       draft.delayed_at,
       draft.allowed_after,
-      draft.to_deal
+      draft.to_deal,
+      draft.title || '',
+      draft.content || ''
     ]);
-
+    
     res.insertedId = draft._id;
     
     return res;
@@ -125,6 +128,14 @@ export class DraftItemsRepository extends PostgresRepository {
   // .insert({ parent_draft_id: value1, child_draft_id: value2 })
   // .onConflict(['parent_draft_id', 'child_draft_id'])
   // .ignore();
+  }
+
+  async detachChild(parent_id: string, child_id: string) {
+    const res = await this.query(`
+      DELETE from draft_items WHERE parent_draft_id = $1 AND child_draft_id = $2;
+    `, [parent_id, child_id]);
+
+    return res;
   }
 }
 

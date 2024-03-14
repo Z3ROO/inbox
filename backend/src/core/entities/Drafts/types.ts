@@ -12,6 +12,7 @@ export interface IDraft_Schema {
   to_deal: boolean
   allowed_after: Date
   created_at: Date
+  content_search_tokens?: null
 }
 
 

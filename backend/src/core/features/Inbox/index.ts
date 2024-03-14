@@ -1,4 +1,4 @@
-import { DelayDraftDTO, IDraft, InsertDraftItemDTO } from "shared-types";
+import { DelayDraftDTO, IDraft, DraftItemDTO } from "shared-types";
 import { Drafts } from "../../entities/Drafts";
 import { Subjects } from "../../entities/Subjects";
 
@@ -21,7 +21,7 @@ export class Inbox {
     return data;
   }
 
-  public async delayDraft(DTO: DelayDraftDTO, draft_items?: InsertDraftItemDTO[]): Promise<void> {
+  public async delayDraft(DTO: DelayDraftDTO, draft_items?: DraftItemDTO[]): Promise<void> {
     let { _id, content, amount, quantity } = DTO;
 
     if (amount === 'none') {
@@ -64,7 +64,7 @@ export class Inbox {
   public async updateDraftOrganization(
       { _id, title, priority, subject, content }:
       { _id: string, title: string,  priority: number, subject: string, content: string }, 
-      draft_items: InsertDraftItemDTO[] 
+      draft_items: DraftItemDTO[] 
     ): Promise<void> {
     // =============================================================================
     //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.

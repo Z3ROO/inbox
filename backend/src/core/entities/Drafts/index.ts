@@ -1,5 +1,5 @@
 import { IDraft_Schema } from "@/core/entities/Drafts/types";
-import { IDraft, InsertDraftDTO, InsertDraftItemDTO } from "shared-types";
+import { IDraft, InsertDraftDTO, AttachDraftItemDTO, DraftItemDTO } from "shared-types";
 import { v4 as UUID } from 'uuid';
 import { Subjects } from "../Subjects";
 import { DraftItemsRepository, DraftsRepository } from "./repository";
@@ -65,7 +65,7 @@ export class Drafts {
     return dbResponse;
   }
 
-  public async updateOne(draft_id: string, properties: Partial<IDraft_Schema>, draft_items?: InsertDraftItemDTO[]) {
+  public async updateOne(draft_id: string, properties: Partial<IDraft_Schema>, draft_items?: DraftItemDTO[]) {
     const dbResponse = await this.draftsRepo.updateOne(draft_id, properties);
 
     if (draft_items)
@@ -74,18 +74,23 @@ export class Drafts {
     return dbResponse;
   }
 
-  public async attachDraftItems(parent_draft_id: string, draft_items: InsertDraftItemDTO[]) {
-    
-      for await (let item of draft_items) {
-        if (item.type === 'existing') {
-          await this.draftItemsRepo.attachChild(parent_draft_id, item.value);
-        }
-        else if (item.type === 'new') {
-          const {insertedId} = await this.insertOne({content: item.value});
-          await this.draftItemsRepo.attachChild(parent_draft_id, insertedId);
-        }
+  public async attachDraftItems(parent_draft_id: string, draft_items: DraftItemDTO|DraftItemDTO[]) {
+    if (!Array.isArray(draft_items))
+      draft_items = [draft_items];
+
+    for await (let item of draft_items) {
+      if (item.type === 'existing') {
+        await this.draftItemsRepo.attachChild(parent_draft_id, item.value);
       }
-    
+      else if (item.type === 'new') {
+        const {insertedId} = await this.insertOne({content: item.value});
+        await this.draftItemsRepo.attachChild(parent_draft_id, insertedId);
+      }
+    }
+  }
+
+  public async detachDraftItem(parent_draft_id: string, child_draft_id: string) {
+    return this.draftItemsRepo.detachChild(parent_draft_id, child_draft_id);
   }
 
   public async getDraftItems(parent_id: string): Promise<IDraft[]> {

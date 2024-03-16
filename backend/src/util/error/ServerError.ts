@@ -3,7 +3,7 @@ export class ServerError extends Error {
   message: string;
   status: number;
 
-  constructor(message: string, status?: number) {
+  constructor(message: string, status: number = 500) {
     super(`Server Error: ${message}.`);
 
     this.errorType = 'server';

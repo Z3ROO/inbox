@@ -12,7 +12,7 @@ type GetSearchDraftsRequest = Request<{}, APIResponse<IDraft[]>, {}, {s: string}
 
 router.get('/search', async (req: GetSearchDraftsRequest, res) => {
   const { s } = req.query;
-  console.log(req.query)
+  
   const foundDrafts = await drafts.searchDrafts(s);
   
   res.json({
@@ -35,6 +35,20 @@ router.get('/items/:parent_id', async (req: GetDraftItemsRequest, res) => {
     message: ''
   })
 });
+
+type GetDraftToTaskRequest = Request<{draft_id: string}, APIResponse, {}, {}>
+
+router.get('/to-task/:draft_id', async (req: GetDraftToTaskRequest, res) => {
+  const { draft_id } = req.params;
+  await drafts.toTask(draft_id);
+
+  res.json({
+    success: true,
+    statusCode: 200,
+    data: null,
+    message: ''
+  });
+})
 
 type PostAttachDraftItemsRequest = Request<{}, APIResponse, AttachDraftItemDTO, {}>;
 

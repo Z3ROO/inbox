@@ -10,7 +10,7 @@ export class DraftsRepository extends PostgresRepository {
       SELECT ${DRAFT_PROP_FIELDS}
       FROM drafts 
       ${JOIN_SUBJECT} 
-      WHERE drafts._id <= $1;
+      WHERE drafts._id = $1;
     `, [draft_id]);
     
     return res;
@@ -139,7 +139,7 @@ export class DraftItemsRepository extends PostgresRepository {
   }
 }
 
-function mapHandlers(properties: {}, startAfter: number = 0) {
+export function mapHandlers(properties: {}, startAfter: number = 0) {
   return Object.keys(properties).reduce(
       (acc, key, i) => {
         const comma = i === 0 ? '' : ',';

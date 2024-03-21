@@ -3,11 +3,14 @@ import { IDraft, InsertDraftDTO, AttachDraftItemDTO, DraftItemDTO } from "shared
 import { v4 as UUID } from 'uuid';
 import { Subjects } from "../Subjects";
 import { DraftItemsRepository, DraftsRepository } from "./repository";
+import { Tasks } from "../Tasks";
+import { ServerError } from "@/util/error/ServerError";
 
 export class Drafts {
   subjects = new Subjects();
   draftsRepo = new DraftsRepository();
   draftItemsRepo = new DraftItemsRepository();
+  tasks = new Tasks();
 
   public async allowedAfter(date: Date): Promise<IDraft[]> {
     const { data } = await this.draftsRepo.findAllowedAfter(date);
@@ -17,6 +20,15 @@ export class Drafts {
   public async byBooleanProp(properties: {to_deal: boolean}): Promise<IDraft[]> {
     const { data } = await  this.draftsRepo.findByBooleanProp(properties);
     return data;
+  }
+
+  public async byId(_id: string) {
+    const { data } = await this.draftsRepo.findById(_id);
+    
+    if (data.length === 0)
+      throw new ServerError("Draft not fount. Id used: "+_id);
+
+    return data[0];
   }
 
   public async insertOne({ title, content, priority, subject, to_deal, draft_items }: InsertDraftDTO) {
@@ -86,6 +98,41 @@ export class Drafts {
         const {insertedId} = await this.insertOne({content: item.value});
         await this.draftItemsRepo.attachChild(parent_draft_id, insertedId);
       }
+    }
+  }
+
+  public async toTask(draft_id: string) {
+    const {
+      title,
+      content,
+      priority,
+      subject
+    } = await this.byId(draft_id);
+    
+    const items = await this.getDraftItems(draft_id);
+
+    const {insertedId: task_id} = await this.tasks.insertOne({
+      title,
+      content,
+      priority,
+      subject_id: subject._id || null
+    })
+    
+    await this.deleteOne(draft_id);
+    console.log(items);
+
+    console.log('GET THIS BETTER');
+
+    for (const item of items) {
+      const {insertedId: item_id} = await this.tasks.insertOne({
+        title: item.title,
+        content: item.content,
+        priority: item.priority,
+        subject_id: item.subject._id || null
+      })
+      
+      await this.deleteOne(item._id);
+      await this.tasks.attachChild(task_id, {type: 'existing', value: item_id});
     }
   }
 

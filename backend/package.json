@@ -1,13 +1,17 @@
 {
   "name": "back-end",
-  "version": "0.0.19",
+  "version": "0.0.22",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "./scripts/start-prod.sh",
     "dev": "./scripts/start-dev.sh",
-    "migrations:prod": "NODE_ENV=production knex migrate:latest",
-    "migrations:dev": "NODE_ENV=development knex migrate:latest"
+    "migrate:up:prod": "NODE_ENV=production knex migrate:up",
+    "migrate:down:prod": "NODE_ENV=production knex migrate:down",
+    "migrate:up:dev": "NODE_ENV=development knex migrate:up",
+    "migrate:down:dev": "NODE_ENV=development knex migrate:down",
+    "migrate:prod": "NODE_ENV=production knex migrate:latest",
+    "migrate:dev": "NODE_ENV=development knex migrate:latest"
   },
   "keywords": [],
   "author": "",

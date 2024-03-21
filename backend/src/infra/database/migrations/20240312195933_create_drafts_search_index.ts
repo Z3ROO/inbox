@@ -2,7 +2,7 @@ import type { Knex } from "knex";
 
 
 export async function up(knex: Knex): Promise<void> {
-  knex.raw(`
+  await knex.raw(`
     BEGIN;
 
     ALTER TABLE drafts ADD COLUMN content_search_tokens tsvector; 
@@ -11,12 +11,12 @@ export async function up(knex: Knex): Promise<void> {
     CREATE INDEX idx_drafts_content_gin ON drafts USING GIN(content_search_tokens);
     
     COMMIT;
-  `)
+  `);
 }
 
 
 export async function down(knex: Knex): Promise<void> {
-  knex.raw(`
+  await knex.raw(`
     BEGIN;
 
     DROP INDEX idx_drafts_content_gin;
@@ -24,6 +24,6 @@ export async function down(knex: Knex): Promise<void> {
     ALTER TABLE drafts DROP COLUMN content_search_tokens;
     
     COMMIT;
-  `)
+  `);
 }
 

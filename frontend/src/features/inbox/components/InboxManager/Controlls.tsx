@@ -12,6 +12,7 @@ export function Controlls() {
       <DelayDraftButtons />
       <ToDealButton />
       <RemoveButton />
+      <ToTaskButton />
       <UndoButton />
     </div>
   );
@@ -109,7 +110,6 @@ function ToDealButton() {
   );
 }
 
-
 function RemoveButton() {
   const inbox = InboxAPI.QueryInbox().data!;
   const currentDraft = inbox[0];
@@ -122,6 +122,22 @@ function RemoveButton() {
       onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'remove' })}
     >
       <FaTrashAlt />
+    </OptionBtn>
+  );
+}
+
+function ToTaskButton() {
+  const inbox = InboxAPI.QueryInbox().data!;
+  const currentDraft = inbox[0];
+
+  const toTask = InboxAPI.TransformInTask();
+
+  return (
+    <OptionBtn confirm
+      disabled={toTask.isLoading}
+      onClick={() => toTask({ draft_id: currentDraft._id })}
+    >
+      T
     </OptionBtn>
   );
 }

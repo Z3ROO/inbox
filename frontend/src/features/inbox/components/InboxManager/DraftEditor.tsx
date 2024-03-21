@@ -50,9 +50,9 @@ function DraftItems() {
             <span>
             {item.content}
             </span>
-            <DropDownOnClickButton position='top' main={<button>x</button>}>
-              <button onClick={() => detachDraftItem({type: 'delete', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>draft</button>
-              <button onClick={() => detachDraftItem({type: 'unlink', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>link</button>
+            <DropDownOnClickButton position='top' main={<button className='px-1.5 rounded border'>x</button>}>
+              <button onClick={() => detachDraftItem({type: 'delete', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>delete</button>
+              <button onClick={() => detachDraftItem({type: 'unlink', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>unlink</button>
             </DropDownOnClickButton>
           </div>
         ))
@@ -80,7 +80,7 @@ function ChooseNewDraftItem({newItem, setNewItem}: { newItem: DraftItemDTO, setN
         newItem.type === 'new' && (
           <div>
             <input value={newItem.value} onChange={e => setNewItem({type: 'new', value: e.target.value})} />
-            <button onClick={() => {setNewItem(null)}}>XX</button>
+            <button className='px-1.5 rounded border' onClick={() => {setNewItem(null)}}>XX</button>
           </div>
         )
       }
@@ -89,7 +89,7 @@ function ChooseNewDraftItem({newItem, setNewItem}: { newItem: DraftItemDTO, setN
           <SearchDrafts result={(draft) => { setNewItem({type:'existing', value: draft._id})}} />
         )
       }
-      <button onClick={() => { attachDraftItem({draft_id: currentDraft._id, ...newItem}); setNewItem(null) }} disabled={newItem.value.trim() === ''}>send</button>
+      <button className='px-1.5 rounded border' onClick={() => { attachDraftItem({draft_id: currentDraft._id, ...newItem}); setNewItem(null) }} disabled={newItem.value.trim() === ''}>send</button>
     </div>
   )
 }

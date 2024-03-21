@@ -6,3 +6,4 @@ export * from './QueryDraftItems';
 export * from './QuerySearchDrafts';
 export * from './AttachDraftItem';
 export * from './DetachDraftItem';
+export * from './TransformInTask';

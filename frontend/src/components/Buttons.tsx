@@ -271,7 +271,7 @@ function Li(props: HTMLAttributes<HTMLLIElement>) {
 
 
 
-export function OptionBtn(props: { onClick: () => void, disabled?: boolean, confirm?: boolean, children: JSX.Element}) {
+export function OptionBtn(props: { onClick: () => void, disabled?: boolean, confirm?: boolean, children: ReactNode}) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { onClick, disabled, confirm, children } = props;
 

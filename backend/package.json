@@ -12,7 +12,8 @@
     "migrate:down:dev": "NODE_ENV=development knex migrate:down",
     "migrate:prod": "NODE_ENV=production knex migrate:latest",
     "migrate:dev": "NODE_ENV=development knex migrate:latest"
-  },
+  },  
+  "workspaces":["../packages/*"],
   "keywords": [],
   "author": "",
   "license": "ISC",

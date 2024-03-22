@@ -24,6 +24,22 @@ export interface InsertDraftDTO {
   priority?: number
   subject?: string
   to_deal?: boolean
+  draft_items?: DraftItemDTO[]
+}
+
+export interface DraftItemDTO {
+  type: 'new'|'existing'
+  value: string
+}
+
+export interface AttachDraftItemDTO extends DraftItemDTO {
+  draft_id: string
+}
+
+export interface DeleteDraftItemDTO {
+  type: 'delete'|'unlink'
+  parent_draft_id: string
+  child_draft_id: string
 }
 
 export interface DraftUpdateDTO {
@@ -34,6 +50,7 @@ export interface DraftUpdateDTO {
   priority?: number
   subject?: string
   quantity?: 1|2|3
+  draft_items?: DraftItemDTO[]
 }
 
 export interface DelayDraftDTO {

@@ -1,4 +1,4 @@
-import { DelayDraftDTO, DraftDelayAmount, IDraft } from "shared-types";
+import { DelayDraftDTO, IDraft, DraftItemDTO } from "shared-types";
 import { Drafts } from "../../entities/Drafts";
 import { Subjects } from "../../entities/Subjects";
 
@@ -21,7 +21,7 @@ export class Inbox {
     return data;
   }
 
-  public async delayDraft(DTO: DelayDraftDTO): Promise<void> {
+  public async delayDraft(DTO: DelayDraftDTO, draft_items?: DraftItemDTO[]): Promise<void> {
     let { _id, content, amount, quantity } = DTO;
 
     if (amount === 'none') {
@@ -55,18 +55,22 @@ export class Inbox {
       delay: amount,
       delayed_at: new Date(),
       delay_quantity: quantity      
-    });
+    }, draft_items);
 
     //undoCache.set = originalValue;
     return;
   }
 
-  public async updateDraftOrganization({ _id, title, priority, subject, content }: { _id: string, title: string,  priority: number, subject: string, content: string }): Promise<void> {
+  public async updateDraftOrganization(
+      { _id, title, priority, subject, content }:
+      { _id: string, title: string,  priority: number, subject: string, content: string }, 
+      draft_items: DraftItemDTO[] 
+    ): Promise<void> {
     // =============================================================================
     //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.
     // =============================================================================
     if (priority != null) {
-      await this.drafts.updateOne(_id, {priority, content});
+      await this.drafts.updateOne(_id, {priority, content}, draft_items);
     }
 
     if (subject != null && subject !== '') {
@@ -78,7 +82,7 @@ export class Inbox {
       else
         subject_id = (await this.subjects.insertOne({name: subject})).insertedId;
 
-      await this.drafts.updateOne(_id, {subject_id, title, content});
+      await this.drafts.updateOne(_id, {subject_id, title, content}, draft_items);
     }
 
     return;

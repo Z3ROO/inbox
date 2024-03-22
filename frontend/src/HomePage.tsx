@@ -1,4 +1,5 @@
 import Inbox from './features/inbox';
+import { TaskList } from './features/tasks/components/TaskList';
 import { ToDealList } from './features/toDeal';
 
 export function HomePage() {
@@ -6,6 +7,7 @@ export function HomePage() {
     <div className='flex h-screen' >
       <ToDealList />
       <Inbox />
+      <TaskList />
     </div>
   );
 }

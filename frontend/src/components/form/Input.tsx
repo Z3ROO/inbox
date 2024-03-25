@@ -1,3 +1,12 @@
+
+/**
+ * ##### Taygra:
+ * ### Text Input
+ * 
+ * @param props DEFAULT INPUT PROPS
+ * @returns JSX.Element
+ */
+
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={`
     text-tanj-gray bg-tanj-white rounded-sm p-1.5 
@@ -5,6 +14,14 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
     border-2 border-tanj-pink focus:border-tanj-green outline-none 
   ` + props.className} />
 }
+
+/**
+ * ##### Taygra:
+ * ### Textarea Input
+ * 
+ * @param props DEFAULT INPUT PROPS
+ * @returns JSX.Element
+ */
 
 export function Textarea(props: React.InputHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea {...props} className={`

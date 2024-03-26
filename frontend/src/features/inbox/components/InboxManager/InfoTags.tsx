@@ -5,7 +5,7 @@ import { IconType } from "react-icons/lib";
 import { IoAlertCircle } from "react-icons/io5";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { AiFillAlert, AiOutlineFieldTime } from "react-icons/ai";
-import { BtnSecondary, DropDownOnClickButton } from "@/components/Buttons";
+import { Secondary, DropDownOnClickButton } from "@/components/Buttons";
 import { InputDataList } from "@/components/form/InputDataList";
 import * as InboxAPI from '@/features/inbox/api';
 import { useInboxContext } from "../../store/InboxContext";
@@ -46,7 +46,7 @@ function Subject() {
               value={subject}
               setValue={setSubject}
             />
-            <BtnSecondary onClick={e => {
+            <Secondary onClick={e => {
               setShowSubjectPicker(false)
               
               updateDraft({
@@ -56,7 +56,7 @@ function Subject() {
                 title: inboxManagerTitle,
                 content: inboxManagerTextarea
               })
-            }} icon>+</BtnSecondary>
+            }} icon>+</Secondary>
           </div>
           )
         }

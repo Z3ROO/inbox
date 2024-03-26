@@ -1,4 +1,4 @@
-import { BtnSecondary, DropDownOnHoldButton, OptionBtn } from "@/components/Buttons";
+import { Secondary, DropDownOnHoldButton, OptionBtn } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useInboxContext } from "../../store/InboxContext";
 import { DraftDelayAmount } from "shared-types";
@@ -91,7 +91,7 @@ function ToDealButton() {
 
   return (
     <div>
-      <BtnSecondary icon
+      <Secondary icon
         className=""
         disabled={toggleToDeal.isLoading}
         onClick={() => {
@@ -105,7 +105,7 @@ function ToDealButton() {
         }}
       >
         <BsFillCheckSquareFill />
-      </BtnSecondary>
+      </Secondary>
     </div>
   );
 }

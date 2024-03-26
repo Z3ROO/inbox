@@ -1,5 +1,5 @@
 import { IoClose } from 'react-icons/io5';
-import { BtnSecondary } from './Buttons';
+import * as Button from './Buttons';
 
 interface ModalProps { 
   isModalOpen?: boolean
@@ -28,8 +28,8 @@ export function Modal(props: ModalProps) {
 
 function CloseButton(props: { closeFn: () => void }) {
   return (
-    <BtnSecondary icon className="absolute top-2 right-2" onClick={props.closeFn}>
+    <Button.Secondary icon className="absolute top-2 right-2" onClick={props.closeFn}>
       <IoClose />
-    </BtnSecondary>
+    </Button.Secondary>
   )
 }

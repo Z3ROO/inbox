@@ -3,45 +3,60 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa";
 
-interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: boolean
   outline?: boolean
   bgLess?: boolean
   round?: boolean
+  className?: string
 }
 
-export function BtnPrimary (props: BtnProps) {
-  const { icon, outline, bgLess, round } = props;
-
+export function Raw (props: ButtonProps) {
+  const { icon, outline, bgLess, round, className } = props;
+  
   return (
     <button {...props} className={`
-      ${ icon ? ' p-2 ' : ' py-2 px-4 ' } 
-      ${ (bgLess || outline) ? '  ' : ' bg-gradient-to-br from-tanj-pink to-tanj-gray hover:from-tanj-green hover:to-tanj-pink '}
-      ${ outline ? ' border border-tanj-pink hover:border-tanj-green ' : ' border border-tanj-gray '}
-      ${ round ? ' rounded-full ' : ' rounded-sm ' }
-      m-2 text-tanj-white disabled:grayscale disabled:opacity-50 disabled:pointer-events-none disabled:filter disabled:contrast-75 ${props.className}
+      ${ icon ? ' p-2 ' : ' py-2 px-4 ' /* x */ }
+      ${ round ? ' rounded-full ' : ' rounded-sm ' } 
+      ${className}
     `} />
   )
 }
 
-export function BtnSecondary (props: BtnProps) {
-  const { icon, outline, bgLess, round } = props;
+export function Primary (props: ButtonProps) {
+  const { icon, outline, bgLess, round, className } = props;
+
+  const bg_TW = ' bg-gradient-to-br from-tanj-pink to-tanj-gray hover:from-tanj-green hover:to-tanj-pink ';
 
   return (
-    <button {...props} className={`
-    ${ icon ? ' p-2 ' : ' py-2 px-4 ' } 
-    ${ (bgLess || outline) ? '  ' : ' hover:bg-tanj-gray  hover:text-tanj-green '}
-    ${ outline ? ' border border-transparent hover:border-tanj-gray ' : '  '}
-    ${ round ? ' rounded-full ' : ' rounded-sm ' }
-      m-2 text-tanj-pink hover:text-tanj-green ${props.className}
+    <Raw {...props} className={`
+      ${ (bgLess || outline) ? '  ' : bg_TW}
+      ${ outline ? ' border border-tanj-pink hover:border-tanj-green ' : ' border border-tanj-gray '}
+      m-2 text-tanj-white disabled:grayscale disabled:opacity-50 disabled:pointer-events-none disabled:filter disabled:contrast-75 
+      ${className}
+    `} />
+  )
+}
+
+export function Secondary (props: ButtonProps) {
+  const { icon, outline, bgLess, round, className } = props;
+
+  const bg_TW = ' hover:bg-tanj-gray  hover:text-tanj-green ';
+
+  return (
+    <Raw {...props} className={`
+    ${ (bgLess || outline) ? '  ' :  bg_TW }
+    ${ outline ? ' border border-transparent hover:border-tanj-gray ' : '  ' }
+      m-2 text-tanj-pink hover:text-tanj-green 
+      ${className}
     `} />
   )
 }
 
 
 type DropDownOnHoldButtonProps = {
-  buttons: BtnProps[]
-  BtnComponent?: (props: BtnProps) => JSX.Element
+  buttons: ButtonProps[]
+  BtnComponent?: (props: ButtonProps) => JSX.Element
 }
 
 export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
@@ -84,7 +99,7 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
 
   return (
     <div className="relative" onClick={e => e.stopPropagation()}>
-      <BtnPrimary
+      <Primary
         {...buttons[0]}
         onMouseDown={mouseDown}
         onMouseUp={mouseUp}
@@ -102,7 +117,7 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
               buttons.map((button, index) => {
                 if (index === 0)
                 return (
-                  <BtnPrimary {...button} 
+                  <Primary {...button} 
                     onMouseDown={mouseDown}
                     onMouseUp={mouseUp}
                     onClick={undefined} 
@@ -110,7 +125,7 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
                 );
 
                 return (
-                  <BtnPrimary {...button} 
+                  <Primary {...button} 
                     className={`whitespace-nowrap `+button.className}
                     onClick={
                       e => { 
@@ -131,7 +146,7 @@ export function DropDownOnHoldButton({buttons}: DropDownOnHoldButtonProps) {
 
 type DropDownOnClickButtonProps = {
   main: ReactNode
-  BtnComponent?: (props: BtnProps) => JSX.Element
+  BtnComponent?: (props: ButtonProps) => JSX.Element
   children: ReactNode|ReactNode[]
   className?: string
   position?: 'top'|'bottom'|'left'|'right'
@@ -206,70 +221,6 @@ export function DropDownOnClickButton({main, BtnComponent, children, className, 
   );
 }
 
-export function OptionsButton(props: { className: string, options: { onClick: () => void, text: string, disabled?: boolean}[]}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { options } = props;
-  
-  useEffect(() => {
-    const handler = () => {
-      setIsOpen(false);
-    }
-
-    if (isOpen)
-      window.addEventListener('click', handler);
-
-    return () => window.removeEventListener('click', handler);
-  }, [isOpen])
-
-  return (
-    <div className={props.className+" "}>
-      <BtnSecondary icon
-        onClick={e => {
-          setIsOpen(prev => !prev);
-          e.stopPropagation();
-        }}
-        style={{
-          backgroundColor: isOpen ? 'rgb(34 32 31)' : undefined,
-          color: isOpen ? 'rgb(70 176 119)' : undefined
-        }}
-      >
-        <BsThreeDotsVertical className="text-tanj-green" />
-      </BtnSecondary>
-      {
-        isOpen && (
-          <div 
-            className="absolute top-2 max-w-xs w-max right-full rounded-sm bg-tanj-gray shadow z-10"
-            onClick={e => e.stopPropagation()}
-          >
-            <ul
-              className={`list-none p-1.5`}
-            >
-              {
-                options.map(({text, onClick, disabled}) => disabled ? null :(
-                    <Li onClick={() => {
-                      onClick();
-                      setIsOpen(false);
-                    }}>{text}</Li>
-                  )
-                )
-              }
-            </ul>
-          </div>
-        )
-      }
-      
-    </div>
-  )
-}
-
-
-function Li(props: HTMLAttributes<HTMLLIElement>) {
-  return (
-    <li {...props} className="p-1 px-2.5 select-none hover:bg-tanj-green hover:bg-opacity-5 rounded-sm text-tanj-green text-sm cursor-pointer" />
-  )
-}
-
-
 
 export function OptionBtn(props: { onClick: () => void, disabled?: boolean, confirm?: boolean, children: ReactNode}) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -277,7 +228,7 @@ export function OptionBtn(props: { onClick: () => void, disabled?: boolean, conf
 
   return (
     <div className='relative'>
-      <BtnSecondary icon 
+      <Secondary icon 
         className=''
         onClick={e => {
           if (confirm) {
@@ -289,7 +240,7 @@ export function OptionBtn(props: { onClick: () => void, disabled?: boolean, conf
         disabled={disabled}
       >
         {children}
-      </BtnSecondary>
+      </Secondary>
       { 
         isConfirmOpen && ( 
           <ConfirmationWidget 
@@ -323,12 +274,12 @@ function ConfirmationWidget({y, n, className}: { y: () => void, n: () => void, c
         backdropFilter: 'blur(8px)'
       }}
       className={`flex rounded-sm bg-tanj-brown bg-opacity-70 shadow ${className}`}>
-      <BtnSecondary icon onClick={n}>
+      <Secondary icon onClick={n}>
         <ImCross className='w-2.5 h-2.5 text-tanj-pink' />
-      </BtnSecondary>
-      <BtnSecondary icon onClick={y}>
+      </Secondary>
+      <Secondary icon onClick={y}>
         <FaCheck className='w-2.5 h-2.5 text-tanj-green' />
-      </BtnSecondary>
+      </Secondary>
     </div>
   );
 }

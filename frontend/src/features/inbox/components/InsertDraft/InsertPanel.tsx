@@ -1,9 +1,9 @@
-import { BtnPrimary, BtnSecondary } from "@/components/Buttons";
+import * as Button from "@/components/Buttons";
 import { useState, useEffect, useMemo } from "react";
 import { useInboxContext } from "../../store/InboxContext";
 import { cacheInsertInputField, getCachedInsertInputField } from "../../util/cacheInsertField";
 import * as InboxAPI from '@/features/inbox/api'
-import { Input, Textarea } from "@/components/form/Input";
+import { Textarea } from "@/components/form/Input";
 import { TfiLayoutSidebarNone } from 'react-icons/tfi';
 import { InputDataList } from "@/components/form/InputDataList";
 import { BsFillPinAngleFill } from "react-icons/bs";
@@ -173,13 +173,13 @@ function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
   
   return (
     <div className="flex justify-between">
-      <BtnPrimary
+      <Button.Primary
         onClick={insertInbox}
-      >Add</BtnPrimary>
-      <BtnPrimary
+      >Add</Button.Primary>
+      <Button.Primary
         onClick={toggleInboxManager}
         disabled={!(inbox?.length)}
-      >Free</BtnPrimary>
+      >Free</Button.Primary>
     </div>
   )
 }

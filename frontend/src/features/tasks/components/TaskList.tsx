@@ -1,9 +1,9 @@
 import { Container } from "@/components/structure/container";
 import * as TasksAPI from "@/features/tasks/api";
-import { DropDownOnClickButton } from "@/components/Buttons";
 import { ITask } from "shared-types";
 import { LoadingSpinner } from "@/components/Loading";
 import { useState } from "react";
+import { DropDownMenu, DropDownMenuItem, DropDownMenuTrigger, DropDownMenuContent } from "@/components/dropdown";
 
 export function TaskList() {
   const {data: tasks} = TasksAPI.QueryTasks();
@@ -105,10 +105,20 @@ function TaskActions({task, type}: {task:ITask, type: 'block'|'leaf'}) {
       {(task.status === 'in progress' || type === 'block') && (
         <button onClick={() => {actOnTask({task_id: task._id, action: 'completed'})}} className="px-1 rounded-sm border">finish</button>
       )}
-      <DropDownOnClickButton main={<button className="px-1 ml-1 rounded-sm border">...</button>} position="top">
+      {/* <DropDownOnClickButton main={<button className="px-1 ml-1 rounded-sm border">...</button>} position="top">
         <button onClick={() => {actOnTask({task_id: task._id, action: 'cancelled'})}}>cancel</button>
         {task.status === 'pending' && <button onClick={() => {actOnTask({task_id: task._id, action: 'completed'})}}>finish</button>}
-      </DropDownOnClickButton>
+      </DropDownOnClickButton> */}
+      <DropDownMenu>
+        <DropDownMenuTrigger>...</DropDownMenuTrigger>
+        <DropDownMenuContent position="top">
+          <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'cancelled'})}}>Cancel</DropDownMenuItem>
+          {
+            task.status === 'pending' && 
+            <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'completed'})}}>Finish</DropDownMenuItem>
+          }
+        </DropDownMenuContent>
+      </DropDownMenu>
     </div>
   )
 }

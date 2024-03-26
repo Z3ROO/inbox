@@ -4,8 +4,8 @@ import { useInboxContext } from '../../store/InboxContext';
 import * as InboxAPI from '@/features/inbox/api';
 import { LoadingSpinner } from '@/components/Loading';
 import { IDraft, DraftItemDTO } from 'shared-types';
-import { DropDownOnClickButton } from '@/components/Buttons';
 import { Modal } from '@/components/Modal';
+import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTrigger } from '@/components/dropdown';
 
 export function DraftEditor(props: React.HTMLAttributes<HTMLDivElement>){
   const { inboxManagerTextarea, setInboxManagerTextarea, inboxManagerTitle, setInboxManagerTitle } = useInboxContext()!;
@@ -50,10 +50,13 @@ function DraftItems() {
             <span>
             {item.content}
             </span>
-            <DropDownOnClickButton position='top' main={<button className='px-1.5 rounded border'>x</button>}>
-              <button onClick={() => detachDraftItem({type: 'delete', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>delete</button>
-              <button onClick={() => detachDraftItem({type: 'unlink', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>unlink</button>
-            </DropDownOnClickButton>
+            <DropDownMenu>
+              <DropDownMenuTrigger>x</DropDownMenuTrigger>
+              <DropDownMenuContent position='top'>
+                <DropDownMenuItem onClick={() => detachDraftItem({type: 'delete', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>delete</DropDownMenuItem>
+                <DropDownMenuItem onClick={() => detachDraftItem({type: 'unlink', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>unlink</DropDownMenuItem>
+              </DropDownMenuContent>
+            </DropDownMenu>
           </div>
         ))
       }
@@ -97,12 +100,13 @@ function ChooseNewDraftItem({newItem, setNewItem}: { newItem: DraftItemDTO, setN
 function ChooseItemTypeButton({newItem, setNewItem}: { newItem: DraftItemDTO|null, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
   return (
     <div className='w-min relative'>
-      <DropDownOnClickButton position='top' align='start' main={
-        <button>+</button>
-      }>
-        <button onClick={() => setNewItem({type: 'new', value: ''})}>new</button>
-        <button onClick={() => setNewItem({type: 'existing', value: ''})}>existing</button>
-      </DropDownOnClickButton>
+      <DropDownMenu>
+        <DropDownMenuTrigger>+</DropDownMenuTrigger>
+        <DropDownMenuContent position='top' align='start'>
+          <DropDownMenuItem onClick={() => setNewItem({type: 'new', value: ''})}>New</DropDownMenuItem>
+          <DropDownMenuItem onClick={() => setNewItem({type: 'existing', value: ''})}>Existing</DropDownMenuItem>
+        </DropDownMenuContent>
+      </DropDownMenu>
     </div>
   )
 }

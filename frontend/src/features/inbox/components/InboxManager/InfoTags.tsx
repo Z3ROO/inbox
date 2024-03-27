@@ -9,7 +9,7 @@ import { Secondary } from "@/components/Buttons";
 import { InputDataList } from "@/components/form/InputDataList";
 import * as InboxAPI from '@/features/inbox/api';
 import { useInboxContext } from "../../store/InboxContext";
-import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTrigger } from "@/components/dropdown";
+import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from "@/components/dropdown";
 
 export function InfoTags() {
   const inboxQuery = InboxAPI.QueryInbox();
@@ -75,9 +75,9 @@ function Priority() {
 
   return (
     <DropDownMenu>
-      <DropDownMenuTrigger>
+      <DropDownMenuTriggerOnClick>
         <InfoTag {...getPriorityProps(draft.priority)} />
-      </DropDownMenuTrigger>
+      </DropDownMenuTriggerOnClick>
       <DropDownMenuContent position="bottom" align="center">
         <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 3, content: inboxManagerTextarea})}>
           <InfoTag {...getPriorityProps(3)} />

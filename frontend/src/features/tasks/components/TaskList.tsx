@@ -3,7 +3,7 @@ import * as TasksAPI from "@/features/tasks/api";
 import { ITask } from "shared-types";
 import { LoadingSpinner } from "@/components/Loading";
 import { useState } from "react";
-import { DropDownMenu, DropDownMenuItem, DropDownMenuTrigger, DropDownMenuContent } from "@/components/dropdown";
+import { DropDownMenu, DropDownMenuItem, DropDownMenuTriggerOnClick, DropDownMenuContent } from "@/components/dropdown";
 
 export function TaskList() {
   const {data: tasks} = TasksAPI.QueryTasks();
@@ -110,7 +110,7 @@ function TaskActions({task, type}: {task:ITask, type: 'block'|'leaf'}) {
         {task.status === 'pending' && <button onClick={() => {actOnTask({task_id: task._id, action: 'completed'})}}>finish</button>}
       </DropDownOnClickButton> */}
       <DropDownMenu>
-        <DropDownMenuTrigger>...</DropDownMenuTrigger>
+        <DropDownMenuTriggerOnClick>...</DropDownMenuTriggerOnClick>
         <DropDownMenuContent position="top">
           <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'cancelled'})}}>Cancel</DropDownMenuItem>
           {

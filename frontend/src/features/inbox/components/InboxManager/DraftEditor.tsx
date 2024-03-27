@@ -5,7 +5,7 @@ import * as InboxAPI from '@/features/inbox/api';
 import { LoadingSpinner } from '@/components/Loading';
 import { IDraft, DraftItemDTO } from 'shared-types';
 import { Modal } from '@/components/Modal';
-import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTrigger } from '@/components/dropdown';
+import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from '@/components/dropdown';
 
 export function DraftEditor(props: React.HTMLAttributes<HTMLDivElement>){
   const { inboxManagerTextarea, setInboxManagerTextarea, inboxManagerTitle, setInboxManagerTitle } = useInboxContext()!;
@@ -51,7 +51,7 @@ function DraftItems() {
             {item.content}
             </span>
             <DropDownMenu>
-              <DropDownMenuTrigger>x</DropDownMenuTrigger>
+              <DropDownMenuTriggerOnClick>x</DropDownMenuTriggerOnClick>
               <DropDownMenuContent position='top'>
                 <DropDownMenuItem onClick={() => detachDraftItem({type: 'delete', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>delete</DropDownMenuItem>
                 <DropDownMenuItem onClick={() => detachDraftItem({type: 'unlink', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>unlink</DropDownMenuItem>
@@ -101,7 +101,7 @@ function ChooseItemTypeButton({newItem, setNewItem}: { newItem: DraftItemDTO|nul
   return (
     <div className='w-min relative'>
       <DropDownMenu>
-        <DropDownMenuTrigger>+</DropDownMenuTrigger>
+        <DropDownMenuTriggerOnClick>+</DropDownMenuTriggerOnClick>
         <DropDownMenuContent position='top' align='start'>
           <DropDownMenuItem onClick={() => setNewItem({type: 'new', value: ''})}>New</DropDownMenuItem>
           <DropDownMenuItem onClick={() => setNewItem({type: 'existing', value: ''})}>Existing</DropDownMenuItem>

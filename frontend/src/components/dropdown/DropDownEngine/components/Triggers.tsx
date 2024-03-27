@@ -16,7 +16,7 @@ export function DropDownTriggerOnClick({children}: {children?: ReactNode}) {
   )
 }
 
-function DropDownTriggerOnHover({children}: {children?: ReactNode}) {
+export function DropDownTriggerOnHover({children}: {children?: ReactNode}) {
   const menuContext = useDropDown();
   
   if (!menuContext)
@@ -29,7 +29,8 @@ function DropDownTriggerOnHover({children}: {children?: ReactNode}) {
   return (
     <button
       onMouseEnter={e => {
-        menuContext.setIsDropDownOpen(prev => !prev);
+        if (menuContext.isDropDownOpen === false)
+          menuContext.setIsDropDownOpen(prev => !prev);
       }} 
     >{children}</button>
   )

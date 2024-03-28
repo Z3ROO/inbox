@@ -8,7 +8,7 @@ export function Root() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/ui-doc" element={<UIDocumentationPage />} />
+        <Route path="/uidoc" element={<UIDocumentationPage />} />
         <Route path="*" element={<ErrorRoute />} />
       </Routes>
     </BrowserRouter>

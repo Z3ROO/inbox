@@ -11,20 +11,16 @@ export function DropDownMenu({children}: {children?: ReactNode}) {
 
 export function DropDownMenuTriggerOnHover({children, icon}: {children?: ReactNode, icon?: boolean}) {
   return (
-    <DropDownTriggerOnHover>
-      <button className={`${icon ? 'px-1' : 'px-2'} py-1 hover:bg-gray-500 rounded-sm`}>
-        {children}
-      </button>
+    <DropDownTriggerOnHover className={`${icon ? 'px-1' : 'px-2'} py-1 hover:bg-gray-500 rounded-sm`}>
+      {children}
     </DropDownTriggerOnHover>
   )
 }
 
 export function DropDownMenuTriggerOnClick({children, icon}: {children?: ReactNode, icon?: boolean}) {
   return (
-    <DropDownTriggerOnClick>
-      <button className={`${icon ? 'px-1' : 'px-2'} py-1 hover:bg-gray-500 rounded-sm`}>
-        {children}
-      </button>
+    <DropDownTriggerOnClick className={`${icon ? 'px-1' : 'px-2'} py-1 hover:bg-gray-500 rounded-sm`}>
+      {children}
     </DropDownTriggerOnClick>
   )
 }

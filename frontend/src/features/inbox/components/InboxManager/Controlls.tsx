@@ -1,4 +1,4 @@
-import { Button, OptionBtn } from "@/components/Buttons";
+import { Button, ConfirmButton } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useInboxContext } from "../../store/InboxContext";
 import { DraftDelayAmount } from "shared-types";
@@ -85,6 +85,7 @@ function ToDealButton() {
   return (
     <div>
       <Button icon
+        variant="discret"
         className=""
         disabled={toggleToDeal.isLoading}
         onClick={() => {
@@ -97,7 +98,7 @@ function ToDealButton() {
           toggleToDeal({ draft_id: currentDraft._id, state: true });
         }}
       >
-        <BsFillCheckSquareFill />
+        <BsFillCheckSquareFill className="w-3.5 h-3.5" />
       </Button>
     </div>
   );
@@ -110,12 +111,13 @@ function RemoveButton() {
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
-    <OptionBtn confirm
+    <ConfirmButton
+      variant="discret" icon
       disabled={updateDraft.isLoading}
       onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'remove' })}
     >
-      <FaTrashAlt />
-    </OptionBtn>
+      <FaTrashAlt className="w-3.5 h-3.5" />
+    </ConfirmButton>
   );
 }
 
@@ -126,12 +128,13 @@ function ToTaskButton() {
   const toTask = InboxAPI.TransformInTask();
 
   return (
-    <OptionBtn confirm
+    <ConfirmButton
+      variant="discret" icon
       disabled={toTask.isLoading}
       onClick={() => toTask({ draft_id: currentDraft._id })}
     >
       T
-    </OptionBtn>
+    </ConfirmButton>
   );
 }
 
@@ -142,11 +145,12 @@ function UndoButton() {
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
-    <OptionBtn
+    <Button
+      variant="discret" icon
       disabled={updateDraft.isLoading}
       onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'undo' })}
     >
-      <FaUndoAlt />
-    </OptionBtn>
+      <FaUndoAlt className="w-3.5 h-3.5" />
+    </Button>
   );
 }

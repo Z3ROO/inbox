@@ -15,7 +15,25 @@ export function ComponentSample() {
       
         <DropDownMenu>
           <DropDownMenuTriggerOnHover>Hover</DropDownMenuTriggerOnHover>
-          <DropDownMenuContent>
+          <DropDownMenuContent position="bottom">
+            <DropDownMenuItem>Opção 1</DropDownMenuItem>
+            <DropDownMenuItem>Opção 2</DropDownMenuItem>
+            <DropDownMenuItem>Opção 3</DropDownMenuItem>
+          </DropDownMenuContent>
+        </DropDownMenu>
+
+        <DropDownMenu>
+          <DropDownMenuTriggerOnClick>Click</DropDownMenuTriggerOnClick>
+          <DropDownMenuContent direction="horizontal">
+            <DropDownMenuItem>Opção 1</DropDownMenuItem>
+            <DropDownMenuItem>Opção 2</DropDownMenuItem>
+            <DropDownMenuItem>Opção 3</DropDownMenuItem>
+          </DropDownMenuContent>
+        </DropDownMenu>
+      
+        <DropDownMenu>
+          <DropDownMenuTriggerOnHover>Hover</DropDownMenuTriggerOnHover>
+          <DropDownMenuContent direction="horizontal" position="bottom">
             <DropDownMenuItem>Opção 1</DropDownMenuItem>
             <DropDownMenuItem>Opção 2</DropDownMenuItem>
             <DropDownMenuItem>Opção 3</DropDownMenuItem>

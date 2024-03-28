@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, ReactNode, useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa";
+import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from "./dropdown";
 
 export interface NanoButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary'|'secondary'|'destructive'|'discret'
@@ -55,64 +56,22 @@ export function Button (props: NanoButtonProps) {
   )
 }
 
-export function OptionBtn(props: { onClick: () => void, disabled?: boolean, confirm?: boolean, children: ReactNode}) {
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const { onClick, disabled, confirm, children } = props;
+export function ConfirmButton(props: NanoButtonProps) {
+  const { onClick, children } = props;
 
   return (
-    <div className='relative'>
-      <Button icon variant="discret"
-        className=''
-        onClick={e => {
-          if (confirm) {
-            setIsConfirmOpen(prev => !prev);
-            return;
-          }
-          onClick();
-        }}
-        disabled={disabled}
-      >
+    <DropDownMenu>
+      <DropDownMenuTriggerOnClick {...props} onClick={undefined}>
         {children}
-      </Button>
-      { 
-        isConfirmOpen && ( 
-          <ConfirmationWidget 
-            className='absolute bottom-14 left-[calc(50%)] translate-x-[-50%]'
-            y={() => { onClick(); setIsConfirmOpen(false); }} 
-            n={() => setIsConfirmOpen(false)} 
-          /> 
-        )
-      }
-    </div>
-  );
-}
-
-function ConfirmationWidget({y, n, className}: { y: () => void, n: () => void, className?: string}) {
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      n(); 
-    }
-    const delay = setTimeout( () => window.addEventListener('click', handler), 0);
-
-    return () => {
-      clearTimeout(delay);
-      window.removeEventListener('click', handler);
-    }
-  }, []);
-
-  return (
-    <div onClick={e => e.stopPropagation()} 
-      style={{
-        backdropFilter: 'blur(8px)'
-      }}
-      className={`flex rounded-sm bg-tanj-brown bg-opacity-70 shadow ${className}`}>
-      <Button variant="discret" icon onClick={n}>
-        <ImCross className='w-2.5 h-2.5 text-tanj-pink' />
-      </Button>
-      <Button variant="discret" icon onClick={y}>
-        <FaCheck className='w-2.5 h-2.5 text-tanj-green' />
-      </Button>
-    </div>
+      </DropDownMenuTriggerOnClick>
+      <DropDownMenuContent direction="horizontal">
+        <DropDownMenuItem onClick={onClick} icon>
+          <FaCheck className='w-2.5 h-2.5' />
+        </DropDownMenuItem>
+        <DropDownMenuItem icon>
+          <ImCross className='w-2.5 h-2.5' />
+        </DropDownMenuItem>
+      </DropDownMenuContent>
+    </DropDownMenu>
   );
 }

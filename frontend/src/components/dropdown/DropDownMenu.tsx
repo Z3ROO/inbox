@@ -26,17 +26,15 @@ export function DropDownMenuTriggerOnClick(props: NanoButtonProps) {
   )
 }
 
-export function DropDownMenuContent({children, position, align}: DropDownContentType) {
+export function DropDownMenuContent({children, position, align, direction}: DropDownContentType) {
   return (
-    <DropDownContent {...{position, align}}>
-      <div className="p-1 bg-gray-700 border border-gray-500 hover:border-gray-450  rounded-sm">
-        {children}
-      </div>
+    <DropDownContent className="p-1 bg-gray-700 border border-gray-500 hover:border-gray-450 rounded-sm shadow-md " {...{position, align, direction}}>
+      {children}
     </DropDownContent>
   )
 }
 
-export function DropDownMenuItem(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+export function DropDownMenuItem(props: NanoButtonProps) {
   const {onClick, className} = props;
   const dropDown = useDropDown();
   

@@ -28,7 +28,7 @@ export function Modal(props: ModalProps) {
 
 function CloseButton(props: { closeFn: () => void }) {
   return (
-    <Button icon className="absolute top-2 right-2" onClick={props.closeFn}>
+    <Button icon variant='discret' className="absolute top-2 right-2" onClick={props.closeFn}>
       <IoClose />
     </Button>
   )

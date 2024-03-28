@@ -1,22 +1,22 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDropDown } from "../store/Hooks";
 
-export function DropDownTriggerOnClick({children}: {children?: ReactNode}) {
+export function DropDownTriggerOnClick(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const menuContext = useDropDown();
   
   if (!menuContext)
     return null;
 
   return (
-    <button
+    <button {...props}
       onClick={e => {
         menuContext.setIsDropDownOpen(prev => !prev);
       }} 
-    >{children}</button>
+    />
   )
 }
 
-export function DropDownTriggerOnHover({children}: {children?: ReactNode}) {
+export function DropDownTriggerOnHover(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const menuContext = useDropDown();
   
   if (!menuContext)
@@ -27,16 +27,16 @@ export function DropDownTriggerOnHover({children}: {children?: ReactNode}) {
   },[]);
 
   return (
-    <button
+    <button {...props} 
       onMouseEnter={e => {
         if (menuContext.isDropDownOpen === false)
           menuContext.setIsDropDownOpen(prev => !prev);
       }} 
-    >{children}</button>
+    />
   )
 }
 
-function DropDownTriggerOnHold({children}: {children?: ReactNode}) {
+function DropDownTriggerOnHold(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const menuContext = useDropDown();
   
   if (!menuContext)
@@ -69,9 +69,9 @@ function DropDownTriggerOnHold({children}: {children?: ReactNode}) {
   }
 
   return (
-    <button
+    <button {...props}
       onMouseUp={mouseUp}
       onMouseDown={mouseDown} 
-    >{children}</button>
+    />
   )
 }

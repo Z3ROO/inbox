@@ -40,8 +40,9 @@ export function DropDownContent({children, position, align}: DropDownContentType
         ${((position === 'left' || position === 'right') && align === 'end') && ' bottom-0'}
       `}
     >
-      <div className="absolute opacity-0 -z-10 bg-white w-full h-full scale-110 top-0 left-0" onMouseMove={e => e.stopPropagation()}></div>
+      <div className="absolute opacity-0 -z-10 w-full h-full scale-110 top-0 left-0" ></div>
       {children}
     </div>
   )
 }
+//onMouseMove={e => e.stopPropagation()}

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState, useRef, useEffect } from "react";
+import { createContext, ReactNode, useState, useRef, useEffect,  } from "react";
 
 export const MenuContext = createContext<IMenuContext|null>(null);
 
@@ -12,10 +12,13 @@ interface IMenuContext {
 export function DropDownContextProvider({children}: { children: ReactNode }) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const triggerType = useRef<'click'|'mousemove'>('click');
+  const rootDropDownElement = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    const handler = () => {
-      setIsDropDownOpen(false);
+    const handler = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (rootDropDownElement.current && !rootDropDownElement.current.contains(target))
+        setIsDropDownOpen(false);
     }
 
     if (isDropDownOpen)
@@ -31,7 +34,9 @@ export function DropDownContextProvider({children}: { children: ReactNode }) {
         triggerType,
         close: () => setIsDropDownOpen(false)
       }}>
-      {children}
+      <div ref={rootDropDownElement} className="inline-block">
+        {children}
+      </div>
     </MenuContext.Provider>
   )
 }

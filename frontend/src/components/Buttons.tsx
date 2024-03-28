@@ -3,50 +3,47 @@ import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary'|'secondary'|'discret'
   icon?: boolean
   outline?: boolean
-  bgLess?: boolean
   round?: boolean
   className?: string
 }
 
-export function Raw (props: ButtonProps) {
-  const { icon, outline, bgLess, round, className } = props;
+
+
+const primaryBtnDefault_TW = 'text-tanj-white border border-tanj-gray bg-gradient-to-br from-tanj-pink to-tanj-gray hover:from-tanj-green hover:to-tanj-pink';
+const primaryBtnOutline_TW = 'text-tanj-white border border-tanj-pink hover:border-tanj-green';
+
+const secondaryBtnDefault_TW = 'text-tanj-pink hover:text-tanj-green hover:bg-tanj-gray ';
+const secondaryBtnOutline_TW = 'text-tanj-pink hover:text-tanj-green  border border-transparent hover:border-tanj-gray ';
+
+const discretBtnDefault_TW = '';
+
+const ButtonStyling: {[key: string] : {default: string, outline: string} } = {
+  primary: {
+    default: primaryBtnDefault_TW,
+    outline: primaryBtnOutline_TW
+  },
+  secondary: {
+    default: secondaryBtnDefault_TW,
+    outline: secondaryBtnOutline_TW
+  },
+  discret: {
+    default: discretBtnDefault_TW,
+    outline: ''
+  }
+}
+
+export function Button (props: ButtonProps) {
+  const { icon, outline, variant = 'secondary', round, className } = props;
   
   return (
     <button {...props} className={`
       ${ icon ? ' p-2 ' : ' py-2 px-4 ' /* x */ }
       ${ round ? ' rounded-full ' : ' rounded-sm ' } 
-      ${className}
-    `} />
-  )
-}
-
-export function Primary (props: ButtonProps) {
-  const { icon, outline, bgLess, round, className } = props;
-
-  const bg_TW = ' bg-gradient-to-br from-tanj-pink to-tanj-gray hover:from-tanj-green hover:to-tanj-pink ';
-
-  return (
-    <Raw {...props} className={`
-      ${ (bgLess || outline) ? '  ' : bg_TW}
-      ${ outline ? ' border border-tanj-pink hover:border-tanj-green ' : ' border border-tanj-gray '}
-      m-2 text-tanj-white disabled:grayscale disabled:opacity-50 disabled:pointer-events-none disabled:filter disabled:contrast-75 
-      ${className}
-    `} />
-  )
-}
-
-export function Secondary (props: ButtonProps) {
-  const { icon, outline, bgLess, round, className } = props;
-
-  const bg_TW = ' hover:bg-tanj-gray  hover:text-tanj-green ';
-
-  return (
-    <Raw {...props} className={`
-    ${ (bgLess || outline) ? '  ' :  bg_TW }
-    ${ outline ? ' border border-transparent hover:border-tanj-gray ' : '  ' }
-      m-2 text-tanj-pink hover:text-tanj-green 
+      m-2 disabled:grayscale disabled:opacity-50 disabled:pointer-events-none disabled:filter disabled:contrast-75
+      ${outline ? ButtonStyling[variant].outline : ButtonStyling[variant].default }
       ${className}
     `} />
   )
@@ -58,7 +55,7 @@ export function OptionBtn(props: { onClick: () => void, disabled?: boolean, conf
 
   return (
     <div className='relative'>
-      <Secondary icon 
+      <Button icon variant="discret"
         className=''
         onClick={e => {
           if (confirm) {
@@ -70,7 +67,7 @@ export function OptionBtn(props: { onClick: () => void, disabled?: boolean, conf
         disabled={disabled}
       >
         {children}
-      </Secondary>
+      </Button>
       { 
         isConfirmOpen && ( 
           <ConfirmationWidget 
@@ -104,12 +101,12 @@ function ConfirmationWidget({y, n, className}: { y: () => void, n: () => void, c
         backdropFilter: 'blur(8px)'
       }}
       className={`flex rounded-sm bg-tanj-brown bg-opacity-70 shadow ${className}`}>
-      <Secondary icon onClick={n}>
+      <Button variant="discret" icon onClick={n}>
         <ImCross className='w-2.5 h-2.5 text-tanj-pink' />
-      </Secondary>
-      <Secondary icon onClick={y}>
+      </Button>
+      <Button variant="discret" icon onClick={y}>
         <FaCheck className='w-2.5 h-2.5 text-tanj-green' />
-      </Secondary>
+      </Button>
     </div>
   );
 }

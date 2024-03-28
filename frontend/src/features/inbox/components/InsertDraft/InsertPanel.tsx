@@ -1,4 +1,4 @@
-import * as Button from "@/components/Buttons";
+import { Button } from "@/components/Buttons";
 import { useState, useEffect, useMemo } from "react";
 import { useInboxContext } from "../../store/InboxContext";
 import { cacheInsertInputField, getCachedInsertInputField } from "../../util/cacheInsertField";
@@ -173,13 +173,13 @@ function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
   
   return (
     <div className="flex justify-between">
-      <Button.Primary
+      <Button variant="primary"
         onClick={insertInbox}
-      >Add</Button.Primary>
-      <Button.Primary
+      >Add</Button>
+      <Button
         onClick={toggleInboxManager}
         disabled={!(inbox?.length)}
-      >Free</Button.Primary>
+      >Free</Button>
     </div>
   )
 }

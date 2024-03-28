@@ -1,48 +1,54 @@
-import { ButtonHTMLAttributes, ReactNode, useEffect, useRef, useState } from "react";
+import { ButtonHTMLAttributes, ReactNode, useEffect, useState } from "react";
 import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary'|'secondary'|'discret'
+export interface NanoButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary'|'secondary'|'destructive'|'discret'
   icon?: boolean
   outline?: boolean
   round?: boolean
   className?: string
 }
 
+const primaryBtnDefault_TW = ' text-gray-900 bg-gradient-to-br to-gray-400 from-gray-200 hover:to-gray-450 hover:from-gray-250';
+const primaryBtnOutline_TW = ' text-gray-900 border border-tanj-pink hover:border-tanj-green ';
 
+const secondaryBtnDefault_TW = ' text-gray-100 hover:text-white bg-gray-500 hover:bg-gray-450 ';
+const secondaryBtnOutline_TW = ' text-gray-250 hover:text-gray-150  border border-gray-500 hover:border-gray-450 ';
 
-const primaryBtnDefault_TW = 'text-tanj-white border border-tanj-gray bg-gradient-to-br from-tanj-pink to-tanj-gray hover:from-tanj-green hover:to-tanj-pink';
-const primaryBtnOutline_TW = 'text-tanj-white border border-tanj-pink hover:border-tanj-green';
+const destructiveBtnDefault_TW = ' text-gray-800 hover:text-gray-900 bg-red-900 hover:bg-red-800 ';
+const destructiveBtnOutline_TW = '  text-red-300 hover:text-red-400 border border-red-900 hover:border-red-800 ';
 
-const secondaryBtnDefault_TW = 'text-tanj-pink hover:text-tanj-green hover:bg-tanj-gray ';
-const secondaryBtnOutline_TW = 'text-tanj-pink hover:text-tanj-green  border border-transparent hover:border-tanj-gray ';
+const discretBtnDefault_TW = ' text-gray-250 hover:text-gray-200 hover:bg-gray-550 ';
 
-const discretBtnDefault_TW = '';
 
 const ButtonStyling: {[key: string] : {default: string, outline: string} } = {
   primary: {
     default: primaryBtnDefault_TW,
-    outline: primaryBtnOutline_TW
+    outline: primaryBtnDefault_TW
   },
   secondary: {
     default: secondaryBtnDefault_TW,
     outline: secondaryBtnOutline_TW
   },
+  destructive: {
+    default: destructiveBtnDefault_TW,
+    outline: destructiveBtnOutline_TW
+  },
   discret: {
     default: discretBtnDefault_TW,
-    outline: ''
+    outline: discretBtnDefault_TW
   }
 }
 
-export function Button (props: ButtonProps) {
+export function Button (props: NanoButtonProps) {
   const { icon, outline, variant = 'secondary', round, className } = props;
   
   return (
     <button {...props} className={`
-      ${ icon ? ' p-2 ' : ' py-2 px-4 ' /* x */ }
+      ${ icon ? ' p-2 ' : ' py-1 px-2 ' }
       ${ round ? ' rounded-full ' : ' rounded-sm ' } 
-      m-2 disabled:grayscale disabled:opacity-50 disabled:pointer-events-none disabled:filter disabled:contrast-75
+      disabled:grayscale disabled:opacity-50 disabled:pointer-events-none disabled:filter disabled:contrast-75
       ${outline ? ButtonStyling[variant].outline : ButtonStyling[variant].default }
       ${className}
     `} />

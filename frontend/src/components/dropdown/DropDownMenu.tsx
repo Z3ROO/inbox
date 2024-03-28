@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { DropDownContent, DropDownContentType, DropDownEngine, DropDownTriggerOnClick, DropDownTriggerOnHover, useDropDown } from "./DropDownEngine";
+import { Button, NanoButtonProps } from "../Buttons";
 
 export function DropDownMenu({children}: {children?: ReactNode}) {
   return (
@@ -9,18 +10,18 @@ export function DropDownMenu({children}: {children?: ReactNode}) {
   )
 }
 
-export function DropDownMenuTriggerOnHover({children, icon}: {children?: ReactNode, icon?: boolean}) {
+export function DropDownMenuTriggerOnHover(props : NanoButtonProps) {
   return (
-    <DropDownTriggerOnHover className={`${icon ? 'px-1' : 'px-2'} py-1 hover:bg-gray-500 rounded-sm`}>
-      {children}
+    <DropDownTriggerOnHover>
+      <Button outline {...props} />
     </DropDownTriggerOnHover>
   )
 }
 
-export function DropDownMenuTriggerOnClick({children, icon}: {children?: ReactNode, icon?: boolean}) {
+export function DropDownMenuTriggerOnClick(props: NanoButtonProps) {
   return (
-    <DropDownTriggerOnClick className={`${icon ? 'px-1' : 'px-2'} py-1 hover:bg-gray-500 rounded-sm`}>
-      {children}
+    <DropDownTriggerOnClick>
+      <Button outline {...props} />
     </DropDownTriggerOnClick>
   )
 }
@@ -28,7 +29,7 @@ export function DropDownMenuTriggerOnClick({children, icon}: {children?: ReactNo
 export function DropDownMenuContent({children, position, align}: DropDownContentType) {
   return (
     <DropDownContent {...{position, align}}>
-      <div className="p-1 bg-gray-700 border border-gray-600 rounded-sm">
+      <div className="p-1 bg-gray-700 border border-gray-500 hover:border-gray-450  rounded-sm">
         {children}
       </div>
     </DropDownContent>
@@ -43,8 +44,8 @@ export function DropDownMenuItem(props: React.ButtonHTMLAttributes<HTMLButtonEle
     return null;
 
   return (
-    <button {...props} 
-      className={`px-2 py-1 w-full hover:bg-gray-550 rounded-sm text-left whitespace-nowrap ${className}`} 
+    <Button variant="discret" {...props} 
+      className={`my-0.5 w-full text-left whitespace-nowrap ${className}`} 
       onClick={(e) => { onClick && onClick(e); dropDown.close(); }} 
     />
   )

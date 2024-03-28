@@ -2,44 +2,44 @@ import { ReactNode, useEffect, useRef } from "react";
 import { useDropDown } from "../store/Hooks";
 
 export function DropDownTriggerOnClick(props: {children: ReactNode}) {
-  const menuContext = useDropDown();
+  const dropDownContext = useDropDown();
   
-  if (!menuContext)
+  if (!dropDownContext)
     return null;
 
   return (
     <div className="inline"
       onClick={e => {
-        menuContext.setIsDropDownOpen(prev => !prev);
+        dropDownContext.setIsDropDownOpen(prev => !prev);
       }} 
     >{props.children}</div>
   )
 }
 
 export function DropDownTriggerOnHover(props: {children: ReactNode}) {
-  const menuContext = useDropDown();
+  const dropDownContext = useDropDown();
   
-  if (!menuContext)
+  if (!dropDownContext)
     return null;
 
   useEffect(() => {
-    menuContext.triggerType.current = 'mousemove';
+    dropDownContext.triggerType.current = 'mousemove';
   },[]);
 
   return (
     <div className="inline"
       onMouseEnter={e => {
-        if (menuContext.isDropDownOpen === false)
-          menuContext.setIsDropDownOpen(prev => !prev);
+        if (dropDownContext.isDropDownOpen === false)
+          dropDownContext.setIsDropDownOpen(prev => !prev);
       }} 
       >{props.children}</div>
   )
 }
 
 function DropDownTriggerOnHold(props: {children: ReactNode}) {
-  const menuContext = useDropDown();
+  const dropDownContext = useDropDown();
   
-  if (!menuContext)
+  if (!dropDownContext)
     return null;
 
   const timeout = useRef<NodeJS.Timeout>();
@@ -50,7 +50,7 @@ function DropDownTriggerOnHold(props: {children: ReactNode}) {
       return; 
 
     timeout.current = setTimeout(()=>{
-      menuContext.setIsDropDownOpen(prev => !prev);
+      dropDownContext.setIsDropDownOpen(prev => !prev);
       releaseClick.current = false;
     }, 250);
   }
@@ -62,7 +62,7 @@ function DropDownTriggerOnHold(props: {children: ReactNode}) {
     clearTimeout(timeout.current)
 
     if (releaseClick.current) {
-      menuContext.setIsDropDownOpen(false);
+      dropDownContext.setIsDropDownOpen(false);
     }
     else
       releaseClick.current = true;

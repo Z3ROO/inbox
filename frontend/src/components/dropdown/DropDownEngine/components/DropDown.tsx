@@ -6,7 +6,7 @@ export function DropDownEngine({ children }: { children?: ReactNode }) {
 
   return (
     <DropDownContextProvider>
-      <div>
+      <div className="inline-block">
         <div className="relative z-10" onClick={e => e.stopPropagation()} onMouseMove={e => e.stopPropagation()}>
           {children}
         </div>

@@ -1,5 +1,5 @@
 import Page from "@/components/structure/Page";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ComponentMetaData, components } from "./components";
 import { LoadingSpinner } from "@/components/Loading";
@@ -66,7 +66,7 @@ function ComponentSample({name, directory}: ComponentMetaData) {
         setComponent({current:UnableToLoad});
       }
     })
-  },[]);
+  },[name, directory]);
 
   return (
     <div className="flex-grow p-8">

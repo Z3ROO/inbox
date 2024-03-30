@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useDropDown } from "../store/Hooks";
+import { createPortal } from "react-dom";
 
 
 export type DropDownContentType = {
@@ -12,35 +13,79 @@ export type DropDownContentType = {
 
 export function DropDownContent({children, position = 'top', align = 'center', direction = 'vertical', className}: DropDownContentType) {
   const menuContext = useDropDown();
+  const reference = useRef<HTMLDivElement>(null)
 
   if (!menuContext)
     return null;
-
 
   if (!menuContext.isDropDownOpen)
     return null;
 
   return (
     <div 
+      ref={reference}
       className={`
         absolute 
-        ${direction === 'horizontal' && 'flex'}
         ${position === 'top' && ' bottom-full mb-1'}
         ${position === 'bottom' && ' top-full mt-1'}
         ${position === 'left' && ' right-full mr-1'}
         ${position === 'right' && ' left-full ml-1'}
-        ${((position === 'top' || position === 'bottom') && align === 'start') && ' left-0'}
-        ${((position === 'top' || position === 'bottom') && align === 'center') && ' left-1/2 -translate-x-1/2'}
-        ${((position === 'top' || position === 'bottom') && align === 'end') && ' right-0'}
-        ${((position === 'left' || position === 'right') && align === 'start') && ' top-0'}
-        ${((position === 'left' || position === 'right') && align === 'center') && ' top-1/2 -translate-y-1/2'}
-        ${((position === 'left' || position === 'right') && align === 'end') && ' bottom-0'}
-        ${className}
+        ${(position === 'top' || position === 'bottom') && ' left-1/2 -translate-x-1/2'}
+        ${(position === 'left' || position === 'right') && ' top-1/2 -translate-y-1/2'}
       `}
     >
-      <div className="absolute opacity-0 -z-10 w-full h-full scale-110 top-0 left-0" ></div>
-      {children}
+      <Content {...{position, align, direction, className,reference}}>
+        {children}
+        <div className="absolute opacity-0 -z-10 w-full h-full scale-110 top-0 left-0" ></div>
+      </Content>
     </div>
   )
 }
-//onMouseMove={e => e.stopPropagation()}
+
+function Content({children, position, align, direction, className, reference}: DropDownContentType & {reference: React.RefObject<HTMLDivElement>}) {
+  const {contentElement} = useDropDown()!;
+  const [pos, setPos] = useState({x: 0, y:0});
+  
+  useEffect(() => {
+    if (!reference.current || !contentElement.current)
+      return;
+
+    const {x, y} = reference.current.getBoundingClientRect();
+    const {width, height} =  contentElement.current.getBoundingClientRect();
+
+    let finalX = x, finalY = y;
+    if (position === 'top') {
+      finalX -= (width/2);
+      finalY -= (height);
+    }
+    else if (position === 'bottom') {
+      finalX -= (width/2);
+    }
+    else if (position === 'left') {
+      finalX -= (width);
+      finalY -= (height/2);
+    }
+    else if (position === 'right') {
+      finalY -= (height/2);
+    }    
+
+    setPos({x: finalX, y:finalY});
+
+  },[]);
+
+  return createPortal((
+    <div 
+      ref={contentElement}
+      style={{
+        top: `${pos.y}px`,
+        left: `${pos.x}px`
+      }}
+      className={`
+        absolute z-50
+        ${direction === 'horizontal' && 'flex'}
+        ${className}
+      `}>
+      {children}
+    </div>
+  ),document.body);
+}

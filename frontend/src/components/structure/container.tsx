@@ -4,7 +4,7 @@ export function Container(props: HTMLAttributes<HTMLDivElement>) {
   return (
     <div 
       {...props} 
-      className={`p-4 to-tanj-gray from-tanj-brown bg-gradient-to-br rounded-sm ${props.className}`} 
+      className={`p-4 to-gray-800 from-gray-700 bg-gradient-to-br rounded-sm ${props.className}`} 
     />
   )
 }

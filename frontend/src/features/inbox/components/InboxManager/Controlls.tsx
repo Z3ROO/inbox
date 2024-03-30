@@ -1,10 +1,11 @@
-import { BtnSecondary, DropDownOnHoldButton, OptionBtn } from "@/components/Buttons";
+import { Button, ConfirmButton } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { useInboxContext } from "../../store/InboxContext";
 import { DraftDelayAmount } from "shared-types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
 import * as InboxAPI from '@/features/inbox/api';
 import * as ToDealAPI from '@/features/toDeal/api';
+import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnHover } from "@/components/dropdown";
 
 export function Controlls() {
   return (
@@ -37,44 +38,36 @@ function DelayDraftButtons() {
   
   return (
     <>
-      <DropDownOnHoldButton 
-        buttons={[
-          {
-            children: 'Next',
-            onClick: updateDraftEvent('next'),
-            disabled: updateDraft.isLoading
-          },
-          {
-            children: `Later`,
-            onClick: updateDraftEvent('later'),
-          },
-          {
-            children: `Dawn`,
-            onClick: updateDraftEvent('dawn'),
-            disabled: new Date().getHours() > 17
-          }
-        ]}
-      />
+      <DropDownMenu>
+        <DropDownMenuTriggerOnHover>Soon</DropDownMenuTriggerOnHover>
+        <DropDownMenuContent position="top">
+          <DropDownMenuItem onClick={updateDraftEvent('next')}>
+            Next
+          </DropDownMenuItem> 
+          <DropDownMenuItem onClick={updateDraftEvent('later')}>
+            Later
+          </DropDownMenuItem> 
+          <DropDownMenuItem onClick={updateDraftEvent('dawn')} disabled={new Date().getHours() > 17}>
+            Dawn
+          </DropDownMenuItem> 
+        </DropDownMenuContent>
+      </DropDownMenu>
       {
-        ['Day', 'Week', 'Month'].map(amount => (
-          <DropDownOnHoldButton 
-            buttons={[
-              { 
-                children: amount, 
-                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmount),
-                disabled: updateDraft.isLoading
-              },
-              {
-                children: `2 ${amount}s`,
-                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmount, 2),
-              },
-              {
-                children: `3 ${amount}s`,
-                onClick: updateDraftEvent(amount.toLowerCase() as DraftDelayAmount, 3),
-
-              }
-            ]}
-          />
+      ['Day', 'Week', 'Month'].map(amount => (
+        <DropDownMenu>
+          <DropDownMenuTriggerOnHover>{amount}</DropDownMenuTriggerOnHover>
+          <DropDownMenuContent position="top">
+            <DropDownMenuItem onClick={updateDraftEvent(amount.toLowerCase() as DraftDelayAmount)}>
+              1 {amount}
+            </DropDownMenuItem> 
+            <DropDownMenuItem onClick={updateDraftEvent(amount.toLowerCase() as DraftDelayAmount, 2)}>
+              2 {amount}s
+            </DropDownMenuItem> 
+            <DropDownMenuItem onClick={updateDraftEvent(amount.toLowerCase() as DraftDelayAmount, 3)}>
+              3 {amount}s
+            </DropDownMenuItem> 
+          </DropDownMenuContent>
+        </DropDownMenu>
         ))
       }
     </>
@@ -91,7 +84,8 @@ function ToDealButton() {
 
   return (
     <div>
-      <BtnSecondary icon
+      <Button icon
+        variant="discret"
         className=""
         disabled={toggleToDeal.isLoading}
         onClick={() => {
@@ -104,8 +98,8 @@ function ToDealButton() {
           toggleToDeal({ draft_id: currentDraft._id, state: true });
         }}
       >
-        <BsFillCheckSquareFill />
-      </BtnSecondary>
+        <BsFillCheckSquareFill className="w-3.5 h-3.5" />
+      </Button>
     </div>
   );
 }
@@ -117,12 +111,13 @@ function RemoveButton() {
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
-    <OptionBtn confirm
+    <ConfirmButton
+      variant="discret" icon
       disabled={updateDraft.isLoading}
       onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'remove' })}
     >
-      <FaTrashAlt />
-    </OptionBtn>
+      <FaTrashAlt className="w-3.5 h-3.5" />
+    </ConfirmButton>
   );
 }
 
@@ -133,12 +128,13 @@ function ToTaskButton() {
   const toTask = InboxAPI.TransformInTask();
 
   return (
-    <OptionBtn confirm
+    <ConfirmButton
+      variant="discret" icon
       disabled={toTask.isLoading}
       onClick={() => toTask({ draft_id: currentDraft._id })}
     >
       T
-    </OptionBtn>
+    </ConfirmButton>
   );
 }
 
@@ -149,11 +145,12 @@ function UndoButton() {
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
-    <OptionBtn
+    <Button
+      variant="discret" icon
       disabled={updateDraft.isLoading}
       onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'undo' })}
     >
-      <FaUndoAlt />
-    </OptionBtn>
+      <FaUndoAlt className="w-3.5 h-3.5" />
+    </Button>
   );
 }

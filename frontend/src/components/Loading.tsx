@@ -8,7 +8,7 @@ import { BiLoaderAlt } from 'react-icons/bi';
  * @param props.isLoading - If false display equals none
  */
 
-export function LoadingSpinner({isLoading, className}: {isLoading: boolean, className?: string}) {
+export function LoadingSpinner({isLoading = true, className}: {isLoading?: boolean, className?: string}) {
   return (
     <div 
       style={{display: !isLoading ? 'none' : undefined}}

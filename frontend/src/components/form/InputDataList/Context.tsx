@@ -1,15 +1,5 @@
-import { useState, useEffect, createContext, ReactNode, useContext } from "react"
-import { HiExclamationCircle } from "react-icons/hi2"
-import { Input } from "./Input"
-
-export interface InputDataListAttributes {
-  value: { label: string, value: string }
-  setValue: (value: { label: string, value: string }) => void
-  options: { label: string, value: string }[]
-  className?: string
-  ulClassName?: string
-  liClassName?: string
-}
+import { createContext, useState, useEffect, useContext, ReactNode } from "react";
+import { InputDataListAttributes } from ".";
 
 interface InputDataListContext {
   value: {
@@ -33,8 +23,9 @@ interface InputDataListContext {
 }
 
 const Context = createContext<InputDataListContext|null>(null);
+export const UseInputDataListContext = () => useContext(Context);
 
-export function InputDataList(props: InputDataListAttributes) {
+export function InputDataListContextProvider(props: InputDataListAttributes & {children: ReactNode}) {
   let { value, setValue, options, className, ulClassName, liClassName } = props;
 
   const [isDataListOpen, setIsDataListOpen] = useState(false);
@@ -99,69 +90,8 @@ export function InputDataList(props: InputDataListAttributes) {
 
   return(
     <Context.Provider value={contextValue}>
-      <InputContainer />
+      {props.children}
     </Context.Provider>
   )
 }
 
-
-function InputContainer() {
-  const { className, inputText, setInputText, isDataListOpen, autoSelectOptionIfMatch, openDataList, closeDataList } = useContext(Context)!;
-
-  return (
-    <div className="relative">
-      <Input 
-        type="text" 
-        className={' ' + (className || 'w-64')}
-        value={inputText}
-        onChange={(e) => {
-          e.stopPropagation();
-          const textContent = e.target.value;
-          setInputText(textContent);
-          autoSelectOptionIfMatch(textContent);
-          console.log('aasdasd: ', textContent);
-        }}
-        onFocus={openDataList}
-        onBlur={closeDataList}
-      />
-      <InexistentOptionIconWarning />
-      {isDataListOpen && <OptionsDataList />}
-    </div>
-  )
-}
-
-function InexistentOptionIconWarning() {
-  const { inputText, value } = useContext(Context)!;
-
-  if (inputText !== '' && !value.value)
-    return (
-      <HiExclamationCircle className="absolute right-2 top-2.5 fill-red-400 w-5 h-5" />
-    )
-  
-  return null;
-}
-
-function OptionsDataList() {
-  const { options, liClassName, ulClassName, chooseOption } = useContext(Context)!;
-
-  return (
-    <ul
-      className={'z-10 text-input-data-list absolute top-[calc(100%-2px)] left-0 overflow-auto bg-tanj-white border-2 border-tanj-green rounded-sm border-t-0 shadow-md ' + (ulClassName || ' w-full max-h-48')}
-    >
-      {
-        options.map(option => {
-          const { label, value } = option;
-          return (
-            <li
-              className={'p-1.5 hover:bg-tanj-green hover:font-bold cursor-pointer ' + (liClassName || ' w-full ')}
-              onClick={(e) => {
-                e.stopPropagation();
-                chooseOption(label, value);
-              }}
-            >{label}</li>
-          )
-        })
-      }
-    </ul>
-  )
-}

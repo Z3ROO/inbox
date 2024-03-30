@@ -5,10 +5,11 @@ import { IconType } from "react-icons/lib";
 import { IoAlertCircle } from "react-icons/io5";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { AiFillAlert, AiOutlineFieldTime } from "react-icons/ai";
-import { BtnSecondary, DropDownOnClickButton } from "@/components/Buttons";
+import { Button } from "@/components/Buttons";
 import { InputDataList } from "@/components/form/InputDataList";
 import * as InboxAPI from '@/features/inbox/api';
 import { useInboxContext } from "../../store/InboxContext";
+import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from "@/components/dropdown";
 
 export function InfoTags() {
   const inboxQuery = InboxAPI.QueryInbox();
@@ -46,7 +47,7 @@ function Subject() {
               value={subject}
               setValue={setSubject}
             />
-            <BtnSecondary onClick={e => {
+            <Button onClick={e => {
               setShowSubjectPicker(false)
               
               updateDraft({
@@ -56,7 +57,7 @@ function Subject() {
                 title: inboxManagerTitle,
                 content: inboxManagerTextarea
               })
-            }} icon>+</BtnSecondary>
+            }} icon>+</Button>
           </div>
           )
         }
@@ -73,24 +74,25 @@ function Priority() {
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
-    <DropDownOnClickButton  position="bottom" align="center" main={
-      <button>
+    <DropDownMenu>
+      <DropDownMenuTriggerOnClick>
         <InfoTag {...getPriorityProps(draft.priority)} />
-      </button>
-    }>
-      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 3, content: inboxManagerTextarea})}>
-        <InfoTag {...getPriorityProps(3)} />
-      </button>
-      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 2, content: inboxManagerTextarea})}>
-        <InfoTag {...getPriorityProps(2)} />
-      </button>
-      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 1, content: inboxManagerTextarea})}>
-        <InfoTag {...getPriorityProps(1)} />
-      </button>
-      <button onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 0, content: inboxManagerTextarea})}>
-        <InfoTag {...getPriorityProps(0)} />
-      </button>
-    </DropDownOnClickButton>
+      </DropDownMenuTriggerOnClick>
+      <DropDownMenuContent position="bottom" align="center">
+        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 3, content: inboxManagerTextarea})}>
+          <InfoTag {...getPriorityProps(3)} />
+        </DropDownMenuItem>
+        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 2, content: inboxManagerTextarea})}>
+          <InfoTag {...getPriorityProps(2)} />
+        </DropDownMenuItem>
+        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 1, content: inboxManagerTextarea})}>
+          <InfoTag {...getPriorityProps(1)} />
+        </DropDownMenuItem>
+        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 0, content: inboxManagerTextarea})}>
+          <InfoTag {...getPriorityProps(0)} />
+        </DropDownMenuItem>
+      </DropDownMenuContent>
+    </DropDownMenu>
   )
 }
 

@@ -1,9 +1,13 @@
 import { Container } from "@/components/structure/container";
 import * as TasksAPI from "@/features/tasks/api";
-import { ITask } from "shared-types";
+import { ITask, TaskStatus } from "shared-types";
 import { LoadingSpinner } from "@/components/Loading";
 import { useState } from "react";
 import { DropDownMenu, DropDownMenuItem, DropDownMenuTriggerOnClick, DropDownMenuContent } from "@/components/dropdown";
+
+import { DropDownTriggerOnClick } from "@/components/dropdown/DropDownEngine";
+import { Priority, Checkbox, Util } from "@/components/icons/UI";
+import { Button } from "@/components/Buttons";
 
 export function TaskList() {
   const {data: tasks} = TasksAPI.QueryTasks();
@@ -11,7 +15,7 @@ export function TaskList() {
   return (
     <div className="text-tanj-green p-8 mx-10 w-full max-w-sm flex flex-col">
       <h4>Tasks: </h4>
-      <div className="h-full overflow-auto">
+      <div className="h-full overflow-auto ">
         {
           (tasks || []).map(
             task => <Task {...{task}} />
@@ -26,29 +30,60 @@ function Task({task}: {task: ITask}) {
   const items = TasksAPI.QueryTaskItems({task_id:task._id});
   
   return (
-    <Container className="my-4 w-full pt-5 relative">
-      {task.subject.name && <span className="text-xs absolute right-2 top-1">{task.subject.name}</span>}
-      <span className="text-xs absolute left-2 top-1">{task.status}</span>
-      {task.title && <h6>{task.title}</h6>}
-      <p>{task.content}</p>
-      <LoadingSpinner isLoading={items.isLoading} />
-      {
-        !items.isLoading && (
-          <>
-            {
-              (items.data||[]).length > 0 && 
-              items.data!.map(item => <TaskItem task={item} />)
-            }
-            {
-              !(items.data||[]).some(item => ['pending', 'in progress'].includes(item.status)) && 
-              <TaskActions type={(items.data||[]).length ? "block" : "leaf"} {...{task}} />
-            } 
-          </>
-        )
-      }
-      <NewTaskItem parent_id={task._id} />
+    <Container className="my-4 relative p-2 pt-8 ">
+        {/* <div className="absolute w-full h-full top-0 left-0 bg-gradient-to-tr from-transparent border-2 border-yellow-400 to-yellow-600 opacity-5">
+          
+        </div> */}
+        <div>
+          {task.subject.name && <span className="text-xs absolute left-4 top-2">{task.subject.name}</span>}
+          <TaskPriorityIcon priority={task.priority} className={'absolute right-3 top-3'} />
+          {task.title && <h6>{task.title}</h6>}
+          <p>{task.content}</p>
+          <LoadingSpinner isLoading={items.isLoading} />
+          {
+            !items.isLoading && (
+              <>
+                {
+                  (items.data||[]).length > 0 && 
+                  items.data!.map(item => <TaskItem task={item} />)
+                }
+                {
+                  !(items.data||[]).some(item => ['pending', 'in progress'].includes(item.status)) && 
+                  <TaskActions type={(items.data||[]).length ? "block" : "leaf"} {...{task}} />
+                } 
+              </>
+            )
+          }
+          <NewTaskItem parent_id={task._id} />
+          
+      </div>
     </Container>
   )
+}
+
+function TaskPriorityIcon({priority, className}: {priority: number, className: string}) {
+  
+  if (priority === 3)
+    return (
+      <Priority.urgent className={className} />
+    );
+
+  if (priority === 2)
+    return (
+      <Priority.important className={className} />
+    );
+
+  if (priority === 1)
+    return (
+      <Priority.necessary className={className} />
+    );
+
+  if (priority === 0)
+    return (
+      <Priority.none className={className} />
+    );
+
+  return null
 }
 
 function NewTaskItem({parent_id}: {parent_id: string}) {
@@ -57,7 +92,13 @@ function NewTaskItem({parent_id}: {parent_id: string}) {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!isOpen)
-    return (<div><button className="px-1.5 border rounded" onClick={()=> setIsOpen(true)}>+</button></div>)
+    return (
+    <div>
+      <Button variant="discret" icon onClick={()=> setIsOpen(true)}>
+        <Checkbox.doted className={`w-6`} />
+      </Button>
+    </div>
+    )
 
   return (
     <div className='flex'>
@@ -81,18 +122,60 @@ function NewTaskItem({parent_id}: {parent_id: string}) {
   )
 }
 
-function TaskItem({task}: {task:ITask}) {  
+function TaskItem({task}: {task:ITask}) {
   return (
-    <Container className="my-4 w-full pt-5 relative">
-      {task.subject.name && <span className="text-xs absolute right-2 top-1">{task.subject.name}</span>}
-      <span className="text-xs absolute left-2 top-1">{task.status}</span>
-      {
-        task.title ? <h6>{task.title}</h6> : 
-        <p>{task.content}</p>
-      }
-      <TaskActions type="leaf" {...{task}} />
-    </Container>
+    <div className="relative text-gray-200">
+      <TaskIcon {...{task}} className="inline-block" />
+      <span>{task.title || task.content}</span>
+    </div>
   )
+}
+
+function TaskIcon({task, className}: {task: ITask, className?: string}) {
+  const actOnTask = TasksAPI.ActOnTask();
+  if (task.status === 'pending')
+    return (
+      <DropDownMenu>
+        <DropDownTriggerOnClick>
+          <button className="text-gray-250 hover:text-gray-150">
+            <Checkbox.unchecked className={className} />
+          </button>
+        </DropDownTriggerOnClick>
+        <DropDownMenuContent position="top" align="start">
+          <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'in progress'})}}>Start</DropDownMenuItem>
+          <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'completed'})}}>Check</DropDownMenuItem>
+          <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'cancelled'})}}>Cancel</DropDownMenuItem>
+        </DropDownMenuContent>
+      </DropDownMenu>
+    )
+  else if (task.status === 'in progress')
+    return (
+      <DropDownMenu>
+        <DropDownTriggerOnClick>
+          <button className="text-gray-250 hover:text-gray-150">
+            <Util.loading className={"animate-spin "+className} />
+          </button>
+        </DropDownTriggerOnClick>
+        <DropDownMenuContent position="top" align="start">
+          <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'completed'})}}>Finish</DropDownMenuItem>
+          <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'cancelled'})}}>Cancel</DropDownMenuItem>
+        </DropDownMenuContent>
+      </DropDownMenu>
+    )
+  else if (task.status === 'cancelled')
+    return (
+      <Checkbox.canceled className={className} />
+    )
+  else if (task.status === 'completed')
+    return (
+      <Checkbox.checked className={className} />
+    )
+  else if (task.status === 'paused')
+    return (
+      <Checkbox.paused className={className} />
+    )
+
+  return null
 }
 
 function TaskActions({task, type}: {task:ITask, type: 'block'|'leaf'}) {
@@ -105,13 +188,9 @@ function TaskActions({task, type}: {task:ITask, type: 'block'|'leaf'}) {
       {(task.status === 'in progress' || type === 'block') && (
         <button onClick={() => {actOnTask({task_id: task._id, action: 'completed'})}} className="px-1 rounded-sm border">finish</button>
       )}
-      {/* <DropDownOnClickButton main={<button className="px-1 ml-1 rounded-sm border">...</button>} position="top">
-        <button onClick={() => {actOnTask({task_id: task._id, action: 'cancelled'})}}>cancel</button>
-        {task.status === 'pending' && <button onClick={() => {actOnTask({task_id: task._id, action: 'completed'})}}>finish</button>}
-      </DropDownOnClickButton> */}
       <DropDownMenu>
         <DropDownMenuTriggerOnClick>...</DropDownMenuTriggerOnClick>
-        <DropDownMenuContent position="top">
+        <DropDownMenuContent position="right" align="center">
           <DropDownMenuItem onClick={() => {actOnTask({task_id: task._id, action: 'cancelled'})}}>Cancel</DropDownMenuItem>
           {
             task.status === 'pending' && 

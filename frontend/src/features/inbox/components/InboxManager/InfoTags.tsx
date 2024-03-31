@@ -26,11 +26,9 @@ export function InfoTags() {
 }
 
 function Subject() {
-  const inboxQuery = InboxAPI.QueryInbox();
-  const draft = inboxQuery.data![0];
   const [subject, setSubject] = useState({label: '', value: ''});
   const [showSubjectPicker, setShowSubjectPicker] = useState(false);
-  const { inboxManagerTextarea, inboxManagerTitle } = useInboxContext()!;
+  const { draft } = useInboxContext()!;
   
   const querySubject = InboxAPI.QuerySubjects();  
   const updateDraft = InboxAPI.UpdateDraft();
@@ -38,7 +36,7 @@ function Subject() {
   return (
     <button className="text-left" onClick={() => {setShowSubjectPicker(prev => !prev); setSubject({label:'', value:''})}}>
       <div className="group relative">
-        <InfoTag className="bg-blue-600" Icon={TfiLayoutSidebarNone}>{draft.subject.name}</InfoTag>
+        <InfoTag className="bg-blue-600" Icon={TfiLayoutSidebarNone}>{draft!.subject?.name}</InfoTag>
         {
           showSubjectPicker && (
           <div onClick={e => e.stopPropagation()} className="absolute top-full left-0 bg-tanj-gray px-2 py-1 rounded-sm mt-1 flex items-center z-10 cursor-default">
@@ -51,11 +49,11 @@ function Subject() {
               setShowSubjectPicker(false)
               
               updateDraft({
-                draft_id: draft._id,
+                draft_id: draft!._id,
                 action: 'organization',
                 subject: subject.label,
-                title: inboxManagerTitle,
-                content: inboxManagerTextarea
+                title: draft!.title,
+                content: draft!.content
               })
             }} icon>+</Button>
           </div>
@@ -67,28 +65,26 @@ function Subject() {
 }
 
 function Priority() {
-  const { inboxManagerTextarea } = useInboxContext()!;
-  const inboxQuery = InboxAPI.QueryInbox();
-  const draft = inboxQuery.data![0];
+  const { draft } = useInboxContext()!;
 
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
     <DropDownMenu>
       <DropDownMenuTriggerOnClick>
-        <InfoTag {...getPriorityProps(draft.priority)} />
+        <InfoTag {...getPriorityProps(draft!.priority)} />
       </DropDownMenuTriggerOnClick>
       <DropDownMenuContent position="bottom" align="center">
-        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 3, content: inboxManagerTextarea})}>
+        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft!._id, action: 'organization', priority: 3, content: draft!.content})}>
           <InfoTag {...getPriorityProps(3)} />
         </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 2, content: inboxManagerTextarea})}>
+        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft!._id, action: 'organization', priority: 2, content: draft!.content})}>
           <InfoTag {...getPriorityProps(2)} />
         </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 1, content: inboxManagerTextarea})}>
+        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft!._id, action: 'organization', priority: 1, content: draft!.content})}>
           <InfoTag {...getPriorityProps(1)} />
         </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft._id, action: 'organization', priority: 0, content: inboxManagerTextarea})}>
+        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft!._id, action: 'organization', priority: 0, content: draft!.content})}>
           <InfoTag {...getPriorityProps(0)} />
         </DropDownMenuItem>
       </DropDownMenuContent>

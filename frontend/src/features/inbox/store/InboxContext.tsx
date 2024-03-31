@@ -1,21 +1,50 @@
-import { createContext, useContext, useState } from "react";
-import { IInboxContext } from "@/features/inbox/types";
+import { createContext, useContext, useEffect, useState } from "react";
+import { DraftItemsMethods, IInboxContext } from "@/features/inbox/types";
+import { DraftItemDTO, IDraft } from "shared-types";
+import * as InboxAPI from '@/features/inbox/api';
+import { queryClient } from "@/App";
 
 const Context = createContext<IInboxContext|null>(null);
 
 export const useInboxContext = () => useContext(Context);
 
-export function InboxContextProvider(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[] }) {
-  const [isInboxManagerOpen, setIsInboxManagerOpen] = useState(false);
-  const toggleInboxManager = () => setIsInboxManagerOpen(prev => !prev);
+const draftTemplate: IDraft = {
+  _id: '',
+  title: '',
+  content: '',
+  subject: {
+    _id: '',
+    color: '',
+    icon: '',
+    name: ''
+  },
+  priority: 0,
+  to_deal: false,
+  delayed_at: undefined,
+  delay: 'none',
+  delay_quantity: 1,
+  allowed_after: undefined,
+  created_at: new Date(),
+}
 
-  const [inboxManagerTitle, setInboxManagerTitle] = useState('');
-  const [inboxManagerTextarea, setInboxManagerTextarea] = useState('');
+export function InboxContextProvider(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[] }) {
+  const [mode, setMode] = useState<'create'|'edit'|null>(null);
+  
+  const [draft, setDraft] = useState<IDraft>();
+
+  const modeSetter = (mode: 'edit'|'create'|null) => {
+    if (mode === 'edit') {
+
+    }
+    else if (mode === 'create') 
+      setDraft(draftTemplate);
+    
+    setMode(mode)
+  }
 
   const contextValue: IInboxContext = {
-    isInboxManagerOpen, toggleInboxManager,
-    inboxManagerTitle, setInboxManagerTitle,
-    inboxManagerTextarea, setInboxManagerTextarea,
+    mode, setMode: modeSetter,
+    draft, setDraft
   }
 
   return (

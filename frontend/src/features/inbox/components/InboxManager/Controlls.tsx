@@ -20,17 +20,14 @@ export function Controlls() {
 }
 
 function DelayDraftButtons() {
-  const { inboxManagerTextarea, inboxManagerTitle } = useInboxContext()!
-  const inbox = InboxAPI.QueryInbox().data!;
-  const currentDraft = inbox[0];
-
+  const { draft } = useInboxContext()!
   const updateDraft = InboxAPI.UpdateDraft();
 
   const updateDraftEvent = (delay: DraftDelayAmount, quantity?: 1|2|3) => () => { 
     updateDraft({ 
-      title: inboxManagerTitle,
-      content: inboxManagerTextarea,
-      draft_id: currentDraft._id, 
+      title: draft!.title,
+      content: draft!.content,
+      draft_id: draft!._id, 
       action: delay,
       quantity
     });
@@ -75,9 +72,7 @@ function DelayDraftButtons() {
 }
 
 function ToDealButton() {
-  const { inboxManagerTextarea, inboxManagerTitle } = useInboxContext()!;
-  const inbox = InboxAPI.QueryInbox().data!;
-  const currentDraft = inbox[0];
+  const { draft } = useInboxContext()!;
 
   const updateDraft = InboxAPI.UpdateDraft();
   const toggleToDeal = ToDealAPI.ToggleToDeal();
@@ -91,11 +86,11 @@ function ToDealButton() {
         onClick={() => {
           updateDraft({
             action: 'none',
-            draft_id: currentDraft._id,
-            title: inboxManagerTitle,
-            content: inboxManagerTextarea
+            draft_id: draft!._id,
+            title: draft!.title,
+            content: draft!.content
           });
-          toggleToDeal({ draft_id: currentDraft._id, state: true });
+          toggleToDeal({ draft_id: draft!._id, state: true });
         }}
       >
         <BsFillCheckSquareFill className="w-3.5 h-3.5" />

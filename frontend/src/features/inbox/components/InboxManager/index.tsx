@@ -5,29 +5,40 @@ import { DraftEditor } from "./DraftEditor";
 import { Controlls } from "./Controlls";
 import * as InboxAPI from '@/features/inbox/api';
 import { InfoTags } from "./InfoTags";
+import { useEffect } from "react";
 
 export function InboxManagerModal() {
-  const { isInboxManagerOpen, toggleInboxManager } = useInboxContext()!;
+  const { mode, setMode } = useInboxContext()!;
 
   return (
-    <Modal isModalOpen={isInboxManagerOpen} closeFn={toggleInboxManager}>
+    <Modal isModalOpen={mode != null} closeFn={() => setMode(null)}>
       <Manager />
     </Modal>
   )
 }
 
 function Manager() {
-  const inboxQuery = InboxAPI.QueryInbox();
+  const inbox = InboxAPI.QueryInbox();
+  const { draft, setDraft } = useInboxContext()!;
+
+  useEffect(() => {
+    if (inbox.data == null)
+      return;
+    const currentDraft = inbox.data[0]
+    setDraft(currentDraft);
+  },[inbox.data]);
   
+  if (draft == null)
+    return <h2 className="m-4 mx-10 text-tanj-pink">Something Went wrong. new</h2>
 /*
 * All the proceding use of inboxItems depends on these conditions
 * */
-  if (inboxQuery.isLoading)
+  if (inbox.isLoading)
     return <h2 className="m-4 mx-10 text-tanj-green">Loading...</h2>
-  if (inboxQuery.error)
+  if (inbox.error)
     return <h2 className="m-4 mx-10 text-tanj-pink">Something Went wrong</h2>
   // ?? check if is idle ??
-  if (!inboxQuery.data || inboxQuery.data.length === 0)
+  if (!inbox.data || inbox.data.length === 0)
     return (
       <h2 className="m-4 mx-10 text-tanj-green">Inbox empty.</h2>
     )

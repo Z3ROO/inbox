@@ -5,12 +5,12 @@ export interface IDraft {
   title: string
   content: string
   priority: number
-  subject: ISubject
+  subject?: ISubject
   delay: null | DraftDelayAmount
-  delayed_at: Date
+  delayed_at?: Date
   delay_quantity: 1|2|3
   to_deal: boolean
-  allowed_after: Date
+  allowed_after?: Date
   created_at: Date
 }
 

@@ -1,4 +1,5 @@
 import * as InboxAPI from '@/features/inbox/api';
+import { useInboxContext } from '../../store/InboxContext';
 export function StatusLog() {
   return (
     <div className="text-right">
@@ -8,21 +9,18 @@ export function StatusLog() {
 }
 
 export function LastDelayLog() {
-  const inboxQuery = InboxAPI.QueryInbox();
-  const inbox = inboxQuery.data!; 
-
-  const currentDraft = inbox[0];
+  const { draft } = useInboxContext()!;
 
   // If never delayed, no log.
-  if (currentDraft.delay == null)
+  if (draft!.delay == null)
     return null;
 
-  //const { delayed_at, amount, quantity } = currentDraft.last_delay;
-  const { delay, delay_quantity, delayed_at } = currentDraft;
+  const { delay, delay_quantity, delayed_at } = draft!;
 
   let amountDelayed = delay_quantity ? ` ${delay_quantity} ${delay}` : `a ${delay}`
 
-  const dateDelayed = new Date(delayed_at).toLocaleDateString(['pt-BR']);
+  //if draft.delay is not null, therefore delayed_at has value
+  const dateDelayed = new Date(delayed_at!).toLocaleDateString(['pt-BR']);
 
   return (
     <span className="text-sm text-tanj-green">

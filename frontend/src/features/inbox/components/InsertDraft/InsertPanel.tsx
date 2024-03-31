@@ -167,7 +167,7 @@ function InsertPanelInputField(props: {
 }
 
 function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
-  const { toggleInboxManager } = useInboxContext()!;
+  const { setMode } = useInboxContext()!;
   const { insertInbox } = props;
   const inbox = InboxAPI.QueryInbox().data;
   
@@ -177,7 +177,7 @@ function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
         onClick={insertInbox}
       >Add</Button>
       <Button
-        onClick={toggleInboxManager}
+        onClick={() => setMode('edit')}
         disabled={!(inbox?.length)}
       >Free</Button>
     </div>

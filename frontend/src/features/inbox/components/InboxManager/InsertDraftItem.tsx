@@ -4,13 +4,15 @@ import { Checkbox } from "@/components/icons/UI";
 import { useState } from "react";
 import { DraftItemDTO, IDraft } from "shared-types";
 import * as InboxAPI from '@/features/inbox/api';
+import { useInboxContext } from "../../store/InboxContext";
+import { Button } from "@/components/Buttons";
 
-export function NewDraftItem({cb}: { cb: ((newItem: DraftItemDTO) => void)}) {
+export function InsertDraftItem() {
   const [newItem, setNewItem] = useState<DraftItemDTO|null>(null);
 
   if (newItem)
     return (
-      <ChooseNewDraftItem {...{newItem, setNewItem, cb}} />
+      <ChooseNewDraftItem {...{newItem, setNewItem}} />
     )
   
   return (
@@ -18,8 +20,10 @@ export function NewDraftItem({cb}: { cb: ((newItem: DraftItemDTO) => void)}) {
   )
 }
 
-function ChooseNewDraftItem({newItem, setNewItem, cb}: { cb: ((newItem: DraftItemDTO) => void), newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
+function ChooseNewDraftItem({ newItem, setNewItem }: { newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
+  const { mode } = useInboxContext()!;
   
+
   return (
     <div className='flex'>
       <ChooseItemTypeButton  {...{newItem, setNewItem}} />
@@ -36,8 +40,26 @@ function ChooseNewDraftItem({newItem, setNewItem, cb}: { cb: ((newItem: DraftIte
           <SearchDrafts result={(draft) => { setNewItem({type:'existing', value: draft._id})}} />
         )
       }
-      <button className='px-1.5 rounded border' onClick={() => { cb(newItem); setNewItem(null) }} disabled={newItem.value.trim() === ''}>send</button>
+      {
+        mode === 'edit' && (
+          <ApplyNewDraftItemEditMode {...{newItem, setNewItem}} />
+        )
+      }
+      {
+        mode === 'create' && (
+          <Button onClick={() => {/* include in some array */}}>send</Button>
+        )
+      }
     </div>
+  )
+}
+
+function ApplyNewDraftItemEditMode({newItem, setNewItem }: { newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
+  const { draft } = useInboxContext()!;
+  const attachDraftItem = InboxAPI.AttachDraftItem();
+
+  return (
+    <button className='px-1.5 rounded border' onClick={() => { attachDraftItem({draft_id: draft!._id, ...newItem}); setNewItem(null) }} disabled={newItem.value.trim() === ''}>send</button>
   )
 }
 

@@ -1,32 +1,26 @@
 import { Textarea } from '@/components/form/Input';
-import { useEffect, useState } from 'react';
 import { useInboxContext } from '../../store/InboxContext';
 import * as InboxAPI from '@/features/inbox/api';
 import { LoadingSpinner } from '@/components/Loading';
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from '@/components/dropdown';
-import { NewDraftItem } from './NewDraftItem';
+import { InsertDraftItem } from './InsertDraftItem';
+import { DraftItemDTO, IDraft } from 'shared-types';
+import { Button } from '@/components/Buttons';
 
 export function DraftEditor(props: React.HTMLAttributes<HTMLDivElement>){
-  const { inboxManagerTextarea, setInboxManagerTextarea, inboxManagerTitle, setInboxManagerTitle } = useInboxContext()!;
-  const inboxQuery = InboxAPI.QueryInbox();
-  const inbox = inboxQuery.data!; 
-
+  const { draft, setDraft } = useInboxContext()!;
   const updateDraft = InboxAPI.UpdateDraft();
-
-  useEffect(() => {
-    setInboxManagerTitle(inbox[0].title);
-    setInboxManagerTextarea(inbox[0].content);
-  }, [inbox]);
+  
 
   return (
     <div className="relative h-72 overflow-auto" {...props}>
       <Textarea
         className={`resize-none w-full h-10 font-bold`}
-        value={inboxManagerTitle} onChange={e => setInboxManagerTitle(e.target.value)}
+        value={draft!.title} onChange={e => setDraft(prev => ({ ...prev!, title: e.target.value }))}
       />
       <Textarea
         className={`resize-none w-full h-full`}
-        value={inboxManagerTextarea} onChange={e => setInboxManagerTextarea(e.target.value)}
+        value={draft!.content} onChange={e => setDraft(prev => ({ ...prev!, content: e.target.value }))}
       />
       <DraftItems />
       <LoadingSpinner isLoading={updateDraft.isLoading} className='top-4 right-4' />
@@ -34,32 +28,53 @@ export function DraftEditor(props: React.HTMLAttributes<HTMLDivElement>){
   )
 }
 
-function DraftItems(props: {}) {
-  const { data: inbox } = InboxAPI.QueryInbox();
-  const currentDraft = inbox![0];
-  const {data: items} = InboxAPI.QueryDraftItems({draft_id: currentDraft._id});
-  const attachDraftItem = InboxAPI.AttachDraftItem();
-  const detachDraftItem = InboxAPI.DetachDraftItem();
+function DraftItems() {
+  const { draft } = useInboxContext()!; 
+  const {data: items} = InboxAPI.QueryDraftItems({draft_id: draft!._id});
+
+  if (items == null)
+    return null
 
   return (
     <>
       {
-        (items||[]).map(item => (
+        items.map(item => (
           <div className='flex'>
             <span>
-            {item.content}
+              {item.content}
             </span>
-            <DropDownMenu>
-              <DropDownMenuTriggerOnClick>x</DropDownMenuTriggerOnClick>
-              <DropDownMenuContent position='top'>
-                <DropDownMenuItem onClick={() => detachDraftItem({type: 'delete', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>delete</DropDownMenuItem>
-                <DropDownMenuItem onClick={() => detachDraftItem({type: 'unlink', parent_draft_id: currentDraft._id, child_draft_id:item._id})}>unlink</DropDownMenuItem>
-              </DropDownMenuContent>
-            </DropDownMenu>
+            <DraftItemOptions {...{ item }}/>
           </div>
         ))
       }
-      <NewDraftItem cb={(newItem) => { attachDraftItem({draft_id: currentDraft._id, ...newItem}) }} />
+      <InsertDraftItem />
     </>
   )
+}
+
+function DraftItemOptions({ item }: { item: IDraft }) {
+  const { draft, mode } = useInboxContext()!;
+  const detachDraftItem = InboxAPI.DetachDraftItem();
+
+  if (mode === 'create')
+    return (
+      <Button onClick={() =>{}}>x</Button>
+    )
+  
+  if (mode === 'edit')
+    return (
+      <DropDownMenu>
+        <DropDownMenuTriggerOnClick>...</DropDownMenuTriggerOnClick>
+        <DropDownMenuContent position='top'>
+          <DropDownMenuItem onClick={() => detachDraftItem({type: 'unlink', parent_draft_id: draft!._id, child_draft_id:item._id})}>
+            unlink
+          </DropDownMenuItem>
+          <DropDownMenuItem onClick={() => detachDraftItem({type: 'delete', parent_draft_id: draft!._id, child_draft_id:item._id})}>
+            delete
+          </DropDownMenuItem>
+        </DropDownMenuContent>
+      </DropDownMenu>
+    )
+
+  return null;
 }

@@ -19,7 +19,7 @@ export function InboxManagerModal() {
 
 function Manager() {
   const inbox = InboxAPI.QueryInbox();
-  const { draft, setDraft } = useInboxContext()!;
+  const { draft, setDraft, mode } = useInboxContext()!;
 
   useEffect(() => {
     if (inbox.data == null)

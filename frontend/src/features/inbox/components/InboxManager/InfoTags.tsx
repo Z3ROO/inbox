@@ -12,26 +12,58 @@ import { useInboxContext } from "../../store/InboxContext";
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from "@/components/dropdown";
 
 export function InfoTags() {
-  const inboxQuery = InboxAPI.QueryInbox();
+  const { draft, mode } = useInboxContext()!;
 
-  const timePassed = timePassedSince(inboxQuery.data![0].created_at);
+  const timePassed = timePassedSince(draft!.created_at);
 
   return (
     <div className="flex py-2 gap-2">
       <Subject />
       <Priority />
-      <TimePassed {...timePassed} />
+      { mode === 'edit' && <TimePassed {...timePassed} />}
     </div>
   )
 }
 
 function Subject() {
+  const { draft, mode } = useInboxContext()!;
+  const updateDraft = InboxAPI.UpdateDraft();
+
+  return (
+    <>
+    {
+      mode === 'create' ? (
+        <SubjectSetter cb={(subject) => {}} />
+      ) : (
+        <SubjectSetter 
+          cb={(subject) => { 
+            updateDraft({
+              draft_id: draft!._id,
+              action: 'organization',
+              subject: subject.label,
+              title: draft!.title,
+              content: draft!.content
+            })
+          } 
+        }/>
+      )
+    }
+    </>
+  )
+}
+
+function SubjectSetter({cb}: {
+    cb: (subject: {
+      label: string;
+      value: string;
+    }) => void
+  }) {
+
   const [subject, setSubject] = useState({label: '', value: ''});
   const [showSubjectPicker, setShowSubjectPicker] = useState(false);
   const { draft } = useInboxContext()!;
   
   const querySubject = InboxAPI.QuerySubjects();  
-  const updateDraft = InboxAPI.UpdateDraft();
 
   return (
     <button className="text-left" onClick={() => {setShowSubjectPicker(prev => !prev); setSubject({label:'', value:''})}}>
@@ -46,15 +78,8 @@ function Subject() {
               setValue={setSubject}
             />
             <Button onClick={e => {
+              cb(subject);
               setShowSubjectPicker(false)
-              
-              updateDraft({
-                draft_id: draft!._id,
-                action: 'organization',
-                subject: subject.label,
-                title: draft!.title,
-                content: draft!.content
-              })
             }} icon>+</Button>
           </div>
           )
@@ -65,9 +90,26 @@ function Subject() {
 }
 
 function Priority() {
-  const { draft } = useInboxContext()!;
+  const { draft, mode } = useInboxContext()!;
 
   const updateDraft = InboxAPI.UpdateDraft();
+
+  return (
+    <>
+      {
+        mode === 'create' && <PrioritySetter cb={(priority) => {}} /> 
+      }
+      {
+        mode === 'edit' && (
+          <PrioritySetter cb={(priority) => updateDraft({draft_id: draft!._id, action: 'organization', priority, content: draft!.content})} />
+        )
+      }
+    </>
+  )
+}
+
+function PrioritySetter({cb}: {cb: (priority: number) => void}) {
+  const { draft } = useInboxContext()!;
 
   return (
     <DropDownMenu>
@@ -75,16 +117,16 @@ function Priority() {
         <InfoTag {...getPriorityProps(draft!.priority)} />
       </DropDownMenuTriggerOnClick>
       <DropDownMenuContent position="bottom" align="center">
-        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft!._id, action: 'organization', priority: 3, content: draft!.content})}>
+        <DropDownMenuItem onClick={() => cb(3)}>
           <InfoTag {...getPriorityProps(3)} />
         </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft!._id, action: 'organization', priority: 2, content: draft!.content})}>
+        <DropDownMenuItem onClick={() => cb(2)}>
           <InfoTag {...getPriorityProps(2)} />
         </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft!._id, action: 'organization', priority: 1, content: draft!.content})}>
+        <DropDownMenuItem onClick={() => cb(1)}>
           <InfoTag {...getPriorityProps(1)} />
         </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => updateDraft({draft_id: draft!._id, action: 'organization', priority: 0, content: draft!.content})}>
+        <DropDownMenuItem onClick={() => cb(0)}>
           <InfoTag {...getPriorityProps(0)} />
         </DropDownMenuItem>
       </DropDownMenuContent>

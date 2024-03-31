@@ -9,7 +9,7 @@ import { Button } from '@/components/Buttons';
 
 export function DraftEditor(props: React.HTMLAttributes<HTMLDivElement>){
   const { draft, setDraft } = useInboxContext()!;
-  const updateDraft = InboxAPI.UpdateDraft();
+  const updateDraft = InboxAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
   
 
   return (

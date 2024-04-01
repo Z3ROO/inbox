@@ -1,6 +1,6 @@
 import { Button, ConfirmButton } from "@/components/Buttons";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
-import { useInboxContext } from "../../store/InboxContext";
+import { useDraftEditor } from "../../store/DraftEditorContext";
 import { DraftDelayAmount } from "shared-types";
 import { BsFillCheckSquareFill } from "react-icons/bs";
 import * as InboxAPI from '@/features/inbox/api';
@@ -8,7 +8,7 @@ import * as ToDealAPI from '@/features/toDeal/api';
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnHover } from "@/components/dropdown";
 
 export function Controlls() {
-  const { mode } = useInboxContext()!;
+  const { mode } = useDraftEditor()!;
   return (
     <div className="flex justify-between mt-2 text-sm">
       {mode === 'create' && <CreatorControlls />}
@@ -19,7 +19,7 @@ export function Controlls() {
 
 function CreatorControlls() {
   const insertDraft = InboxAPI.InsertDraft();
-  const { draft, setMode } = useInboxContext()!;
+  const { draft, setMode } = useDraftEditor()!;
   
   return (
   <>
@@ -64,7 +64,7 @@ function EditorControlls() {
 }
 
 function DelayDraftButtons() {
-  const { draft } = useInboxContext()!
+  const { draft } = useDraftEditor()!
   const updateDraft = InboxAPI.UpdateDraft();
 
   const updateDraftEvent = (delay: DraftDelayAmount, quantity?: 1|2|3) => () => { 
@@ -116,7 +116,7 @@ function DelayDraftButtons() {
 }
 
 function ToDealButton() {
-  const { draft } = useInboxContext()!;
+  const { draft } = useDraftEditor()!;
 
   const updateDraft = InboxAPI.UpdateDraft();
   const toggleToDeal = ToDealAPI.ToggleToDeal();

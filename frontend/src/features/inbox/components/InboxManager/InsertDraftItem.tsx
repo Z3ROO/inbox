@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/icons/UI";
 import { useState } from "react";
 import { DraftItemDTO, IDraft } from "shared-types";
 import * as InboxAPI from '@/features/inbox/api';
-import { useInboxContext } from "../../store/InboxContext";
+import { useDraftEditor } from "../../store/DraftEditorContext";
 import { Button } from "@/components/Buttons";
 
 export function InsertDraftItem() {
@@ -21,7 +21,7 @@ export function InsertDraftItem() {
 }
 
 function ChooseNewDraftItem({ newItem, setNewItem }: { newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
-  const { mode } = useInboxContext()!;
+  const { mode } = useDraftEditor()!;
   
 
   return (
@@ -55,7 +55,7 @@ function ChooseNewDraftItem({ newItem, setNewItem }: { newItem: DraftItemDTO, se
 }
 
 function ApplyNewDraftItemEditMode({newItem, setNewItem }: { newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
-  const { draft } = useInboxContext()!;
+  const { draft } = useDraftEditor()!;
   const attachDraftItem = InboxAPI.AttachDraftItem();
 
   return (

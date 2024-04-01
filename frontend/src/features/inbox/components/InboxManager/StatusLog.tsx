@@ -1,5 +1,5 @@
 import * as InboxAPI from '@/features/inbox/api';
-import { useInboxContext } from '../../store/InboxContext';
+import { useDraftEditor } from '../../store/DraftEditorContext';
 export function StatusLog() {
   return (
     <div className="text-right">
@@ -9,7 +9,7 @@ export function StatusLog() {
 }
 
 export function LastDelayLog() {
-  const { draft } = useInboxContext()!;
+  const { draft } = useDraftEditor()!;
 
   // If never delayed, no log.
   if (draft!.delay == null)

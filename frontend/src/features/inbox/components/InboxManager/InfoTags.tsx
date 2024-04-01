@@ -8,11 +8,11 @@ import { AiFillAlert, AiOutlineFieldTime } from "react-icons/ai";
 import { Button } from "@/components/Buttons";
 import { InputDataList } from "@/components/form/InputDataList";
 import * as InboxAPI from '@/features/inbox/api';
-import { useInboxContext } from "../../store/InboxContext";
+import { useDraftEditor } from "../../store/DraftEditorContext";
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from "@/components/dropdown";
 
 export function InfoTags() {
-  const { draft, mode } = useInboxContext()!;
+  const { draft, mode } = useDraftEditor()!;
 
   const timePassed = timePassedSince(draft!.created_at);
 
@@ -26,7 +26,7 @@ export function InfoTags() {
 }
 
 function Subject() {
-  const { draft, setDraft, mode } = useInboxContext()!;
+  const { draft, setDraft, mode } = useDraftEditor()!;
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
@@ -64,7 +64,7 @@ function SubjectSetter({cb}: {
 
   const [subject, setSubject] = useState({label: '', value: ''});
   const [showSubjectPicker, setShowSubjectPicker] = useState(false);
-  const { draft } = useInboxContext()!;
+  const { draft } = useDraftEditor()!;
   
   const querySubject = InboxAPI.QuerySubjects();  
 
@@ -93,7 +93,7 @@ function SubjectSetter({cb}: {
 }
 
 function Priority() {
-  const { draft, setDraft, mode } = useInboxContext()!;
+  const { draft, setDraft, mode } = useDraftEditor()!;
 
   const updateDraft = InboxAPI.UpdateDraft();
 
@@ -112,7 +112,7 @@ function Priority() {
 }
 
 function PrioritySetter({cb}: {cb: (priority: number) => void}) {
-  const { draft } = useInboxContext()!;
+  const { draft } = useDraftEditor()!;
 
   return (
     <DropDownMenu>

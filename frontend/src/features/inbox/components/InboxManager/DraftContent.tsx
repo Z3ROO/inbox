@@ -1,5 +1,5 @@
 import { Textarea } from '@/components/form/Input';
-import { useInboxContext } from '../../store/InboxContext';
+import { useDraftEditor } from '../../store/DraftEditorContext';
 import * as InboxAPI from '@/features/inbox/api';
 import { LoadingSpinner } from '@/components/Loading';
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from '@/components/dropdown';
@@ -7,8 +7,8 @@ import { InsertDraftItem } from './InsertDraftItem';
 import { DraftItemDTO, IDraft } from 'shared-types';
 import { Button } from '@/components/Buttons';
 
-export function DraftEditor(props: React.HTMLAttributes<HTMLDivElement>){
-  const { draft, setDraft } = useInboxContext()!;
+export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
+  const { draft, setDraft } = useDraftEditor()!;
   const updateDraft = InboxAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
   
 
@@ -29,7 +29,7 @@ export function DraftEditor(props: React.HTMLAttributes<HTMLDivElement>){
 }
 
 function DraftItems() {
-  const { draft } = useInboxContext()!; 
+  const { draft } = useDraftEditor()!; 
   const {data: items} = InboxAPI.QueryDraftItems({draft_id: draft!._id});
 
   if (items == null)
@@ -53,7 +53,7 @@ function DraftItems() {
 }
 
 function DraftItemOptions({ item }: { item: IDraft }) {
-  const { draft, mode } = useInboxContext()!;
+  const { draft, mode } = useDraftEditor()!;
   const detachDraftItem = InboxAPI.DetachDraftItem();
 
   if (mode === 'create')

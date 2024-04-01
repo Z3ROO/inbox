@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import { useState, useEffect, useMemo } from "react";
-import { useInboxContext } from "../../store/InboxContext";
+import { useDraftEditor } from "../../store/DraftEditorContext";
 import { cacheInsertInputField, getCachedInsertInputField } from "../../util/cacheInsertField";
 import * as InboxAPI from '@/features/inbox/api'
 import { Textarea } from "@/components/form/Input";
@@ -167,7 +167,7 @@ function InsertPanelInputField(props: {
 }
 
 function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
-  const { setMode } = useInboxContext()!;
+  const { setMode } = useDraftEditor()!;
   const { insertInbox } = props;
   const inbox = InboxAPI.QueryInbox().data;
   

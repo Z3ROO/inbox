@@ -1,36 +1,25 @@
 import { Modal } from "@/components/Modal";
-import { useInboxContext } from "@/features/inbox/store/InboxContext";
+import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
 import { StatusLog } from "./StatusLog";
-import { DraftEditor } from "./DraftEditor";
+import { DraftContent } from "./DraftContent";
 import { Controlls } from "./Controlls";
-import * as InboxAPI from '@/features/inbox/api';
 import { InfoTags } from "./InfoTags";
-import { useEffect } from "react";
 
-export function InboxManagerModal() {
-  const { mode, setMode } = useInboxContext()!;
+export function DraftEditorModal() {
+  const { mode, setMode } = useDraftEditor()!;
 
   return (
     <Modal isModalOpen={mode != null} closeFn={() => setMode(null)}>
-      <Manager />
+      <DraftEditor />
     </Modal>
   )
 }
 
-function Manager() {
-  const inbox = InboxAPI.QueryInbox();
-  const { draft, setDraft, mode} = useInboxContext()!;
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      if (inbox.data == null)
-        return;
-      const currentDraft = inbox.data[0]
-      setDraft(currentDraft);
-    }
-  },[inbox.data]);
+function DraftEditor() {
   
-  if (draft == null)
+  const { inbox, draft, mode} = useDraftEditor()!;
+  
+  if (draft == null && mode === 'create')
     return <h2 className="m-4 mx-10 text-tanj-pink">Something Went wrong. new</h2>
 /*
 * All the proceding use of inboxItems depends on these conditions
@@ -49,7 +38,7 @@ function Manager() {
     <div className="w-[36rem] m-2">
       <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
       <InfoTags />
-      <DraftEditor />
+      <DraftContent />
       { mode === 'edit' && <StatusLog /> }
       <Controlls />
     </div>

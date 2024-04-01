@@ -1,31 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { InboxContextProvider, useInboxContext } from "./store/InboxContext";
-import { InboxInsertPanel } from './components/InsertDraft/InsertPanel';
-import { InboxManagerModal } from './components/InboxManager';
+import { DraftEditorContextProvider, useDraftEditor } from "./store/DraftEditorContext";
+import { DraftEditorModal } from './components/InboxManager';
 import { Button } from "@/components/Buttons";
+import { createPortal } from "react-dom";
 
 export default function Inbox() {
   return (
     <div className="mt-8">
-      <InboxContextProvider>
-        <h4 className="text-tanj-green">Inbox</h4>
-        <InboxInsertPanel />
-        <InboxManagerModal />
-      </InboxContextProvider>
+      <DraftEditorContextProvider>
+        <div className="w-96">{/* TA AQUI SO PRA CRIAR ESPAÇO NA TELA */}</div>
+        <InitDraftEditor />
+        <DraftEditorModal />
+      </DraftEditorContextProvider>
     </div>
   )
 }
 
-function InitWidget() {
-  const inboxContext = useInboxContext();
+function InitDraftEditor() {
+  const draftEditorContext = useDraftEditor();
 
-  if (!inboxContext)
+  if (!draftEditorContext)
     return null;
 
   return (
-    <div>
-      <Button onClick={() => inboxContext.setMode('create')}>add</Button>
-      <Button onClick={() => inboxContext.setMode('edit')}>edit</Button>
-    </div>
+    createPortal(
+    <div className="absolute top-8 left-1/2 -translate-x-1/2 p-2.5 rounded-sm bg-gray-600 z-50">
+      <Button variant="discret" onClick={() => draftEditorContext.setMode('create')}>add</Button>
+      <Button variant="discret" onClick={() => draftEditorContext.setMode('edit')}>edit</Button>
+    </div>,
+    document.body
+    )
   );
 }

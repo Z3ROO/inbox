@@ -1,12 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { DraftItemsMethods, IInboxContext } from "@/features/inbox/types";
+import { DraftItemsMethods, IDraftEditorContext } from "@/features/inbox/types";
 import { DraftItemDTO, IDraft } from "shared-types";
 import * as InboxAPI from '@/features/inbox/api';
-import { queryClient } from "@/App";
 
-const Context = createContext<IInboxContext|null>(null);
+const Context = createContext<IDraftEditorContext|null>(null);
 
-export const useInboxContext = () => useContext(Context);
+export const useDraftEditor = () => useContext(Context);
 
 const draftTemplate: IDraft = {
   _id: '',
@@ -27,14 +26,17 @@ const draftTemplate: IDraft = {
   created_at: new Date(),
 }
 
-export function InboxContextProvider(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[] }) {
+export function DraftEditorContextProvider(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[] }) {
   const [mode, setMode] = useState<'create'|'edit'|null>(null);
-  
+  const inbox = InboxAPI.QueryInbox();
   const [draft, setDraft] = useState<IDraft>();
 
   const modeSetter = (mode: 'edit'|'create'|null) => {
     if (mode === 'edit') {
-
+      if (inbox.data == null)
+        return;
+      const topDraft = inbox.data[0]
+      setDraft(topDraft);
     }
     else if (mode === 'create') 
       setDraft(draftTemplate);
@@ -42,9 +44,17 @@ export function InboxContextProvider(props: { children?: JSX.Element|null|false|
     setMode(mode)
   }
 
-  const contextValue: IInboxContext = {
+  //Updates topDraft
+  useEffect(() => {
+    if (mode === 'edit') {
+      modeSetter('edit');
+    }
+  },[inbox.data]);
+
+  const contextValue: IDraftEditorContext = {
     mode, setMode: modeSetter,
-    draft, setDraft
+    draft, setDraft,
+    inbox
   }
 
   return (

@@ -25,6 +25,8 @@ function CreatorControlls() {
   <>
     <Button 
       onClick={() => {
+        if (draft?.content.trim() === '')
+          return;
         insertDraft({ 
           title: draft?.title, 
           content: draft!.content,
@@ -36,6 +38,8 @@ function CreatorControlls() {
     >Insert</Button>
     <Button 
       onClick={() => {
+        if (draft?.content.trim() === '')
+          return;
         insertDraft({ 
           title: draft?.title, 
           content: draft!.content,

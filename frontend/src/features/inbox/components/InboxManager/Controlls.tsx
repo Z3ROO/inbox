@@ -8,15 +8,59 @@ import * as ToDealAPI from '@/features/toDeal/api';
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnHover } from "@/components/dropdown";
 
 export function Controlls() {
+  const { mode } = useInboxContext()!;
   return (
     <div className="flex justify-between mt-2 text-sm">
+      {mode === 'create' && <CreatorControlls />}
+      {mode === 'edit' && <EditorControlls />}
+    </div>
+  );
+}
+
+function CreatorControlls() {
+  const insertDraft = InboxAPI.InsertDraft();
+  const { draft, setMode } = useInboxContext()!;
+  
+  return (
+  <>
+    <Button 
+      onClick={() => {
+        insertDraft({ 
+          title: draft?.title, 
+          content: draft!.content,
+          priority: draft!.priority,
+          subject: draft!.subject?.name
+        });
+        setMode('create');
+      }}
+    >Insert</Button>
+    <Button 
+      onClick={() => {
+        insertDraft({ 
+          title: draft?.title, 
+          content: draft!.content,
+          priority: draft!.priority,
+          subject: draft!.subject?.name,
+          to_deal: true
+        });
+        setMode('create');
+      }}
+    >To deal</Button>
+    <Button onClick={() => console.log(draft)}>LOG</Button>
+  </>
+  )
+}
+
+function EditorControlls() {
+  return (
+    <>
       <DelayDraftButtons />
       <ToDealButton />
       <RemoveButton />
       <ToTaskButton />
       <UndoButton />
-    </div>
-  );
+    </>
+  )
 }
 
 function DelayDraftButtons() {

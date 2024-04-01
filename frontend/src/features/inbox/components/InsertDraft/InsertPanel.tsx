@@ -174,7 +174,7 @@ function InsertPanelControlls(props: { insertInbox: () => Promise<void> }) {
   return (
     <div className="flex justify-between">
       <Button variant="primary"
-        onClick={insertInbox}
+        onClick={() => setMode('create')}
       >Add</Button>
       <Button
         onClick={() => setMode('edit')}

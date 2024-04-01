@@ -19,13 +19,15 @@ export function InboxManagerModal() {
 
 function Manager() {
   const inbox = InboxAPI.QueryInbox();
-  const { draft, setDraft, mode } = useInboxContext()!;
+  const { draft, setDraft, mode} = useInboxContext()!;
 
   useEffect(() => {
-    if (inbox.data == null)
-      return;
-    const currentDraft = inbox.data[0]
-    setDraft(currentDraft);
+    if (mode === 'edit') {
+      if (inbox.data == null)
+        return;
+      const currentDraft = inbox.data[0]
+      setDraft(currentDraft);
+    }
   },[inbox.data]);
   
   if (draft == null)
@@ -38,7 +40,7 @@ function Manager() {
   if (inbox.error)
     return <h2 className="m-4 mx-10 text-tanj-pink">Something Went wrong</h2>
   // ?? check if is idle ??
-  if (!inbox.data || inbox.data.length === 0)
+  if (mode === 'edit' && (!inbox.data || inbox.data.length === 0))
     return (
       <h2 className="m-4 mx-10 text-tanj-green">Inbox empty.</h2>
     )
@@ -48,7 +50,7 @@ function Manager() {
       <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
       <InfoTags />
       <DraftEditor />
-      <StatusLog />
+      { mode === 'edit' && <StatusLog /> }
       <Controlls />
     </div>
   )

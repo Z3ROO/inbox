@@ -26,15 +26,18 @@ export function InfoTags() {
 }
 
 function Subject() {
-  const { draft, mode } = useInboxContext()!;
+  const { draft, setDraft, mode } = useInboxContext()!;
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
     <>
     {
-      mode === 'create' ? (
-        <SubjectSetter cb={(subject) => {}} />
-      ) : (
+      mode === 'create' && (
+        <SubjectSetter cb={(subject) => { setDraft(prev => ({...prev!, subject: {_id: subject.value, name: subject.label, icon: '', color: ''}})); }} />
+      )
+    }
+    {
+      mode === 'edit' && (
         <SubjectSetter 
           cb={(subject) => { 
             updateDraft({
@@ -90,14 +93,14 @@ function SubjectSetter({cb}: {
 }
 
 function Priority() {
-  const { draft, mode } = useInboxContext()!;
+  const { draft, setDraft, mode } = useInboxContext()!;
 
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
     <>
       {
-        mode === 'create' && <PrioritySetter cb={(priority) => {}} /> 
+        mode === 'create' && <PrioritySetter cb={(priority) => { setDraft(prev => ({...prev!, priority}))}} /> 
       }
       {
         mode === 'edit' && (

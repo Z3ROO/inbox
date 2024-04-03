@@ -8,7 +8,7 @@ import { DraftItemDTO, IDraft } from 'shared-types';
 import { Button } from '@/components/Buttons';
 
 export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
-  const { draft, setDraft } = useDraftEditor()!;
+  const { draft, setDraft, mode } = useDraftEditor()!;
   const updateDraft = InboxAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
   
 
@@ -22,11 +22,48 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
         className={`resize-none w-full h-full`}
         value={draft!.content} onChange={e => setDraft(prev => ({ ...prev!, content: e.target.value }))}
       />
-      <DraftItems />
+      { mode === 'edit' && <DraftItems /> }
+      { mode === 'create' && <DraftItemsCreate /> }
       <LoadingSpinner isLoading={updateDraft.isLoading} className='top-4 right-4' />
     </div>
   )
 }
+
+function DraftItemsCreate() {
+  const { draft, draftItemsDTO: items } = useDraftEditor()!; 
+
+  if (items == null)
+    return null
+
+  return (
+    <>
+      {
+        items.map(item => (
+          <div className='flex'>
+            <span>
+              {item.value}
+            </span>
+            <DraftItemOptionsCreate {...{ item }}/>
+          </div>
+        ))
+      }
+      <InsertDraftItem />
+    </>
+  )
+}
+
+function DraftItemOptionsCreate({ item }: { item: DraftItemDTO }) {
+  const { draft, mode, setDraftItemsDTO } = useDraftEditor()!;
+
+  if (mode === 'create')
+    return (
+      <Button onClick={() =>{ setDraftItemsDTO(prev => prev.filter(v => v.value !== item.value))}}>x</Button>
+    )
+  
+
+  return null;
+}
+
 
 function DraftItems() {
   const { draft } = useDraftEditor()!; 
@@ -56,10 +93,6 @@ function DraftItemOptions({ item }: { item: IDraft }) {
   const { draft, mode } = useDraftEditor()!;
   const detachDraftItem = InboxAPI.DetachDraftItem();
 
-  if (mode === 'create')
-    return (
-      <Button onClick={() =>{}}>x</Button>
-    )
   
   if (mode === 'edit')
     return (

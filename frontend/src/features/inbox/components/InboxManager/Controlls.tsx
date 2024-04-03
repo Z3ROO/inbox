@@ -19,7 +19,7 @@ export function Controlls() {
 
 function CreatorControlls() {
   const insertDraft = InboxAPI.InsertDraft();
-  const { draft, setMode } = useDraftEditor()!;
+  const { draft, setMode, draftItemsDTO, setDraftItemsDTO } = useDraftEditor()!;
   
   return (
   <>
@@ -31,8 +31,10 @@ function CreatorControlls() {
           title: draft?.title, 
           content: draft!.content,
           priority: draft!.priority,
-          subject: draft!.subject?.name
+          subject: draft!.subject?.name,
+          draft_items: draftItemsDTO
         });
+        
         setMode('create');
       }}
     >Insert</Button>
@@ -45,6 +47,7 @@ function CreatorControlls() {
           content: draft!.content,
           priority: draft!.priority,
           subject: draft!.subject?.name,
+          draft_items: draftItemsDTO,
           to_deal: true
         });
         setMode('create');

@@ -21,7 +21,7 @@ export function InsertDraftItem() {
 }
 
 function ChooseNewDraftItem({ newItem, setNewItem }: { newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
-  const { mode } = useDraftEditor()!;
+  const { mode, setDraftItemsDTO } = useDraftEditor()!;
   
 
   return (
@@ -47,7 +47,7 @@ function ChooseNewDraftItem({ newItem, setNewItem }: { newItem: DraftItemDTO, se
       }
       {
         mode === 'create' && (
-          <Button onClick={() => {/* include in some array */}}>send</Button>
+          <Button onClick={() => {  setDraftItemsDTO(prev => prev.concat(newItem)); setNewItem(null); }}>send</Button>
         )
       }
     </div>
@@ -59,7 +59,7 @@ function ApplyNewDraftItemEditMode({newItem, setNewItem }: { newItem: DraftItemD
   const attachDraftItem = InboxAPI.AttachDraftItem();
 
   return (
-    <button className='px-1.5 rounded border' onClick={() => { attachDraftItem({draft_id: draft!._id, ...newItem}); setNewItem(null) }} disabled={newItem.value.trim() === ''}>send</button>
+    <button className='px-1.5 rounded border' onClick={() => { attachDraftItem({draft_id: draft!._id, ...newItem}); setNewItem(null); }} disabled={newItem.value.trim() === ''}>send</button>
   )
 }
 

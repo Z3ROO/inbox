@@ -31,6 +31,8 @@ export function DraftEditorContextProvider(props: { children?: JSX.Element|null|
   const inbox = InboxAPI.QueryInbox();
   const [draft, setDraft] = useState<IDraft>();
 
+  const [draftItemsDTO, setDraftItemsDTO] = useState<DraftItemDTO[]>([]);
+
   const modeSetter = (mode: 'edit'|'create'|null) => {
     if (mode === 'edit') {
       if (inbox.data == null)
@@ -38,8 +40,10 @@ export function DraftEditorContextProvider(props: { children?: JSX.Element|null|
       const topDraft = inbox.data[0]
       setDraft(topDraft);
     }
-    else if (mode === 'create') 
+    else if (mode === 'create') {
       setDraft(draftTemplate);
+      setDraftItemsDTO([]);
+    }
     
     setMode(mode)
   }
@@ -54,6 +58,7 @@ export function DraftEditorContextProvider(props: { children?: JSX.Element|null|
   const contextValue: IDraftEditorContext = {
     mode, setMode: modeSetter,
     draft, setDraft,
+    draftItemsDTO, setDraftItemsDTO,
     inbox
   }
 

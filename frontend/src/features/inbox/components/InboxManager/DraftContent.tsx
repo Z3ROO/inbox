@@ -1,4 +1,3 @@
-import { Textarea } from '@/components/form/Input';
 import { useDraftEditor } from '../../store/DraftEditorContext';
 import * as InboxAPI from '@/features/inbox/api';
 import { LoadingSpinner } from '@/components/Loading';
@@ -6,21 +5,44 @@ import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTrigge
 import { InsertDraftItem } from './InsertDraftItem';
 import { DraftItemDTO, IDraft } from 'shared-types';
 import { Button } from '@/components/Buttons';
+import { Checkbox } from '@/components/icons/UI';
 
 export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
   const { draft, setDraft, mode } = useDraftEditor()!;
   const updateDraft = InboxAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
   
+  const input_TW = 'bg-transparent text-gray-250 w-full overflow-hidden min-h-[2.5rem] p-2 cursor-text outline-none';
 
   return (
-    <div className="relative h-72 overflow-auto" {...props}>
-      <Textarea
-        className={`resize-none w-full h-10 font-bold`}
-        value={draft!.title} onChange={e => setDraft(prev => ({ ...prev!, title: e.target.value }))}
+    <div className="relative h-72 p-2 overflow-auto bg-gray-550 shadow-inner shadow-gray-800 border border-gray-900 rounded-sm" {...props}>
+      <div
+        className={` font-bold ${input_TW}`}
+        dangerouslySetInnerHTML={{__html: draft!.title}}
+        
+        onChange={e => {
+          const target = (e.target as HTMLElement);
+          setDraft(prev => ({ ...prev!, title: target.innerText }));
+          
+          target.style.height = 'auto';
+          target.style.height = target.scrollHeight + 'px';
+        }}
+
+        contentEditable
       />
-      <Textarea
-        className={`resize-none w-full h-full`}
-        value={draft!.content} onChange={e => setDraft(prev => ({ ...prev!, content: e.target.value }))}
+      <hr className='m-1 border-gray-900'/>
+      <div
+        className={`  ${input_TW}`}
+        dangerouslySetInnerHTML={{__html: draft!.content}}
+
+        onChange={e => {
+          const target = (e.target as HTMLElement);
+
+          setDraft(prev => ({ ...prev!, content: target.innerText }));
+          target.style.height = 'auto';
+          target.style.height = target.scrollHeight + 'px';
+        }}
+
+        contentEditable
       />
       { mode === 'edit' && <DraftItems /> }
       { mode === 'create' && <DraftItemsCreate /> }
@@ -40,6 +62,7 @@ function DraftItemsCreate() {
       {
         items.map(item => (
           <div className='flex'>
+            <Checkbox.doted className='w-6 shadow-sm' />
             <span>
               {item.value}
             </span>
@@ -77,6 +100,7 @@ function DraftItems() {
       {
         items.map(item => (
           <div className='flex'>
+            <Checkbox.doted className='w-6 shadow-sm' />
             <span>
               {item.content}
             </span>

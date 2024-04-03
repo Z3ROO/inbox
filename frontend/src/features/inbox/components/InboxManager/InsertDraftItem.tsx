@@ -67,8 +67,8 @@ function ChooseItemTypeButton({newItem, setNewItem}: { newItem: DraftItemDTO|nul
   return (
     <div className='w-min relative'>
       <DropDownMenu>
-        <DropDownMenuTriggerOnClick>
-          <Checkbox.doted className='w-6' />
+        <DropDownMenuTriggerOnClick variant="discret">
+          <Checkbox.doted className='w-6 shadow-sm' />
         </DropDownMenuTriggerOnClick>
         <DropDownMenuContent position='top' align='start'>
           <DropDownMenuItem onClick={() => setNewItem({type: 'new', value: ''})}>New</DropDownMenuItem>

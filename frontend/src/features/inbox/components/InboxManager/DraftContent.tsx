@@ -14,7 +14,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
   const input_TW = 'bg-transparent text-gray-250 w-full overflow-hidden min-h-[2.5rem] p-2 cursor-text outline-none';
 
   return (
-    <div className="relative h-72 p-2 overflow-auto bg-gray-550 shadow-inner shadow-gray-800 border border-gray-900 rounded-sm" {...props}>
+    <div className="relative flex flex-col h-72 p-2 bg-gray-550 shadow-inner shadow-gray-800 border border-gray-900 rounded-sm" {...props}>
       <div
         className={` font-bold ${input_TW}`}
         dangerouslySetInnerHTML={{__html: draft!.title}}
@@ -30,22 +30,26 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
         contentEditable
       />
       <hr className='m-1 border-gray-900'/>
-      <div
-        className={`  ${input_TW}`}
-        dangerouslySetInnerHTML={{__html: draft!.content}}
+      <div className='overflow-auto custom-scrollbar'>
+        
+        <div
+          className={`  ${input_TW}`}
+          dangerouslySetInnerHTML={{__html: draft!.content}}
 
-        onChange={e => {
-          const target = (e.target as HTMLElement);
+          onChange={e => {
+            const target = (e.target as HTMLElement);
 
-          setDraft(prev => ({ ...prev!, content: target.innerText }));
-          target.style.height = 'auto';
-          target.style.height = target.scrollHeight + 'px';
-        }}
+            setDraft(prev => ({ ...prev!, content: target.innerText }));
+            target.style.height = 'auto';
+            target.style.height = target.scrollHeight + 'px';
+          }}
 
-        contentEditable
-      />
-      { mode === 'edit' && <DraftItems /> }
-      { mode === 'create' && <DraftItemsCreate /> }
+          contentEditable
+        />
+        { mode === 'edit' && <DraftItems /> }
+        { mode === 'create' && <DraftItemsCreate /> }
+      
+      </div>
       <LoadingSpinner isLoading={updateDraft.isLoading} className='top-4 right-4' />
     </div>
   )

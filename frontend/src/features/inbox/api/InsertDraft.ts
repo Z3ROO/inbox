@@ -5,13 +5,14 @@ import APIRequest from "@/lib/ApiRequest";
 
 
 async function insertDraft(args: InsertDraftDTO) {
-  const { title, content, priority, subject, to_deal } = args;
+  const { title, content, priority, subject, to_deal, draft_items } = args;
 
   const requestBody = {
     title,
     content,
     priority: priority ?? 0,
     subject,
+    draft_items,
     to_deal
   }
 

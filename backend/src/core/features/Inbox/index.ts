@@ -22,7 +22,7 @@ export class Inbox {
   }
 
   public async delayDraft(DTO: DelayDraftDTO, draft_items?: DraftItemDTO[]): Promise<void> {
-    let { _id, content, amount, quantity } = DTO;
+    let { _id, title, content, amount, quantity } = DTO;
 
     if (amount === 'none') {
       /*const { originalValue } =*/ await this.drafts.updateOne(_id, {
@@ -50,6 +50,7 @@ export class Inbox {
       allowed_after = new Date(new Date().setHours(4,0,0,0) + (quantity * DELAY_AMOUNT[amount]));
 
     /*const { originalValue } =*/ await this.drafts.updateOne(_id, {
+      title,
       content,
       allowed_after,      
       delay: amount,
@@ -70,7 +71,7 @@ export class Inbox {
     //  PREFIRO NAO ATUALIZAR `content` POR AQUI, DEVO MELHORAR ESSA LOGICA.
     // =============================================================================
     if (priority != null) {
-      await this.drafts.updateOne(_id, {priority, content}, draft_items);
+      await this.drafts.updateOne(_id, {priority, content, title}, draft_items);
     }
 
     if (subject != null && subject !== '') {

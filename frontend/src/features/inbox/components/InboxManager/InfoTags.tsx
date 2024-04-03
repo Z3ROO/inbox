@@ -104,7 +104,7 @@ function Priority() {
       }
       {
         mode === 'edit' && (
-          <PrioritySetter cb={(priority) => updateDraft({draft_id: draft!._id, action: 'organization', priority, content: draft!.content})} />
+          <PrioritySetter cb={(priority) => updateDraft({draft_id: draft!._id, action: 'organization', priority, content: draft!.content, title: draft!.title})} />
         )
       }
     </>

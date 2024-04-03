@@ -6,22 +6,35 @@ import { InsertDraftItem } from './InsertDraftItem';
 import { DraftItemDTO, IDraft } from 'shared-types';
 import { Button } from '@/components/Buttons';
 import { Checkbox } from '@/components/icons/UI';
+import { useEffect, useRef } from 'react';
+import { title } from 'process';
 
 export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
   const { draft, setDraft, mode } = useDraftEditor()!;
   const updateDraft = InboxAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
+
+  const titleRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   
   const input_TW = 'bg-transparent text-gray-250 w-full overflow-hidden min-h-[2.5rem] p-2 cursor-text outline-none';
+
+  useEffect(() => {
+    if (!titleRef.current || !contentRef.current)
+      return
+
+    titleRef.current.innerText = draft!.title;
+    contentRef.current.innerHTML = draft!.content;
+  }, [draft?._id, mode, titleRef.current, contentRef.current])
 
   return (
     <div className="relative flex flex-col h-72 p-2 bg-gray-550 shadow-inner shadow-gray-800 border border-gray-900 rounded-sm" {...props}>
       <div
         className={` font-bold ${input_TW}`}
-        dangerouslySetInnerHTML={{__html: draft!.title}}
+        ref={titleRef}
         
-        onChange={e => {
+        onInput={e => {
           const target = (e.target as HTMLElement);
-          setDraft(prev => ({ ...prev!, title: target.innerText }));
+          setDraft(prev => ({ ...prev!, title: target.textContent as string }));
           
           target.style.height = 'auto';
           target.style.height = target.scrollHeight + 'px';
@@ -34,12 +47,12 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
         
         <div
           className={`  ${input_TW}`}
-          dangerouslySetInnerHTML={{__html: draft!.content}}
-
-          onChange={e => {
+          ref={contentRef}
+          onInput={e => {
+            
             const target = (e.target as HTMLElement);
-
-            setDraft(prev => ({ ...prev!, content: target.innerText }));
+            console.log(target.innerText)
+            setDraft(prev => ({ ...prev!, content: target.textContent as string }));
             target.style.height = 'auto';
             target.style.height = target.scrollHeight + 'px';
           }}

@@ -35,7 +35,7 @@ router.put('/', async (request: PutUpdateDraftRequest, response) => {
     else if (action === 'organization')
       await inbox.updateDraftOrganization({title, _id: draft_id, priority, subject, content}, draft_items);
     else
-      await inbox.delayDraft({_id: draft_id, content, amount: action, quantity}, draft_items);
+      await inbox.delayDraft({_id: draft_id, title, content, amount: action, quantity}, draft_items);
 
     response.status(200).json({
       success: true,

@@ -14,7 +14,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
   const updateDraft = InboxAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
 
   const titleRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLPreElement>(null);
   
   const input_TW = 'bg-transparent text-gray-250 w-full overflow-hidden min-h-[2.5rem] p-2 cursor-text outline-none';
 
@@ -34,10 +34,22 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
         
         onInput={e => {
           const target = (e.target as HTMLElement);
+          
           setDraft(prev => ({ ...prev!, title: target.textContent as string }));
           
           target.style.height = 'auto';
           target.style.height = target.scrollHeight + 'px';
+        }}
+        onKeyDown={(e) => {
+          const target = (e.target as HTMLElement);
+          if (target.textContent!.length >= 128 && e.key !== 'Backspace' && e.key !== 'Delete' && !e.key.includes('Arrow')) {
+            e.preventDefault();
+            return;
+          }
+            
+          const key = e.key;
+
+          if (key === 'Enter') return;
         }}
 
         contentEditable
@@ -45,16 +57,57 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
       <hr className='m-1 border-gray-900'/>
       <div className='overflow-auto custom-scrollbar'>
         
-        <div
+        <pre
           className={`  ${input_TW}`}
           ref={contentRef}
           onInput={e => {
             
             const target = (e.target as HTMLElement);
-            console.log(target.innerText)
+            
             setDraft(prev => ({ ...prev!, content: target.textContent as string }));
             target.style.height = 'auto';
             target.style.height = target.scrollHeight + 'px';
+          }}
+          onKeyDown={(e) => {
+            const key = e.key
+            const target = (e.target as HTMLElement);
+            
+            if (key === 'Enter'){
+              e.preventDefault(); // Prevent default behavior (creating a new div)
+
+              const selection = window.getSelection();
+              if (!selection) return;
+
+              const range = selection.getRangeAt(0);
+
+              // Create a new text node containing a newline character
+              const br = document.createTextNode('\n');
+              
+              // Insert the newline character at the current selection  
+              if (
+                range.startOffset === range.endOffset &&
+                range.endOffset === range.endContainer.textContent?.length &&
+                range.endContainer.textContent?.slice(-1) !== '\n'
+                )
+                range.insertNode(document.createTextNode('\n'));
+
+              range.insertNode(br);
+              
+              
+              range.setStartAfter(br);
+              range.setEndAfter(br);
+
+              selection.removeAllRanges();
+              selection.addRange(range);
+
+              
+              console.log(target.innerText)
+              setDraft(prev => ({ ...prev!, content: target.textContent as string }));
+              target.style.height = 'auto';
+              target.style.height = target.scrollHeight + 'px';
+            }
+
+            
           }}
 
           contentEditable

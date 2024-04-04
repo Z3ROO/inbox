@@ -41,7 +41,7 @@ export function DraftEditorContextProvider(props: { children?: JSX.Element|null|
       setDraft(topDraft);
     }
     else if (mode === 'create') {
-      setDraft(draftTemplate);
+      setDraft(structuredClone(draftTemplate));
       setDraftItemsDTO([]);
     }
     

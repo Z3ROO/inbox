@@ -24,7 +24,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
 
     titleRef.current.innerText = draft!.title;
     contentRef.current.innerHTML = draft!.content;
-  }, [draft?._id, mode, titleRef.current, contentRef.current])
+  }, [draft?._id, draft?.created_at, mode, titleRef.current, contentRef.current])
 
   return (
     <div className="relative flex flex-col h-72 p-2 bg-gray-550 shadow-inner shadow-gray-800 border border-gray-900 rounded-sm" {...props}>

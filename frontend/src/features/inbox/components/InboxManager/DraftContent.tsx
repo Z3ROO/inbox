@@ -7,7 +7,6 @@ import { DraftItemDTO, IDraft } from 'shared-types';
 import { Button } from '@/components/Buttons';
 import { Checkbox } from '@/components/icons/UI';
 import { useEffect, useRef } from 'react';
-import { title } from 'process';
 
 export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
   const { draft, setDraft, mode } = useDraftEditor()!;
@@ -24,6 +23,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
 
     titleRef.current.innerText = draft!.title;
     contentRef.current.innerHTML = draft!.content;
+    ResizeTextArea(contentRef.current);
   }, [draft?._id, draft?.created_at, mode, titleRef.current, contentRef.current])
 
   return (
@@ -65,8 +65,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
             const target = (e.target as HTMLElement);
             
             setDraft(prev => ({ ...prev!, content: target.textContent as string }));
-            target.style.height = 'auto';
-            target.style.height = target.scrollHeight + 'px';
+            ResizeTextArea(target);
           }}
           onKeyDown={(e) => {
             const key = e.key
@@ -103,8 +102,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
               
               console.log(target.innerText)
               setDraft(prev => ({ ...prev!, content: target.textContent as string }));
-              target.style.height = 'auto';
-              target.style.height = target.scrollHeight + 'px';
+              ResizeTextArea(target);
             }
 
             
@@ -204,4 +202,9 @@ function DraftItemOptions({ item }: { item: IDraft }) {
     )
 
   return null;
+}
+
+function ResizeTextArea(target: HTMLElement) {
+  target.style.height = 'auto';
+  target.style.height = target.scrollHeight + 'px';
 }

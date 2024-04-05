@@ -42,19 +42,23 @@ function Task({task}: {task: ITask}) {
           <LoadingSpinner isLoading={items.isLoading} />
           {
             !items.isLoading && (
-              <>
-                {
-                  (items.data||[]).length > 0 && 
-                  items.data!.map(item => <TaskItem task={item} />)
-                }
-                {
-                  !(items.data||[]).some(item => ['pending', 'in progress'].includes(item.status)) && 
-                  <TaskActions type={(items.data||[]).length ? "block" : "leaf"} {...{task}} />
-                } 
-              </>
+              (items.data||[]).length > 0 && 
+              items.data!.sort((x,y) => {
+                if (x.status === 'in progress' || x.status === 'pending')
+                  return -1;
+                else if (y.status === 'in progress' || y.status === 'pending')
+                  return 1;
+                return 0;
+                }).map(item => <TaskItem task={item} />)
             )
           }
           <NewTaskItem parent_id={task._id} />
+          {
+            !items.isLoading && (
+              !(items.data||[]).some(item => ['pending', 'in progress'].includes(item.status)) && 
+              <TaskActions type={(items.data||[]).length ? "block" : "leaf"} {...{task}} />
+            )
+          }
           
       </div>
     </Container>
@@ -124,7 +128,12 @@ function NewTaskItem({parent_id}: {parent_id: string}) {
 
 function TaskItem({task}: {task:ITask}) {
   return (
-    <div className="relative text-gray-200">
+    <div className={`
+      relative text-gray-200
+      ${task.status === 'in progress' && 'text-amber-400'}
+      ${task.status === 'completed' && 'text-gray-300 line-through opacity-70'}
+      ${task.status === 'cancelled' && 'text-red-400 line-through opacity-70'}
+    `}>
       <TaskIcon {...{task}} className="inline-block" />
       <span>{task.title || task.content}</span>
     </div>

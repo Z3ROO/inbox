@@ -58,7 +58,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
       <div className='overflow-auto custom-scrollbar'>
         
         <pre
-          className={`  ${input_TW}`}
+          className={` whitespace-pre-wrap  ${input_TW}`}
           ref={contentRef}
           onInput={e => {
             

@@ -3,7 +3,7 @@ import { IoAlertCircle } from "react-icons/io5";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { TfiLayoutSidebarNone } from "react-icons/tfi";
 import { ImCheckboxUnchecked } from "react-icons/im";
-import { FaCircleNotch } from "react-icons/fa";
+import { FaCircleNotch, FaPlus, FaInbox } from "react-icons/fa";
 import { DotedUncheckedbox } from "./rehearsal";
 import { CgCheckR, CgCloseR, CgPlayPauseR } from "react-icons/cg";
 
@@ -22,6 +22,11 @@ export const Checkbox = {
   paused: CgPlayPauseR
 }
 
+export const Inbox = {
+  out: FaInbox
+}
+
 export const Util = {
+  plus: FaPlus,
   loading: FaCircleNotch
 }

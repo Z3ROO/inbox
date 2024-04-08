@@ -1,10 +1,10 @@
 import { List } from "./components/List";
-import { FaPlus } from 'react-icons/fa';
 import { BiCheck } from 'react-icons/bi';
 import { RxCross2 } from 'react-icons/rx';
 import { useState } from 'react';
 import { Textarea } from "@/components/form/Input";
 import * as InboxAPI from '@/features/inbox/api';
+import { Util } from "@/components/icons/UI";
 
 export function ToDealList() {
   const [isToDealInputOpen, setIsToDealInputOpen] = useState(false);
@@ -41,7 +41,7 @@ function AddToDealButtons(props: {
         {
           isToDealInputOpen ?
             <RxCross2 className="w-3 h-3 text-tanj-green" /> :
-            <FaPlus className="w-3 h-3 fill-tanj-green" />
+            <Util.plus className="w-3 h-3 fill-tanj-green" />
         }
       </button>
       {

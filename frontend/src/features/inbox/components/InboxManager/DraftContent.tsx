@@ -27,7 +27,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
   }, [draft?._id, draft?.created_at, mode, titleRef.current, contentRef.current])
 
   return (
-    <div className="relative flex flex-col h-72 p-2 bg-gray-550 shadow-inner shadow-gray-800 border border-gray-900 rounded-sm" {...props}>
+    <div className="relative flex flex-col h-80 p-2 bg-gray-550 shadow-inner shadow-gray-800 border border-gray-900 rounded-sm " {...props}>
       <div
         className={` font-bold ${input_TW}`}
         ref={titleRef}

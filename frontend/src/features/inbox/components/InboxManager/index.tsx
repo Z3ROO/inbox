@@ -3,7 +3,7 @@ import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
 import { StatusLog } from "./StatusLog";
 import { DraftContent } from "./DraftContent";
 import { Controlls } from "./Controlls";
-import { InfoTags } from "./InfoTags";
+import { InfoTags, Priority } from "./InfoTags";
 
 export function DraftEditorModal() {
   const { mode, setMode } = useDraftEditor()!;
@@ -35,12 +35,19 @@ function DraftEditor() {
     )
 
   return (
-    <div className="w-[36rem] m-2">
+    <div className="w-[40rem] my-2 ml-9">
       <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
       <InfoTags />
-      <DraftContent />
-      { mode === 'edit' && <StatusLog /> }
-      <Controlls />
+      <div className="flex">
+        <div className="flex-grow">
+          <DraftContent />
+          { mode === 'edit' && <StatusLog /> }
+          <Controlls />
+        </div>
+        <div>
+          <Priority />
+        </div>
+      </div>
     </div>
   )
 }

@@ -9,7 +9,7 @@ import { Button } from "@/components/Buttons";
 import { InputDataList } from "@/components/form/InputDataList";
 import * as InboxAPI from '@/features/inbox/api';
 import { useDraftEditor } from "../../store/DraftEditorContext";
-import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from "@/components/dropdown";
+import { Priority as PriorityIcons } from "@/components/icons/UI";
 
 export function InfoTags() {
   const { draft, mode } = useDraftEditor()!;
@@ -19,7 +19,6 @@ export function InfoTags() {
   return (
     <div className="flex py-2 gap-2">
       <Subject />
-      <Priority />
       { mode === 'edit' && <TimePassed {...timePassed} />}
     </div>
   )
@@ -92,22 +91,20 @@ function SubjectSetter({cb}: {
   )
 }
 
-function Priority() {
+export function Priority() {
   const { draft, setDraft, mode } = useDraftEditor()!;
 
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
-    <>
-      {
-        mode === 'create' && <PrioritySetter cb={(priority) => { setDraft(prev => ({...prev!, priority}))}} /> 
-      }
-      {
-        mode === 'edit' && (
-          <PrioritySetter cb={(priority) => updateDraft({draft_id: draft!._id, action: 'organization', priority, content: draft!.content, title: draft!.title})} />
-        )
-      }
-    </>
+    <PrioritySetter 
+      cb={(priority) => {
+        if (mode === 'create')
+          setDraft(prev => ({...prev!, priority}));
+        else if (mode === 'edit')
+          updateDraft({draft_id: draft!._id, action: 'organization', priority, content: draft!.content, title: draft!.title})    
+      }} 
+    />
   )
 }
 
@@ -115,37 +112,37 @@ function PrioritySetter({cb}: {cb: (priority: number) => void}) {
   const { draft } = useDraftEditor()!;
 
   return (
-    <DropDownMenu>
-      <DropDownMenuTriggerOnClick>
-        <InfoTag {...getPriorityProps(draft!.priority)} />
-      </DropDownMenuTriggerOnClick>
-      <DropDownMenuContent position="bottom" align="center">
-        <DropDownMenuItem onClick={() => cb(3)}>
-          <InfoTag {...getPriorityProps(3)} />
-        </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => cb(2)}>
-          <InfoTag {...getPriorityProps(2)} />
-        </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => cb(1)}>
-          <InfoTag {...getPriorityProps(1)} />
-        </DropDownMenuItem>
-        <DropDownMenuItem onClick={() => cb(0)}>
-          <InfoTag {...getPriorityProps(0)} />
-        </DropDownMenuItem>
-      </DropDownMenuContent>
-    </DropDownMenu>
+    <div className="flex flex-col gap-2 pl-2">
+      <Button variant="discret" style={{
+        filter: draft?.priority === 3 ? 'none' :'grayscale(1)',
+        opacity: draft?.priority === 3 ? '1' : '.6',
+        backgroundColor: draft?.priority === 3 ? 'rgba(255, 255, 255, 0.10)' : undefined
+      }} icon onClick={() => cb(3)} title="Urgent">
+        <PriorityIcons.urgent className="w-5 h-5 text-red-400" />
+      </Button>
+      <Button variant="discret"  style={{
+        filter: draft?.priority === 2 ? 'none' :'grayscale(1)',
+        opacity: draft?.priority === 2 ? '1' : '.6',
+        backgroundColor: draft?.priority === 2 ? 'rgba(255, 255, 255, 0.10)' : undefined
+      }} icon onClick={() => cb(2)} title="Important">
+        <PriorityIcons.important className="w-5 h-5 text-orange-500" />
+      </Button>
+      <Button variant="discret"  style={{
+        filter: draft?.priority === 1 ? 'none' :'grayscale(1)',
+        opacity: draft?.priority === 1 ? '1' : '.6',
+        backgroundColor: draft?.priority === 1 ? 'rgba(255, 255, 255, 0.10)' : undefined
+      }} icon onClick={() => cb(1)} title="Necessary">
+        <PriorityIcons.necessary className="w-5 h-5 text-green-400" />
+      </Button>
+      <Button variant="discret"  style={{
+        filter: draft?.priority === 0 ? 'none' :'grayscale(1)',
+        opacity: draft?.priority === 0 ? '1' : '.6',
+        backgroundColor: draft?.priority === 0 ? 'rgba(255, 255, 255, 0.10)' : undefined
+      }} icon onClick={() => cb(0)} title="None">
+        <PriorityIcons.none className="w-5 h-5 text-gray-350" />
+      </Button>
+    </div>
   )
-}
-
-function getPriorityProps(priority: number) {
-  if (priority === 1)
-    return { children: 'Necessary', className: 'bg-green-400', Icon: BsFillPinAngleFill}
-  else if (priority === 2)
-    return { children: 'Important', className: 'bg-orange-500', Icon: IoAlertCircle}
-  else if (priority === 3)
-    return { children: 'Urgent', className: 'bg-red-400', Icon: AiFillAlert}
-  else
-    return { children: 'None', className: 'bg-gray-350', Icon: TfiLayoutSidebarNone}
 }
 
 function TimePassed({value, metric}: { value: number, metric: string}) {

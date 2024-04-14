@@ -8,8 +8,8 @@ interface CustomCheckBox extends React.InputHTMLAttributes<HTMLInputElement> {
 const CheckBox_TW = 'text-tanj-green mt-1 mr-1.5 shrink-0';
 
 /**
- * ##### Taygra: 
- * ### Checkbox Input
+ * ###### Nano component 
+ * ## Checkbox Input
  * 
  * @param props className - Overwrites existing className
  * @returns JSX.Element

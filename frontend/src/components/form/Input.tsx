@@ -1,6 +1,6 @@
 
 /**
- * ##### Taygra:
+ * ###### Nano component
  * ### Text Input
  * 
  * @param props DEFAULT INPUT PROPS
@@ -16,7 +16,7 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
 }
 
 /**
- * ##### Taygra:
+ * ###### Nano component
  * ### Textarea Input
  * 
  * @param props DEFAULT INPUT PROPS

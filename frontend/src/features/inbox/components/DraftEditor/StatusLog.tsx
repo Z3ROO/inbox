@@ -1,4 +1,3 @@
-import * as InboxAPI from '@/features/inbox/api';
 import { useDraftEditor } from '../../store/DraftEditorContext';
 export function StatusLog() {
   return (

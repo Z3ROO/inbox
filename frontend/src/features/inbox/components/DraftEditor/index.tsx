@@ -1,23 +1,13 @@
-import { Modal } from "@/components/Modal";
-import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
-import { StatusLog } from "./StatusLog";
-import { DraftContent } from "./DraftContent";
+import { useDraftEditor } from "../../store/DraftEditorContext";
 import { Controlls } from "./Controlls";
-import { InfoTags, Priority } from "./InfoTags";
+import { DraftContent } from "./DraftContent";
+import { Priority } from "./Priority";
+import { TopBar } from "./TopBar";
+import { StatusLog } from "./StatusLog";
 
-export function DraftEditorModal() {
-  const { mode, setMode } = useDraftEditor()!;
-
-  return (
-    <Modal isModalOpen={mode != null} closeFn={() => setMode(null)}>
-      <DraftEditor />
-    </Modal>
-  )
-}
-
-function DraftEditor() {
+export function DraftEditor() {
   
-  const { inbox, draft, mode} = useDraftEditor()!;
+  const { inbox, draft, mode } = useDraftEditor()!;
   
   if (draft == null && mode === 'create')
     return <h2 className="m-4 mx-10 text-tanj-pink">Something Went wrong. new</h2>
@@ -36,8 +26,14 @@ function DraftEditor() {
 
   return (
     <div className="w-[40rem] my-2 ml-9">
-      <span className="text-tanj-green font-medium text-3xl">Inbox:</span>
-      <InfoTags />
+      <span className="text-tanj-green font-medium text-3xl">
+      {
+        mode === 'edit' ? 
+        'Inbox: ' :
+        'New draft: '
+      }
+      </span>
+      <TopBar />
       <div className="flex">
         <div className="flex-grow">
           <DraftContent />

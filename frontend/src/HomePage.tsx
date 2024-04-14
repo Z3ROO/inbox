@@ -1,4 +1,4 @@
-import Inbox from './features/inbox';
+import {Inbox} from './features/inbox';
 import { TaskList } from './features/tasks/components/TaskList';
 import { ToDealList } from './features/toDeal';
 

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HomePage } from '@/HomePage';
 import { ErrorRoute } from './Error';
-import UIDocumentationPage from '@/pages/UIDoc';
+import { UIDocumentationPage } from '@/features/UIDoc';
 
 export function Root() {
   return (

@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { DraftEditorContextProvider, useDraftEditor } from "./store/DraftEditorContext";
-import { DraftEditorModal } from './components/DraftEditorModal';
+import { DraftEditorContextProvider, DraftEditorModal, useDraftEditor } from "@/features/DraftEditor";
 import { InitDraftEditor } from "./components/InitDraftEditor";
 
 export function Inbox() {

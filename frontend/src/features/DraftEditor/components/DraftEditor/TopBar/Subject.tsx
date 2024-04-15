@@ -1,14 +1,14 @@
 import { Button } from "@/components/Buttons";
 import { InputDataList } from "@/components/form/InputDataList";
-import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
+import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import { useState } from "react";
 import { TfiLayoutSidebarNone } from "react-icons/tfi";
-import * as InboxAPI from '@/features/inbox/api';
+import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import { InfoTag } from "./Tag";
 
 export function Subject() {
   const { draft, setDraft, mode } = useDraftEditor();
-  const updateDraft = InboxAPI.UpdateDraft();
+  const updateDraft = DraftEditorAPI.UpdateDraft();
 
   return (
     <>
@@ -47,7 +47,7 @@ function SubjectSetter({cb}: {
   const [showSubjectPicker, setShowSubjectPicker] = useState(false);
   const { draft } = useDraftEditor();
   
-  const querySubject = InboxAPI.QuerySubjects();  
+  const querySubject = DraftEditorAPI.QuerySubjects();  
 
   return (
     <button className="text-left" onClick={() => {setShowSubjectPicker(prev => !prev); setSubject({label:'', value:''})}}>

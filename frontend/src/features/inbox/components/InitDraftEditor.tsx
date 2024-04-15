@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import { createPortal } from "react-dom";
-import { useDraftEditor } from "../store/DraftEditorContext";
+import { useDraftEditor } from "@/features/DraftEditor";
 import * as Icon from '@/components/icons/UI';
 
 export function InitDraftEditor() {

@@ -1,12 +1,12 @@
 import { FaCheck, FaTrashAlt } from "react-icons/fa";
-import * as InboxAPI from '@/features/inbox/api';
+import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import * as ToDealAPI from '@/features/toDeal/api';
 import { IDraft } from "shared-types";
 import { Container } from "@/components/structure/container";
 
 export function Item({toDeal}: {toDeal: IDraft}) {
   const draft_id = toDeal._id;
-  const updateDraft = InboxAPI.UpdateDraft();
+  const updateDraft = DraftEditorAPI.UpdateDraft();
   const toggleToDeal = ToDealAPI.ToggleToDeal();
 
   return (

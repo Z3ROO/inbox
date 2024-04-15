@@ -3,7 +3,7 @@ import { DropDownMenu, DropDownMenuTriggerOnClick, DropDownMenuContent, DropDown
 import { Checkbox } from "@/components/icons/UI";
 import { useState } from "react";
 import { DraftItemDTO, IDraft } from "shared-types";
-import * as InboxAPI from '@/features/inbox/api';
+import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import { useDraftEditor } from "../../store/DraftEditorContext";
 import { Button } from "@/components/Buttons";
 
@@ -56,7 +56,7 @@ function ChooseNewDraftItem({ newItem, setNewItem }: { newItem: DraftItemDTO, se
 
 function ApplyNewDraftItemEditMode({newItem, setNewItem }: { newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
   const { draft } = useDraftEditor();
-  const attachDraftItem = InboxAPI.AttachDraftItem();
+  const attachDraftItem = DraftEditorAPI.AttachDraftItem();
 
   return (
     <button className='px-1.5 rounded border' onClick={() => { attachDraftItem({draft_id: draft!._id, ...newItem}); setNewItem(null); }} disabled={newItem.value.trim() === ''}>send</button>
@@ -83,7 +83,7 @@ function SearchDrafts(props: {result:(draft:IDraft) => void}) {
   const [modal, setModal] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
-  const { data: searchResults } = InboxAPI.SearchDrafts({search});
+  const { data: searchResults } = DraftEditorAPI.SearchDrafts({search});
 
   return (
     <>

@@ -1,9 +1,9 @@
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
 import { BsFillCheckSquareFill } from "react-icons/bs";
 import { Button, ConfirmButton } from "@/components/Buttons";
-import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
+import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import { DraftDelayAmount } from "shared-types";
-import * as InboxAPI from '@/features/inbox/api';
+import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import * as ToDealAPI from '@/features/toDeal/api';
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnHover } from "@/components/dropdown";
 
@@ -21,7 +21,7 @@ export function EditorControlls() {
 
 function DelayDraftButtons() {
   const { draft } = useDraftEditor();
-  const updateDraft = InboxAPI.UpdateDraft();
+  const updateDraft = DraftEditorAPI.UpdateDraft();
 
   const updateDraftEvent = (delay: DraftDelayAmount, quantity?: 1|2|3) => () => { 
     updateDraft({ 
@@ -74,7 +74,7 @@ function DelayDraftButtons() {
 function ToDealButton() {
   const { draft } = useDraftEditor();
 
-  const updateDraft = InboxAPI.UpdateDraft();
+  const updateDraft = DraftEditorAPI.UpdateDraft();
   const toggleToDeal = ToDealAPI.ToggleToDeal();
 
   return (
@@ -100,10 +100,10 @@ function ToDealButton() {
 }
 
 function RemoveButton() {
-  const inbox = InboxAPI.QueryInbox().data!;
+  const inbox = DraftEditorAPI.QueryInbox().data!;
   const currentDraft = inbox[0];
 
-  const updateDraft = InboxAPI.UpdateDraft();
+  const updateDraft = DraftEditorAPI.UpdateDraft();
 
   return (
     <ConfirmButton
@@ -117,10 +117,10 @@ function RemoveButton() {
 }
 
 function ToTaskButton() {
-  const inbox = InboxAPI.QueryInbox().data!;
+  const inbox = DraftEditorAPI.QueryInbox().data!;
   const currentDraft = inbox[0];
 
-  const toTask = InboxAPI.TransformInTask();
+  const toTask = DraftEditorAPI.TransformInTask();
 
   return (
     <ConfirmButton
@@ -134,10 +134,10 @@ function ToTaskButton() {
 }
 
 function UndoButton() {
-  const inbox = InboxAPI.QueryInbox().data!;
+  const inbox = DraftEditorAPI.QueryInbox().data!;
   const currentDraft = inbox[0];
 
-  const updateDraft = InboxAPI.UpdateDraft();
+  const updateDraft = DraftEditorAPI.UpdateDraft();
 
   return (
     <Button

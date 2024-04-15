@@ -1,5 +1,5 @@
 import { Modal } from "@/components/Modal";
-import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
+import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import { DraftEditor } from "./DraftEditor";
 
 export function DraftEditorModal() {

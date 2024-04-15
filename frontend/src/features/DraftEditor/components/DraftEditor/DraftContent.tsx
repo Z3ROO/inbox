@@ -1,5 +1,5 @@
 import { useDraftEditor } from '../../store/DraftEditorContext';
-import * as InboxAPI from '@/features/inbox/api';
+import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import { LoadingSpinner } from '@/components/Loading';
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from '@/components/dropdown';
 import { InsertDraftItem } from './InsertDraftItem';
@@ -10,7 +10,7 @@ import { useEffect, useRef } from 'react';
 
 export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
   const { draft, setDraft, mode } = useDraftEditor();
-  const updateDraft = InboxAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
+  const updateDraft = DraftEditorAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
 
   const titleRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLPreElement>(null);
@@ -155,7 +155,7 @@ function DraftItemOptionsCreate({ item }: { item: DraftItemDTO }) {
 
 function DraftItems() {
   const { draft } = useDraftEditor()!; 
-  const {data: items} = InboxAPI.QueryDraftItems({draft_id: draft!._id});
+  const {data: items} = DraftEditorAPI.QueryDraftItems({draft_id: draft!._id});
 
   if (items == null)
     return null
@@ -180,7 +180,7 @@ function DraftItems() {
 
 function DraftItemOptions({ item }: { item: IDraft }) {
   const { draft, mode } = useDraftEditor()!;
-  const detachDraftItem = InboxAPI.DetachDraftItem();
+  const detachDraftItem = DraftEditorAPI.DetachDraftItem();
 
   
   if (mode === 'edit')

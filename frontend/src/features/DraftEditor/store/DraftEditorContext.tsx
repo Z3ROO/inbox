@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { DraftItemsMethods, IDraftEditorContext } from "@/features/inbox/types";
+import { DraftItemsMethods, IDraftEditorContext } from "@/features/DraftEditor/types";
 import { DraftItemDTO, IDraft } from "shared-types";
-import * as InboxAPI from '@/features/inbox/api';
+import * as DraftEditorAPI from '@/features/DraftEditor/api';
 
 const Context = createContext<IDraftEditorContext|null>(null);
 
@@ -35,7 +35,7 @@ const draftTemplate: IDraft = {
 
 export function DraftEditorContextProvider(props: { children?: JSX.Element|null|false|(JSX.Element|null|undefined|false)[] }) {
   const [mode, setMode] = useState<'create'|'edit'|null>(null);
-  const inbox = InboxAPI.QueryInbox();
+  const inbox = DraftEditorAPI.QueryInbox();
   const [draft, setDraft] = useState<IDraft>();
 
   const [draftItemsDTO, setDraftItemsDTO] = useState<DraftItemDTO[]>([]);

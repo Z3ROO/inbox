@@ -1,4 +1,4 @@
-import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
+import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import { CreatorControlls } from "./CreateModeControlls";
 import { EditorControlls } from "./EditModeControlls";
 

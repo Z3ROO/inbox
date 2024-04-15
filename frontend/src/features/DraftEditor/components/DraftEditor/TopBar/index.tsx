@@ -1,5 +1,5 @@
-import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
-import timePassedSince from "@/features/inbox/util/timePassedSince";
+import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
+import timePassedSince from "@/features/DraftEditor/util/timePassedSince";
 import { Subject } from "./Subject";
 import { TimePassed } from "./TimePassed";
 

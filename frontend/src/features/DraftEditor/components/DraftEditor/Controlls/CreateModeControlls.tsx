@@ -1,9 +1,9 @@
 import { Button } from "@/components/Buttons";
-import { useDraftEditor } from "@/features/inbox/store/DraftEditorContext";
-import * as InboxAPI from '@/features/inbox/api';
+import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
+import * as DraftEditorAPI from '@/features/DraftEditor/api';
 
 export function CreatorControlls() {
-  const insertDraft = InboxAPI.InsertDraft();
+  const insertDraft = DraftEditorAPI.InsertDraft();
   const { draft, setMode, draftItemsDTO, setDraftItemsDTO } = useDraftEditor();
   
   return (

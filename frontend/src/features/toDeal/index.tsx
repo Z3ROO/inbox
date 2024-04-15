@@ -3,7 +3,7 @@ import { BiCheck } from 'react-icons/bi';
 import { RxCross2 } from 'react-icons/rx';
 import { useState } from 'react';
 import { Textarea } from "@/components/form/Input";
-import * as InboxAPI from '@/features/inbox/api';
+import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import { Util } from "@/components/icons/UI";
 
 export function ToDealList() {
@@ -30,7 +30,7 @@ function AddToDealButtons(props: {
   setToDealInput: (value: React.SetStateAction<string>) => void
 }) {
   const {isToDealInputOpen, setIsToDealInputOpen, toDealInput, setToDealInput} = props;
-  const insertDraft = InboxAPI.InsertDraft();
+  const insertDraft = DraftEditorAPI.InsertDraft();
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { Button } from "@/components/Buttons";
-import * as InboxAPI from '@/features/inbox/api';
+import * as DraftEditor from '@/features/DraftEditor/api';
 import { useDraftEditor } from "../../store/DraftEditorContext";
 import { Priority as PriorityIcons } from "@/components/icons/UI";
 
@@ -7,7 +7,7 @@ import { Priority as PriorityIcons } from "@/components/icons/UI";
 export function Priority() {
   const { draft, setDraft, mode } = useDraftEditor();
 
-  const updateDraft = InboxAPI.UpdateDraft();
+  const updateDraft = DraftEditor.UpdateDraft();
 
   return (
     <PrioritySetter 

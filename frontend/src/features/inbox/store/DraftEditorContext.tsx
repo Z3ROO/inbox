@@ -5,7 +5,14 @@ import * as InboxAPI from '@/features/inbox/api';
 
 const Context = createContext<IDraftEditorContext|null>(null);
 
-export const useDraftEditor = () => useContext(Context);
+export const useDraftEditor = () => {
+  const context = useContext(Context);
+  
+  if (context == null)
+    throw new Error("useDraftEditor hook can only be used withing DraftEditorContextProvider.")
+
+  return context;
+}
 
 const draftTemplate: IDraft = {
   _id: '',

@@ -1,4 +1,4 @@
-import { AiFillAlert } from "react-icons/ai";
+import { AiFillAlert, AiOutlineFieldTime } from "react-icons/ai";
 import { IoAlertCircle } from "react-icons/io5";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { TfiLayoutSidebarNone } from "react-icons/tfi";
@@ -29,4 +29,8 @@ export const Inbox = {
 export const Util = {
   plus: FaPlus,
   loading: FaCircleNotch
+}
+
+export const Time = {
+  passing: AiOutlineFieldTime
 }

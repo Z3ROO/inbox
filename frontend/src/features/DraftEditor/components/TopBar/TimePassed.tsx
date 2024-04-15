@@ -1,4 +1,4 @@
-import { AiOutlineFieldTime } from "react-icons/ai";
+import { Time } from '@/components/icons/UI';
 import { InfoTag } from "./Tag";
 
 export function TimePassed({value, metric}: { value: number, metric: string}) {
@@ -12,7 +12,7 @@ export function TimePassed({value, metric}: { value: number, metric: string}) {
     color = 'bg-yellow-400';
 
   return (
-    <InfoTag className={` ${color} `} Icon={AiOutlineFieldTime}>
+    <InfoTag className={` ${color} `} Icon={Time.passing}>
       {`${value} ${metric}s`}
     </InfoTag>
   )

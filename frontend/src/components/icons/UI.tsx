@@ -6,6 +6,8 @@ import { ImCheckboxUnchecked } from "react-icons/im";
 import { FaCircleNotch, FaPlus, FaInbox } from "react-icons/fa";
 import { DotedUncheckedbox } from "./rehearsal";
 import { CgCheckR, CgCloseR, CgPlayPauseR } from "react-icons/cg";
+import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
+import { BsFillCheckSquareFill } from "react-icons/bs";
 
 export const Priority = {
   urgent: AiFillAlert,
@@ -29,7 +31,13 @@ export const Inbox = {
 export const Util = {
   plus: FaPlus,
   loading: FaCircleNotch,
-  none: LuBoxSelect
+  none: LuBoxSelect,
+  checkbox: BsFillCheckSquareFill
+}
+
+export const Action = {
+  undo: FaUndoAlt,
+  delete: FaTrashAlt
 }
 
 export const Time = {

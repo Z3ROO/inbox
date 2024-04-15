@@ -1,11 +1,11 @@
-import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
-import { BsFillCheckSquareFill } from "react-icons/bs";
+
 import { Button, ConfirmButton } from "@/components/Buttons";
 import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import { DraftDelayAmount } from "shared-types";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import * as ToDealAPI from '@/features/toDeal/api';
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnHover } from "@/components/dropdown";
+import { Action, Util } from "@/components/icons/UI";
 
 export function EditorControlls() {
   return (
@@ -93,7 +93,7 @@ function ToDealButton() {
           toggleToDeal({ draft_id: draft!._id, state: true });
         }}
       >
-        <BsFillCheckSquareFill className="w-3.5 h-3.5" />
+        <Util.checkbox className="w-3.5 h-3.5" />
       </Button>
     </div>
   );
@@ -111,7 +111,7 @@ function RemoveButton() {
       disabled={updateDraft.isLoading}
       onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'remove' })}
     >
-      <FaTrashAlt className="w-3.5 h-3.5" />
+      <Action.delete className="w-3.5 h-3.5" />
     </ConfirmButton>
   );
 }
@@ -145,7 +145,7 @@ function UndoButton() {
       disabled={updateDraft.isLoading}
       onClick={() => updateDraft({ draft_id: currentDraft._id, action: 'undo' })}
     >
-      <FaUndoAlt className="w-3.5 h-3.5" />
+      <Action.undo className="w-3.5 h-3.5" />
     </Button>
   );
 }

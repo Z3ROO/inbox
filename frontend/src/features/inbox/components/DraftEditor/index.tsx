@@ -7,13 +7,11 @@ import { StatusLog } from "./StatusLog";
 
 export function DraftEditor() {
   
-  const { inbox, draft, mode } = useDraftEditor()!;
+  const { inbox, draft, mode } = useDraftEditor();
   
   if (draft == null && mode === 'create')
     return <h2 className="m-4 mx-10 text-tanj-pink">Something Went wrong. new</h2>
-/*
-* All the proceding use of inboxItems depends on these conditions
-* */
+
   if (inbox.isLoading)
     return <h2 className="m-4 mx-10 text-tanj-green">Loading...</h2>
   if (inbox.error)

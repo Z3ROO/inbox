@@ -9,7 +9,7 @@ import { Checkbox } from '@/components/icons/UI';
 import { useEffect, useRef } from 'react';
 
 export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
-  const { draft, setDraft, mode } = useDraftEditor()!;
+  const { draft, setDraft, mode } = useDraftEditor();
   const updateDraft = InboxAPI.UpdateDraft();//Talvez seja melhor isolar isso tambem.
 
   const titleRef = useRef<HTMLDivElement>(null);
@@ -120,10 +120,7 @@ export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){
 }
 
 function DraftItemsCreate() {
-  const { draft, draftItemsDTO: items } = useDraftEditor()!; 
-
-  if (items == null)
-    return null
+  const { draft, draftItemsDTO: items } = useDraftEditor(); 
 
   return (
     <>

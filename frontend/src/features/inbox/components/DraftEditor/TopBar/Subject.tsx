@@ -7,7 +7,7 @@ import * as InboxAPI from '@/features/inbox/api';
 import { InfoTag } from "./Tag";
 
 export function Subject() {
-  const { draft, setDraft, mode } = useDraftEditor()!;
+  const { draft, setDraft, mode } = useDraftEditor();
   const updateDraft = InboxAPI.UpdateDraft();
 
   return (
@@ -45,7 +45,7 @@ function SubjectSetter({cb}: {
 
   const [subject, setSubject] = useState({label: '', value: ''});
   const [showSubjectPicker, setShowSubjectPicker] = useState(false);
-  const { draft } = useDraftEditor()!;
+  const { draft } = useDraftEditor();
   
   const querySubject = InboxAPI.QuerySubjects();  
 

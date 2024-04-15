@@ -4,7 +4,7 @@ import * as InboxAPI from '@/features/inbox/api';
 
 export function CreatorControlls() {
   const insertDraft = InboxAPI.InsertDraft();
-  const { draft, setMode, draftItemsDTO, setDraftItemsDTO } = useDraftEditor()!;
+  const { draft, setMode, draftItemsDTO, setDraftItemsDTO } = useDraftEditor();
   
   return (
   <>

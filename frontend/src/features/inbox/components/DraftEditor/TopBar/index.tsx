@@ -4,7 +4,7 @@ import { Subject } from "./Subject";
 import { TimePassed } from "./TimePassed";
 
 export function TopBar() {
-  const { draft, mode } = useDraftEditor()!;
+  const { draft, mode } = useDraftEditor();
 
   const timePassed = timePassedSince(draft!.created_at);
 

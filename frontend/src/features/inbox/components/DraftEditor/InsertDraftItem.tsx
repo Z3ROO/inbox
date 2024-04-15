@@ -21,8 +21,8 @@ export function InsertDraftItem() {
 }
 
 function ChooseNewDraftItem({ newItem, setNewItem }: { newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
-  const { mode, setDraftItemsDTO } = useDraftEditor()!;
-  
+  const { mode, setDraftItemsDTO } = useDraftEditor();
+
 
   return (
     <div className='flex'>
@@ -55,7 +55,7 @@ function ChooseNewDraftItem({ newItem, setNewItem }: { newItem: DraftItemDTO, se
 }
 
 function ApplyNewDraftItemEditMode({newItem, setNewItem }: { newItem: DraftItemDTO, setNewItem: React.Dispatch<React.SetStateAction<DraftItemDTO | null>> }) {
-  const { draft } = useDraftEditor()!;
+  const { draft } = useDraftEditor();
   const attachDraftItem = InboxAPI.AttachDraftItem();
 
   return (

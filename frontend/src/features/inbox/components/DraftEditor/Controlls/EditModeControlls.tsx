@@ -20,7 +20,7 @@ export function EditorControlls() {
 }
 
 function DelayDraftButtons() {
-  const { draft } = useDraftEditor()!
+  const { draft } = useDraftEditor();
   const updateDraft = InboxAPI.UpdateDraft();
 
   const updateDraftEvent = (delay: DraftDelayAmount, quantity?: 1|2|3) => () => { 
@@ -72,7 +72,7 @@ function DelayDraftButtons() {
 }
 
 function ToDealButton() {
-  const { draft } = useDraftEditor()!;
+  const { draft } = useDraftEditor();
 
   const updateDraft = InboxAPI.UpdateDraft();
   const toggleToDeal = ToDealAPI.ToggleToDeal();

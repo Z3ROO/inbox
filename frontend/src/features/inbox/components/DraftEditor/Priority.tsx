@@ -5,7 +5,7 @@ import { Priority as PriorityIcons } from "@/components/icons/UI";
 
 
 export function Priority() {
-  const { draft, setDraft, mode } = useDraftEditor()!;
+  const { draft, setDraft, mode } = useDraftEditor();
 
   const updateDraft = InboxAPI.UpdateDraft();
 
@@ -22,7 +22,7 @@ export function Priority() {
 }
 
 function PrioritySetter({cb}: {cb: (priority: number) => void}) {
-  const { draft } = useDraftEditor()!;
+  const { draft } = useDraftEditor();
 
   return (
     <div className="flex flex-col gap-2 pl-2">

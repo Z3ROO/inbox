@@ -6,9 +6,6 @@ import * as Icon from '@/components/icons/UI';
 export function InitDraftEditor() {
   const draftEditorContext = useDraftEditor();
 
-  if (!draftEditorContext)
-    return null;
-
   return (
     createPortal(
     <div className="absolute top-8 left-1/2 -translate-x-1/2 p-2.5 rounded-sm bg-gray-600 z-50">

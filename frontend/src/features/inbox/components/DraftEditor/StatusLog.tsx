@@ -8,7 +8,7 @@ export function StatusLog() {
 }
 
 export function LastDelayLog() {
-  const { draft } = useDraftEditor()!;
+  const { draft } = useDraftEditor();
 
   // If never delayed, no log.
   if (draft!.delay == null)

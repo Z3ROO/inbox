@@ -1,7 +1,7 @@
 import { AiFillAlert, AiOutlineFieldTime } from "react-icons/ai";
 import { IoAlertCircle } from "react-icons/io5";
 import { BsFillPinAngleFill } from "react-icons/bs";
-import { TfiLayoutSidebarNone } from "react-icons/tfi";
+import { LuBoxSelect } from "react-icons/lu";
 import { ImCheckboxUnchecked } from "react-icons/im";
 import { FaCircleNotch, FaPlus, FaInbox } from "react-icons/fa";
 import { DotedUncheckedbox } from "./rehearsal";
@@ -11,7 +11,7 @@ export const Priority = {
   urgent: AiFillAlert,
   important: IoAlertCircle,
   necessary: BsFillPinAngleFill,
-  none: TfiLayoutSidebarNone
+  none: LuBoxSelect
 }
 
 export const Checkbox = {
@@ -28,7 +28,8 @@ export const Inbox = {
 
 export const Util = {
   plus: FaPlus,
-  loading: FaCircleNotch
+  loading: FaCircleNotch,
+  none: LuBoxSelect
 }
 
 export const Time = {

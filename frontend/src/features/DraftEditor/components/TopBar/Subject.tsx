@@ -2,9 +2,9 @@ import { Button } from "@/components/Buttons";
 import { InputDataList } from "@/components/form/InputDataList";
 import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import { useState } from "react";
-import { TfiLayoutSidebarNone } from "react-icons/tfi";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import { InfoTag } from "./Tag";
+import { Util } from "@/components/icons/UI";
 
 export function Subject() {
   const { draft, setDraft, mode } = useDraftEditor();
@@ -52,7 +52,7 @@ function SubjectSetter({cb}: {
   return (
     <button className="text-left" onClick={() => {setShowSubjectPicker(prev => !prev); setSubject({label:'', value:''})}}>
       <div className="group relative">
-        <InfoTag className="bg-blue-600" Icon={TfiLayoutSidebarNone}>{draft!.subject?.name}</InfoTag>
+        <InfoTag className="bg-blue-600" Icon={Util.none}>{draft!.subject?.name}</InfoTag>
         {
           showSubjectPicker && (
           <div onClick={e => e.stopPropagation()} className="absolute top-full left-0 bg-tanj-gray px-2 py-1 rounded-sm mt-1 flex items-center z-10 cursor-default">

@@ -29,13 +29,13 @@ export const Inbox = {
 }
 
 export const Util = {
-  plus: FaPlus,
   loading: FaCircleNotch,
   none: LuBoxSelect,
   checkbox: BsFillCheckSquareFill
 }
 
 export const Action = {
+  plus: FaPlus,
   undo: FaUndoAlt,
   delete: FaTrashAlt
 }

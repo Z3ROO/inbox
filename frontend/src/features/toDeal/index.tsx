@@ -4,7 +4,7 @@ import { RxCross2 } from 'react-icons/rx';
 import { useState } from 'react';
 import { Textarea } from "@/components/form/Input";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
-import { Util } from "@/components/icons/UI";
+import { Action } from "@/components/icons/UI";
 
 export function ToDealList() {
   const [isToDealInputOpen, setIsToDealInputOpen] = useState(false);
@@ -41,7 +41,7 @@ function AddToDealButtons(props: {
         {
           isToDealInputOpen ?
             <RxCross2 className="w-3 h-3 text-tanj-green" /> :
-            <Util.plus className="w-3 h-3 fill-tanj-green" />
+            <Action.plus className="w-3 h-3 fill-tanj-green" />
         }
       </button>
       {

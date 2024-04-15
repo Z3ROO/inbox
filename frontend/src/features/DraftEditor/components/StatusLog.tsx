@@ -1,4 +1,4 @@
-import { useDraftEditor } from '../../store/DraftEditorContext';
+import { useDraftEditor } from '../store/DraftEditorContext';
 export function StatusLog() {
   return (
     <div className="text-right">

@@ -1,4 +1,4 @@
-import { useDraftEditor } from '../../store/DraftEditorContext';
+import { useDraftEditor } from '../store/DraftEditorContext';
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import { LoadingSpinner } from '@/components/Loading';
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from '@/components/dropdown';

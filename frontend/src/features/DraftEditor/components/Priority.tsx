@@ -1,6 +1,6 @@
 import { Button } from "@/components/Buttons";
 import * as DraftEditor from '@/features/DraftEditor/api';
-import { useDraftEditor } from "../../store/DraftEditorContext";
+import { useDraftEditor } from "../store/DraftEditorContext";
 import { Priority as PriorityIcons } from "@/components/icons/UI";
 
 

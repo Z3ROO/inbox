@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/icons/UI";
 import { useState } from "react";
 import { DraftItemDTO, IDraft } from "shared-types";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
-import { useDraftEditor } from "../../store/DraftEditorContext";
+import { useDraftEditor } from "../store/DraftEditorContext";
 import { Button } from "@/components/Buttons";
 
 export function InsertDraftItem() {

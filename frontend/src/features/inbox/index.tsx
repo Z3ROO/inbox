@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { DraftEditorContextProvider, DraftEditorModal, useDraftEditor } from "@/features/DraftEditor";
+import { DraftEditorContextProvider, DraftEditor, useDraftEditor } from "@/features/DraftEditor";
 import { InitDraftEditor } from "./components/InitDraftEditor";
 
 export function Inbox() {
@@ -8,7 +8,7 @@ export function Inbox() {
       <DraftEditorContextProvider>
         <div className="w-96">{/* TA AQUI SO PRA CRIAR ESPAÇO NA TELA */}</div>
         <InitDraftEditor />
-        <DraftEditorModal />
+        <DraftEditor />
       </DraftEditorContextProvider>
     </div>
   )

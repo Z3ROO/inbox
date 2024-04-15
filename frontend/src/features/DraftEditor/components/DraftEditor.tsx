@@ -1,11 +1,22 @@
-import { useDraftEditor } from "../../store/DraftEditorContext";
+import { useDraftEditor } from "../store/DraftEditorContext";
 import { Controlls } from "./Controlls";
 import { DraftContent } from "./DraftContent";
 import { Priority } from "./Priority";
 import { TopBar } from "./TopBar";
 import { StatusLog } from "./StatusLog";
+import { Modal } from "@/components/Modal";
 
 export function DraftEditor() {
+  const { mode, setMode } = useDraftEditor()!;
+
+  return (
+    <Modal isModalOpen={mode != null} closeFn={() => setMode(null)}>
+      <DraftEditorConstructor />
+    </Modal>
+  )
+}
+
+function DraftEditorConstructor() {
   
   const { inbox, draft, mode } = useDraftEditor();
   

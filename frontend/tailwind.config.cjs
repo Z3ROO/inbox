@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@z3ro/nano/ui/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {

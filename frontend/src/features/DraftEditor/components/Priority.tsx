@@ -1,7 +1,7 @@
-import { Button } from "@/components/Buttons";
+import { Button } from "@z3ro/nano";
+import { Priority as PriorityIcons } from "@z3ro/nano";
 import * as DraftEditor from '@/features/DraftEditor/api';
 import { useDraftEditor } from "../store/DraftEditorContext";
-import { Priority as PriorityIcons } from "@/components/icons/UI";
 
 
 export function Priority() {

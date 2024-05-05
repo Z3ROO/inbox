@@ -1,10 +1,10 @@
-import { Button } from "@/components/Buttons";
-import { InputDataList } from "@/components/form/InputDataList";
+import { Button } from "@z3ro/nano";
+import { InputDataList } from "@z3ro/nano";
 import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import { useState } from "react";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import { InfoTag } from "./Tag";
-import { Util } from "@/components/icons/UI";
+import { Util } from "@z3ro/nano";
 
 export function Subject() {
   const { draft, setDraft, mode } = useDraftEditor();

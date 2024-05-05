@@ -2,7 +2,7 @@ import { FaCheck, FaTrashAlt } from "react-icons/fa";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import * as ToDealAPI from '@/features/toDeal/api';
 import { IDraft } from "shared-types";
-import { Container } from "@/components/structure/container";
+import { Container } from "@z3ro/nano";
 
 export function Item({toDeal}: {toDeal: IDraft}) {
   const draft_id = toDeal._id;

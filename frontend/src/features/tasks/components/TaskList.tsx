@@ -1,13 +1,13 @@
-import { Container } from "@/components/structure/container";
+import { Container } from "@z3ro/nano";
 import * as TasksAPI from "@/features/tasks/api";
 import { ITask, TaskStatus } from "shared-types";
-import { LoadingSpinner } from "@/components/Loading";
+import { LoadingSpinner } from "@z3ro/nano";
 import { useState } from "react";
-import { DropDownMenu, DropDownMenuItem, DropDownMenuTriggerOnClick, DropDownMenuContent } from "@/components/dropdown";
+import { DropDownMenu, DropDownMenuItem, DropDownMenuTriggerOnClick, DropDownMenuContent } from "@z3ro/nano";
 
-import { DropDownTriggerOnClick } from "@/components/dropdown/DropDownEngine";
-import { Priority, Checkbox, Util } from "@/components/icons/UI";
-import { Button } from "@/components/Buttons";
+import { DropDownTriggerOnClick } from "@z3ro/nano/ui/dropdown/DropDownEngine";
+import { Priority, Checkbox, Util } from "@z3ro/nano";
+import { Button } from "@z3ro/nano";
 
 export function TaskList() {
   const {data: tasks} = TasksAPI.QueryTasks();

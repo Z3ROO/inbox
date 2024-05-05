@@ -1,11 +1,11 @@
 import { useDraftEditor } from '../store/DraftEditorContext';
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
-import { LoadingSpinner } from '@/components/Loading';
-import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from '@/components/dropdown';
+import { LoadingSpinner } from '@z3ro/nano';
+import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from '@z3ro/nano';
 import { InsertDraftItem } from './InsertDraftItem';
 import { DraftItemDTO, IDraft } from 'shared-types';
-import { Button } from '@/components/Buttons';
-import { Checkbox } from '@/components/icons/UI';
+import { Button } from '@z3ro/nano';
+import { Checkbox } from '@z3ro/nano';
 import { useEffect, useRef } from 'react';
 
 export function DraftContent(props: React.HTMLAttributes<HTMLDivElement>){

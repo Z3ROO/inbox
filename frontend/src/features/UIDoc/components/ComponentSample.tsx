@@ -1,4 +1,4 @@
-import { LoadingSpinner } from "@/components/Loading";
+import { LoadingSpinner } from "@z3ro/nano";
 import { useState, useEffect } from "react";
 import { ComponentMetadata } from "../ComponentMetadata";
 

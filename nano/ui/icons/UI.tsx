@@ -2,8 +2,8 @@ import { AiFillAlert, AiOutlineFieldTime } from "react-icons/ai";
 import { IoAlertCircle } from "react-icons/io5";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { LuBoxSelect } from "react-icons/lu";
-import { ImCheckboxUnchecked } from "react-icons/im";
-import { FaCircleNotch, FaPlus, FaInbox } from "react-icons/fa";
+import { ImCheckboxUnchecked, ImCross } from "react-icons/im";
+import { FaCircleNotch, FaPlus, FaInbox, FaCheck } from "react-icons/fa";
 import { DotedUncheckedbox } from "./rehearsal";
 import { CgCheckR, CgCloseR, CgPlayPauseR } from "react-icons/cg";
 import { FaTrashAlt, FaUndoAlt } from "react-icons/fa";
@@ -36,6 +36,8 @@ export const Util = {
 
 export const Action = {
   plus: FaPlus,
+  cross: ImCross,
+  check: FaCheck,
   undo: FaUndoAlt,
   delete: FaTrashAlt
 }

@@ -1,4 +1,4 @@
-import { Time } from '@/components/icons/UI';
+import { Time } from '@z3ro/nano';
 import { InfoTag } from "./Tag";
 
 export function TimePassed({value, metric}: { value: number, metric: string}) {

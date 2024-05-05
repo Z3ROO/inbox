@@ -1,6 +1,5 @@
-import { HTMLAttributes } from "react";
 
-export function Container(props: HTMLAttributes<HTMLDivElement>) {
+export function Container(props: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div 
       {...props} 

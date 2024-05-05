@@ -1,11 +1,11 @@
-import { Modal } from "@/components/Modal";
-import { DropDownMenu, DropDownMenuTriggerOnClick, DropDownMenuContent, DropDownMenuItem } from "@/components/dropdown";
-import { Checkbox } from "@/components/icons/UI";
+import { Modal } from "@z3ro/nano";
+import { DropDownMenu, DropDownMenuTriggerOnClick, DropDownMenuContent, DropDownMenuItem } from "@z3ro/nano";
+import { Checkbox } from "@z3ro/nano";
 import { useState } from "react";
 import { DraftItemDTO, IDraft } from "shared-types";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import { useDraftEditor } from "../store/DraftEditorContext";
-import { Button } from "@/components/Buttons";
+import { Button } from "@z3ro/nano";
 
 export function InsertDraftItem() {
   const [newItem, setNewItem] = useState<DraftItemDTO|null>(null);

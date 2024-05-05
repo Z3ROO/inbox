@@ -2,9 +2,9 @@ import { List } from "./components/List";
 import { BiCheck } from 'react-icons/bi';
 import { RxCross2 } from 'react-icons/rx';
 import { useState } from 'react';
-import { Textarea } from "@/components/form/Input";
+import { Textarea } from "@z3ro/nano";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
-import { Action } from "@/components/icons/UI";
+import { Action } from "@z3ro/nano";
 
 export function ToDealList() {
   const [isToDealInputOpen, setIsToDealInputOpen] = useState(false);

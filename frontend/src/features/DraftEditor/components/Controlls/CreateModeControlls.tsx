@@ -1,4 +1,4 @@
-import { Button } from "@/components/Buttons";
+import { Button } from "@z3ro/nano";
 import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
 

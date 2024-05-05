@@ -1,9 +1,7 @@
-import { ButtonHTMLAttributes, ReactNode, useEffect, useState } from "react";
-import { ImCross } from "react-icons/im";
-import { FaCheck } from "react-icons/fa";
 import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnClick } from "./dropdown";
+import { Action } from "./icons/UI";
 
-export interface NanoButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface NanoButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary'|'secondary'|'destructive'|'discret'
   icon?: boolean
   outline?: boolean
@@ -66,10 +64,10 @@ export function ConfirmButton(props: NanoButtonProps) {
       </DropDownMenuTriggerOnClick>
       <DropDownMenuContent direction="horizontal">
         <DropDownMenuItem onClick={onClick} icon>
-          <FaCheck className='w-2.5 h-2.5' />
+          <Action.check className='w-2.5 h-2.5' />
         </DropDownMenuItem>
         <DropDownMenuItem icon>
-          <ImCross className='w-2.5 h-2.5' />
+          <Action.cross className='w-2.5 h-2.5' />
         </DropDownMenuItem>
       </DropDownMenuContent>
     </DropDownMenu>

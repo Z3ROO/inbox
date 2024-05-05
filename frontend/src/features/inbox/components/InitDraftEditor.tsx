@@ -1,7 +1,7 @@
-import { Button } from "@/components/Buttons";
+import { Button } from "@z3ro/nano";
 import { createPortal } from "react-dom";
 import { useDraftEditor } from "@/features/DraftEditor";
-import * as Icon from '@/components/icons/UI';
+import * as Icon from '@z3ro/nano';
 
 export function InitDraftEditor() {
   const draftEditorContext = useDraftEditor();

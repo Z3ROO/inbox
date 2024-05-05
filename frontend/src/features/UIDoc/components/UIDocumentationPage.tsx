@@ -1,4 +1,4 @@
-import Page from "@/components/structure/Page";
+import { Page } from "@z3ro/nano";
 import { useState } from "react";
 import { ComponentMetadata } from "../ComponentMetadata";
 import { ComponentsListSideBar } from "./ComponentsListSidebar";

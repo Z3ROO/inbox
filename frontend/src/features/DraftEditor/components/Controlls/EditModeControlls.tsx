@@ -1,11 +1,11 @@
 
-import { Button, ConfirmButton } from "@/components/Buttons";
+import { Button, ConfirmButton } from "@z3ro/nano";
 import { useDraftEditor } from "@/features/DraftEditor/store/DraftEditorContext";
 import { DraftDelayAmount } from "shared-types";
 import * as DraftEditorAPI from '@/features/DraftEditor/api';
 import * as ToDealAPI from '@/features/toDeal/api';
-import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnHover } from "@/components/dropdown";
-import { Action, Util } from "@/components/icons/UI";
+import { DropDownMenu, DropDownMenuContent, DropDownMenuItem, DropDownMenuTriggerOnHover } from "@z3ro/nano";
+import { Action, Util } from "@z3ro/nano";
 
 export function EditorControlls() {
   return (

@@ -4,7 +4,7 @@ import { DraftContent } from "./DraftContent";
 import { Priority } from "./Priority";
 import { TopBar } from "./TopBar";
 import { StatusLog } from "./StatusLog";
-import { Modal } from "@/components/Modal";
+import { Modal } from "@z3ro/nano";
 
 export function DraftEditor() {
   const { mode, setMode } = useDraftEditor()!;

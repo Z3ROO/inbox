@@ -3,6 +3,14 @@ import { HomePage } from '@/HomePage';
 import { ErrorRoute } from './Error';
 import { UIDocumentationPage } from '@/features/UIDoc';
 
+/**
+ * ### Router
+ * 
+ * Where the app routes are assigned and structured.
+ * 
+ * @returns JSX.Element
+ */
+
 export function Root() {
   return (
     <BrowserRouter>

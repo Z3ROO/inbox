@@ -1,4 +1,4 @@
-import { queryClient } from "@/App";
+import { queryClient } from "@/lib/query";
 import { useMutation, MutationOptions } from "@/lib/query";
 import { InsertDraftDTO } from "shared-types";
 import APIRequest from "@/lib/ApiRequest";

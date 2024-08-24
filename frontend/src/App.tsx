@@ -1,10 +1,9 @@
 import { Root } from '@/routes';
-import { QueryClient, QueryClientProvider } from 'react-query';
-export const queryClient = new QueryClient();
+import { QueryClientProvider } from './lib/query';
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider>
       <div className={`w-screen h-screen bg-gray-900`}>
         <Root />
       </div>
